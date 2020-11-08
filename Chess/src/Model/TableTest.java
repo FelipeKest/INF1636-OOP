@@ -12,7 +12,7 @@ class TableTest {
 	
 	@BeforeEach
 	void setUp() throws Exception {
-		this.t = new Table();
+		this.t = Table.getTableInstance();
 	}
 
 	@AfterEach
@@ -22,11 +22,18 @@ class TableTest {
 
 	@Test
 	void test() {
-		assertEquals(this.t.positions.length,64);
-		assertEquals(this.t.positions[0].coordinate.x,1);
-		assertEquals(this.t.positions[0].coordinate.y,1);
-		assertEquals(this.t.positions[63].coordinate.x,8);
-		assertEquals(this.t.positions[63].coordinate.y,8);
+		Coordinate c = new Coordinate(1,1);
+		Coordinate c2 = new Coordinate(8,8);
+		assertEquals(this.t.getAllPositions().length,64);
+		try {
+			assertEquals(this.t.getPositionByCoordinate(c).coordinate.x,1);
+			assertEquals(this.t.getPositionByCoordinate(c).coordinate.y,1);
+			assertEquals(this.t.getPositionByCoordinate(c2).coordinate.x,8);
+			assertEquals(this.t.getPositionByCoordinate(c2).coordinate.y,8);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

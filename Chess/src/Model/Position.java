@@ -24,4 +24,8 @@ final class Position {
 			return Color.BRANCO;
 		}
 	}
+	
+	protected static boolean checkEqualCoordinate(Position p1, Position p2) {
+		return p1.coordinate.x == p2.coordinate.x && p1.coordinate.y == p2.coordinate.y;
+	}
 }
