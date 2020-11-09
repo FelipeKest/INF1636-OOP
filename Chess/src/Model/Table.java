@@ -84,20 +84,23 @@ public final class Table {
 		// Vector of possible positions for a rook (8V - Current)+(8H-Current) = 14
 		Position possible[] = new Position[14];
 		int i=0;
-		
+
 		Coordinate c = current.coordinate;
-		Coordinate aux = c;
+		Coordinate aux = new Coordinate(c.x,c.y);
 		
 		// Check for available positions in x coordinate
 		while (aux.x<9) {
 			
 			Position nextXPosition;
+			System.out.println("X++ - i = "+i);
 			try {	
 				aux.x++;
+				// Verify if position is on table, and gets its position if exists
 				nextXPosition = this.getPositionByCoordinate(aux);
 			} catch (Exception e) {
-				e.printStackTrace();
-				return null;
+				// Position doesn't exist on table
+				System.out.println("Position Doesnt exist on table");
+				break;
 			}
 			
 			if (nextXPosition.occupiedBy != null) {
@@ -112,21 +115,26 @@ public final class Table {
 				}
 			} else {
 				possible[i] = nextXPosition;
+				i++;
 			}
-			i++;
 		}
 		
-		aux = c;
+		aux.x = c.x;
+		aux.y = c.y;
+		System.out.println("cs x = "+c.x);
+		System.out.println("aux x = "+aux.x);
 		
 		while (aux.x>0) {
 			
 			Position nextXPosition;
+			System.out.println("X-- - i = "+i);
 			try {
 				aux.x--;
 				nextXPosition = this.getPositionByCoordinate(aux);
 			} catch (Exception e) {
-				e.printStackTrace();
-				return null;
+				// Position doesn't exist on table
+				System.out.println("Position Doesnt exist on table");
+				break;
 			}
 			
 			if (nextXPosition.occupiedBy != null) {
@@ -141,15 +149,23 @@ public final class Table {
 				}
 			} else {
 				possible[i] = nextXPosition;
+				i++;
 			}
-			i++;
 		}
-		
-		int yPosition = c.y;
-		
-		while (yPosition<8) {
 			
-			Position nextYPosition = new Position(c.x,yPosition+1);
+		aux.x = c.x;
+		aux.y = c.y;
+		
+		while (aux.y<8) {
+			
+			Position nextYPosition;
+			
+			try {
+				aux.y++;
+				nextYPosition = this.getPositionByCoordinate(aux);
+			} catch (Exception e) {
+				break;
+			}
 			
 			if (nextYPosition.occupiedBy != null) {
 				if (nextYPosition.occupiedBy.color == r.color) {
@@ -158,18 +174,28 @@ public final class Table {
 				} else {
 					// other player
 					possible[i] = nextYPosition;
+					i++;
 					break;
 				}
 			} else {
 				possible[i] = nextYPosition;
+				i++;
 			}
-			yPosition++;
-			i++;
 		}
 		
-		while (c.y>0) {
+		aux.x = c.x;
+		aux.y = c.y;
+		
+		while (aux.y>0) {
 			
-			Position nextYPosition = new Position(c.x,yPosition-1);
+			Position nextYPosition;
+			
+			try {
+				aux.y--;
+				nextYPosition = this.getPositionByCoordinate(aux);
+			} catch (Exception e) {
+				break;
+			}
 			
 			if (nextYPosition.occupiedBy != null) {
 				if (nextYPosition.occupiedBy.color == r.color) {
@@ -178,13 +204,13 @@ public final class Table {
 				} else {
 					// other player
 					possible[i] = nextYPosition;
+					i++;
 					break;
 				}
 			} else {
 				possible[i] = nextYPosition;
+				i++;
 			}
-			yPosition--;
-			i++;
 		}	
 		return possible;
 	}
