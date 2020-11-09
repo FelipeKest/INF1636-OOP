@@ -4,16 +4,15 @@ public abstract class Piece {
 	boolean isAlive;
 	Color color;
 	
-	Piece() {
-		
+	Piece(Color c) {
+		this.isAlive = true;
+		this.color = c;
 	}
 	
 	public void move(Position newPosition) { }
 	
 	public void die() {
-		this.isAlive = true;
+		this.isAlive = false;
 	}
-	
-	public abstract void movePattern();
 	
 }

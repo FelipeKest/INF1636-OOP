@@ -121,8 +121,6 @@ public final class Table {
 		
 		aux.x = c.x;
 		aux.y = c.y;
-		System.out.println("cs x = "+c.x);
-		System.out.println("aux x = "+aux.x);
 		
 		while (aux.x>0) {
 			
@@ -214,4 +212,145 @@ public final class Table {
 		}	
 		return possible;
 	}
+	
+	Position[] findBishopAvailablePositions(Position current) {
+		
+			// TODO: Change Piece to rook
+			Piece r = current.occupiedBy;
+			if (r == null) {
+				return null;
+			}
+			
+			// Vector of possible positions for a rook (8V - Current)+(8H-Current) = 14
+			Position possible[] = new Position[14];
+			int i=0;
+
+			Coordinate c = current.coordinate;
+			Coordinate aux = new Coordinate(c.x,c.y);
+			
+			// Check for available positions in x coordinate
+			while (aux.x<9) {
+				
+				Position nextXPosition;
+				try {	
+					aux.x++;
+					// Verify if position is on table, and gets its position if exists
+					nextXPosition = this.getPositionByCoordinate(aux);
+				} catch (Exception e) {
+					// Position doesn't exist on table
+					System.out.println("Position Doesnt exist on table");
+					break;
+				}
+				
+				if (nextXPosition.occupiedBy != null) {
+					if (nextXPosition.occupiedBy.color == r.color) {
+						// same player
+						break;
+					} else {
+						// other player
+						possible[i] = nextXPosition;
+						i++;
+						break;
+					}
+				} else {
+					possible[i] = nextXPosition;
+					i++;
+				}
+			}
+			
+			aux.x = c.x;
+			aux.y = c.y;
+			
+			
+			while (aux.x>0) {
+				
+				Position nextXPosition;
+				try {
+					aux.x--;
+					nextXPosition = this.getPositionByCoordinate(aux);
+				} catch (Exception e) {
+					// Position doesn't exist on table
+					System.out.println("Position Doesnt exist on table");
+					break;
+				}
+				
+				if (nextXPosition.occupiedBy != null) {
+					System.out.println("");
+					if (nextXPosition.occupiedBy.color == r.color) {
+						// same player
+						break;
+					} else {
+						// other player
+						possible[i] = nextXPosition;
+						i++;
+						break;
+					}
+				} else {
+					possible[i] = nextXPosition;
+					i++;
+				}
+			}
+				
+			aux.x = c.x;
+			aux.y = c.y;
+			
+			while (aux.y<8) {
+				
+				Position nextYPosition;
+				
+				try {
+					aux.y++;
+					nextYPosition = this.getPositionByCoordinate(aux);
+				} catch (Exception e) {
+					break;
+				}
+				
+				if (nextYPosition.occupiedBy != null) {
+					if (nextYPosition.occupiedBy.color == r.color) {
+						// same player
+						break;
+					} else {
+						// other player
+						possible[i] = nextYPosition;
+						i++;
+						break;
+					}
+				} else {
+					possible[i] = nextYPosition;
+					i++;
+				}
+			}
+			
+			aux.x = c.x;
+			aux.y = c.y;
+			
+			while (aux.y>0) {
+				
+				Position nextYPosition;
+				
+				try {
+					aux.y--;
+					nextYPosition = this.getPositionByCoordinate(aux);
+				} catch (Exception e) {
+					break;
+				}
+				
+				if (nextYPosition.occupiedBy != null) {
+					if (nextYPosition.occupiedBy.color == r.color) {
+						// same player
+						break;
+					} else {
+						// other player
+						possible[i] = nextYPosition;
+						i++;
+						break;
+					}
+				} else {
+					possible[i] = nextYPosition;
+					i++;
+				}
+			}	
+			return possible;
+		}
+ 	
 }
