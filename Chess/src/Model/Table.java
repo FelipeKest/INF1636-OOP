@@ -34,8 +34,8 @@ public final class Table {
 	
 	protected void changePositions(Position p) {
 		for (int i = 0; i < positions.length; i++) {
-			Position indexed = this.positions[i];	
-			if (indexed.coordinate == p.coordinate) {
+			Position indexed = this.positions[i];
+			if (Position.checkEqualCoordinate(indexed, p)) {
 				this.positions[i] = p;
 				return;
 			}
@@ -92,7 +92,6 @@ public final class Table {
 		while (aux.x<9) {
 			
 			Position nextXPosition;
-			System.out.println("X++ - i = "+i);
 			try {	
 				aux.x++;
 				// Verify if position is on table, and gets its position if exists
@@ -125,7 +124,6 @@ public final class Table {
 		while (aux.x>0) {
 			
 			Position nextXPosition;
-			System.out.println("X-- - i = "+i);
 			try {
 				aux.x--;
 				nextXPosition = this.getPositionByCoordinate(aux);
@@ -215,7 +213,7 @@ public final class Table {
 	
 	Position[] findBishopAvailablePositions(Position current) {
 		
-			// TODO: Change Piece to rook
+			// TODO: Change Piece to bishop
 			Piece r = current.occupiedBy;
 			if (r == null) {
 				return null;
@@ -275,7 +273,6 @@ public final class Table {
 				}
 				
 				if (nextXPosition.occupiedBy != null) {
-					System.out.println("");
 					if (nextXPosition.occupiedBy.color == r.color) {
 						// same player
 						break;
