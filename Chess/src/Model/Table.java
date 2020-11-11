@@ -352,4 +352,208 @@ public final class Table {
 			return possible;
 		}
  	
+	protected Position[] findKnightAvailablePositions(Position current) {
+		Piece r = current.occupiedBy;
+		if (r == null) {
+			return null;
+		}
+		
+		// Vector of possible positions for a knight (2*Each Diagonal) = 8
+		Position possible[] = new Position[8];
+		int i=0;
+
+		Coordinate c = current.coordinate;
+		Coordinate aux = new Coordinate(c.x,c.y);
+	
+		//TODO: Refactor this logic
+		// Verify upper right corner
+		Position nextXPosition;
+		try {	
+			aux.x++;
+			aux.y+=2;
+			// Verify if position is on table, and gets its position if exists
+			nextXPosition = this.getPositionByCoordinate(aux);
+			if (nextXPosition.occupiedBy != null) {
+				if (nextXPosition.occupiedBy.color != r.color) {
+					// other player
+					possible[i] = nextXPosition;
+					i++;
+				}
+			} else {
+				possible[i] = nextXPosition;
+				i++;
+			}
+		} catch (Exception e) {
+			// Position doesn't exist on table
+			System.out.println("Position Doesnt exist on table");
+		}
+		
+		aux.x = c.x;
+		aux.y = c.y;
+
+		try {	
+			aux.x+=2;
+			aux.y++;
+			// Verify if position is on table, and gets its position if exists
+			nextXPosition = this.getPositionByCoordinate(aux);
+			if (nextXPosition.occupiedBy != null) {
+				if (nextXPosition.occupiedBy.color != r.color) {
+					// other player
+					possible[i] = nextXPosition;
+					i++;
+				}
+			} else {
+				possible[i] = nextXPosition;
+				i++;
+			}
+		} catch (Exception e) {
+			// Position doesn't exist on table
+			System.out.println("Position Doesnt exist on table");
+		}
+		
+		aux.x = c.x;
+		aux.y = c.y;
+		
+		// Verify upper left corner
+		try {	
+			aux.x--;
+			aux.y+=2;
+			// Verify if position is on table, and gets its position if exists
+			nextXPosition = this.getPositionByCoordinate(aux);
+			if (nextXPosition.occupiedBy != null) {
+				if (nextXPosition.occupiedBy.color != r.color) {
+					// other player
+					possible[i] = nextXPosition;
+					i++;
+				}
+			} else {
+				possible[i] = nextXPosition;
+				i++;
+			}
+		} catch (Exception e) {
+			// Position doesn't exist on table
+			System.out.println("Position Doesnt exist on table");
+		}
+		
+		aux.x = c.x;
+		aux.y = c.y;
+		
+		try {	
+			aux.x-=2;
+			aux.y++;
+			// Verify if position is on table, and gets its position if exists
+			nextXPosition = this.getPositionByCoordinate(aux);
+			if (nextXPosition.occupiedBy != null) {
+				if (nextXPosition.occupiedBy.color != r.color) {
+					// other player
+					possible[i] = nextXPosition;
+					i++;
+				}
+			} else {
+				possible[i] = nextXPosition;
+				i++;
+			}
+		} catch (Exception e) {
+			// Position doesn't exist on table
+			System.out.println("Position Doesnt exist on table");
+		}
+		
+		
+		aux.x = c.x;
+		aux.y = c.y;
+		
+		// Verify lower right corner
+		try {	
+			aux.x++;
+			aux.y-=2;
+			// Verify if position is on table, and gets its position if exists
+			nextXPosition = this.getPositionByCoordinate(aux);
+			if (nextXPosition.occupiedBy != null) {
+				if (nextXPosition.occupiedBy.color != r.color) {
+					// other player
+					possible[i] = nextXPosition;
+					i++;
+				}
+			} else {
+				possible[i] = nextXPosition;
+				i++;
+			}
+		} catch (Exception e) {
+			// Position doesn't exist on table
+			System.out.println("Position Doesnt exist on table");
+		}
+		
+		aux.x = c.x;
+		aux.y = c.y;
+		
+		try {	
+			aux.x+=2;
+			aux.y--;
+			// Verify if position is on table, and gets its position if exists
+			nextXPosition = this.getPositionByCoordinate(aux);
+			if (nextXPosition.occupiedBy != null) {
+				if (nextXPosition.occupiedBy.color != r.color) {
+					// other player
+					possible[i] = nextXPosition;
+					i++;
+				}
+			} else {
+				possible[i] = nextXPosition;
+				i++;
+			}
+		} catch (Exception e) {
+			// Position doesn't exist on table
+			System.out.println("Position Doesnt exist on table");
+		}
+		
+		aux.x = c.x;
+		aux.y = c.y;
+		
+		// Verify lower left corner
+		try {	
+			aux.x--;
+			aux.y-=2;
+			// Verify if position is on table, and gets its position if exists
+			nextXPosition = this.getPositionByCoordinate(aux);
+			if (nextXPosition.occupiedBy != null) {
+				if (nextXPosition.occupiedBy.color != r.color) {
+					// other player
+					possible[i] = nextXPosition;
+					i++;
+				}
+			} else {
+				possible[i] = nextXPosition;
+				i++;
+			}
+		} catch (Exception e) {
+			// Position doesn't exist on table
+			System.out.println("Position Doesnt exist on table");
+		}
+		
+		aux.x = c.x;
+		aux.y = c.y;
+		
+		try {	
+			aux.x-=2;
+			aux.y--;
+			// Verify if position is on table, and gets its position if exists
+			nextXPosition = this.getPositionByCoordinate(aux);
+			if (nextXPosition.occupiedBy != null) {
+				if (nextXPosition.occupiedBy.color != r.color) {
+					// other player
+					possible[i] = nextXPosition;
+					i++;
+				}
+			} else {
+				possible[i] = nextXPosition;
+				i++;
+			}
+		} catch (Exception e) {
+			// Position doesn't exist on table
+			System.out.println("Position Doesnt exist on table");
+		}
+		
+		return possible;
+		
+	}
 }
