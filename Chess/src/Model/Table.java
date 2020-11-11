@@ -59,7 +59,6 @@ public final class Table {
 	
 
 	protected Position[] findPawnAvailablePositions(Position current) {
-		// TODO: Change Piece to Pawn
 		
 		Piece r = current.occupiedBy;
 		if (r == null) {
@@ -211,27 +210,27 @@ public final class Table {
 		return possible;
 	}
 	
-	Position[] findBishopAvailablePositions(Position current) {
+	protected Position[] findBishopAvailablePositions(Position current) {
 		
-			// TODO: Change Piece to bishop
 			Piece r = current.occupiedBy;
 			if (r == null) {
 				return null;
 			}
 			
 			// Vector of possible positions for a rook (8V - Current)+(8H-Current) = 14
-			Position possible[] = new Position[14];
+			Position possible[] = new Position[13];
 			int i=0;
 
 			Coordinate c = current.coordinate;
 			Coordinate aux = new Coordinate(c.x,c.y);
 			
-			// Check for available positions in x coordinate
-			while (aux.x<9) {
+			// Check for available positions in Right Upwards diagonal
+			while (aux.x<9 && aux.y<9) {
 				
 				Position nextXPosition;
 				try {	
 					aux.x++;
+					aux.y++;
 					// Verify if position is on table, and gets its position if exists
 					nextXPosition = this.getPositionByCoordinate(aux);
 				} catch (Exception e) {
@@ -260,11 +259,12 @@ public final class Table {
 			aux.y = c.y;
 			
 			
-			while (aux.x>0) {
+			while (aux.x<9 && aux.y>0) {
 				
 				Position nextXPosition;
 				try {
-					aux.x--;
+					aux.x++;
+					aux.y--;
 					nextXPosition = this.getPositionByCoordinate(aux);
 				} catch (Exception e) {
 					// Position doesn't exist on table
@@ -291,11 +291,12 @@ public final class Table {
 			aux.x = c.x;
 			aux.y = c.y;
 			
-			while (aux.y<8) {
+			while (aux.x>0 && aux.y<9) {
 				
 				Position nextYPosition;
 				
 				try {
+					aux.x--;
 					aux.y++;
 					nextYPosition = this.getPositionByCoordinate(aux);
 				} catch (Exception e) {
@@ -321,11 +322,12 @@ public final class Table {
 			aux.x = c.x;
 			aux.y = c.y;
 			
-			while (aux.y>0) {
+			while (aux.x > 0 && aux.y>0) {
 				
 				Position nextYPosition;
 				
 				try {
+					aux.x--;
 					aux.y--;
 					nextYPosition = this.getPositionByCoordinate(aux);
 				} catch (Exception e) {
