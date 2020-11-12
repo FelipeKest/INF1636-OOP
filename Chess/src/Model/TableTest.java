@@ -26,11 +26,11 @@ class TableTest {
 		Coordinate c2 = new Coordinate(5,4);
 		
 		
-		Knight k = new Knight(Color.BRANCO);
-		Rook r = new Rook(Color.BRANCO);
+		Knight k = new Knight(Color.WHITE);
+		Rook r = new Rook(Color.WHITE);
 		Rook r2 = new Rook(Color.BLACK);
 		Bishop b = new Bishop(Color.BLACK);
-		Queen q = new Queen(Color.BRANCO);
+		Queen q = new Queen(Color.WHITE);
 		
 		
 		Position pK = new Position(3,3,k);

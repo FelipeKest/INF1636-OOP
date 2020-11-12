@@ -23,7 +23,7 @@ final class Position {
 		if ((c.x+c.y)%2==0) {
 			return Color.BLACK;
 		} else {
-			return Color.BRANCO;
+			return Color.WHITE;
 		}
 	}
 	
