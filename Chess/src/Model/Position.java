@@ -1,5 +1,7 @@
 package Model;
 
+import java.util.Arrays;
+
 final class Position {
 	
 	public Coordinate coordinate;
@@ -27,5 +29,11 @@ final class Position {
 	
 	protected static boolean checkEqualCoordinate(Position p1, Position p2) {
 		return p1.coordinate.x == p2.coordinate.x && p1.coordinate.y == p2.coordinate.y;
+	}
+	
+	protected static Position[] appendPositionToArray(Position arr[], Position p) {
+		Position ps[] = Arrays.copyOf(arr, arr.length + 1);
+		ps[ps.length-1] = p;
+		return ps;
 	}
 }

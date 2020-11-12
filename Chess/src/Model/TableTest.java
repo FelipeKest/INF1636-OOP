@@ -24,32 +24,42 @@ class TableTest {
 	void test() {
 		Coordinate c = new Coordinate(1,1);
 		Coordinate c2 = new Coordinate(5,4);
+		
+		
 		Knight k = new Knight(Color.BRANCO);
 		Rook r = new Rook(Color.BRANCO);
 		Rook r2 = new Rook(Color.PRETO);
 		Bishop b = new Bishop(Color.PRETO);
-		Position p0 = new Position(3,3,k);
-		Position p = new Position(4,3,b);
-		// TODO: Check if rooks are on the same team
-		Position p1 = new Position(5,4,r);
-		Position p2 = new Position(3,4,r2);
-		this.t.changePositions(p0);
-//		this.t.changePositions(p);
-//		this.t.changePositions(p1);
-//		this.t.changePositions(p2);
-		Position[] ret = t.findKnightAvailablePositions(p0);
+		Queen q = new Queen(Color.BRANCO);
+		
+		
+		Position pK = new Position(3,3,k);
+		Position pR1 = new Position(1,1,r);
+		Position pR2 = new Position(3,4,r2);
+		Position pB = new Position(2,2,b);
+		Position pQ = new Position(1,1,q);
+		
+//		this.t.changePositions(pB);
+//		this.t.changePositions(pR1);
+		this.t.changePositions(pQ);
 
-		for (int i = 0; i<8;i++) { 
-			System.out.println(ret[i].coordinate.x+" "+ret[i].coordinate.y);
+//		Position[] ret1 = t.findBishopAvailablePositions(pB);
+		Position[] ret1 = t.findQueenAvailablePositions(pQ);
+
+		for (int i = 0; i<ret1.length;i++) {
+			if (ret1[i] == null) {
+				break;
+			}
+			System.out.println(ret1[i].coordinate.x+" "+ret1[i].coordinate.y);
 		}
+		
+		
 		assertEquals(this.t.getAllPositions().length,64);
 		try {
-//			assertEquals(this.t.getPositionByCoordinate(c).coordinate.x,1);
-//			assertEquals(this.t.getPositionByCoordinate(c).coordinate.y,1);
-//			assertEquals(this.t.getPositionByCoordinate(c2).coordinate.x,5);
-//			assertEquals(this.t.getPositionByCoordinate(c2).coordinate.y,4);
-////			assertFalse(this.t.getPositionByCoordinate(c2).occupiedBy,null);
-//			assertNotEquals(this.t.getPositionByCoordinate(c2).occupiedBy,null);
+			assertEquals(this.t.getPositionByCoordinate(c).coordinate.x,1);
+			assertEquals(this.t.getPositionByCoordinate(c).coordinate.y,1);
+			assertEquals(this.t.getPositionByCoordinate(c2).coordinate.x,5);
+			assertEquals(this.t.getPositionByCoordinate(c2).coordinate.y,4);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

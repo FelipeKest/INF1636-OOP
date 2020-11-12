@@ -57,7 +57,7 @@ public final class Table {
 	}
 	
 	
-
+	// TODO: Fill this method
 	protected Position[] findPawnAvailablePositions(Position current) {
 		
 		Piece r = current.occupiedBy;
@@ -74,7 +74,6 @@ public final class Table {
 	
 	protected Position[] findRookAvailablePositions(Position current) {
 		
-		// TODO: Change Piece to rook
 		Piece r = current.occupiedBy;
 		if (r == null) {
 			return null;
@@ -218,7 +217,7 @@ public final class Table {
 			}
 			
 			// Vector of possible positions for a rook (8V - Current)+(8H-Current) = 14
-			Position possible[] = new Position[13];
+			Position possible[] = new Position[14];
 			int i=0;
 
 			Coordinate c = current.coordinate;
@@ -555,5 +554,41 @@ public final class Table {
 		
 		return possible;
 		
+	}
+
+	protected Position[] findQueenAvailablePositions(Position current) {
+		
+		
+		Position posible[] = {};
+				
+		Position bishopPosible[] = findBishopAvailablePositions(current); 
+		
+		Position rookPosible[] = findRookAvailablePositions(current);
+		
+		for (int i = 0; i<bishopPosible.length;i++) {
+			if (bishopPosible[i] == null) {
+				break;
+			}
+			posible = Position.appendPositionToArray(posible, bishopPosible[i]);
+		}
+		
+		for (int i = 0; i<rookPosible.length;i++) {
+			if (rookPosible[i] == null) {
+				break;
+			}
+			posible = Position.appendPositionToArray(posible, rookPosible[i]);
+		}
+		
+//		System.out.println(posible.length);
+//		System.out.println(posible[1]);
+//		for (int i = 0; i<posible.length;i++) {
+//			if (posible[i] == null) {
+//				System.out.println("NULL at"+ i);
+//				break;
+//			}
+//			System.out.println(posible[i].coordinate.x+" "+posible[i].coordinate.y);
+//		}
+		
+		return posible;
 	}
 }
