@@ -7,8 +7,19 @@ final class Player {
 	private Position[] deadPieces;
 	private Position[] livePieces;
 	
-	public Player() {
+	public Player(String name, Color color) {
 		// TODO Auto-generated constructor stub
+		
+		this.name = name;
+		this.color = color;
+		
+		this.deadPieces = null;
+		this.livePieces = null;		
+		
 	}
+	
+	protected String getPlayerName() {
+        return this.name;
+    }	
 
 }
