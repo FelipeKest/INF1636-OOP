@@ -21,7 +21,7 @@ final class Position {
 	
 	private Color getColorByCoordinate(Coordinate c) {
 		if ((c.x+c.y)%2==0) {
-			return Color.PRETO;
+			return Color.BLACK;
 		} else {
 			return Color.BRANCO;
 		}

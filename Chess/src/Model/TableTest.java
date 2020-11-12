@@ -28,8 +28,8 @@ class TableTest {
 		
 		Knight k = new Knight(Color.BRANCO);
 		Rook r = new Rook(Color.BRANCO);
-		Rook r2 = new Rook(Color.PRETO);
-		Bishop b = new Bishop(Color.PRETO);
+		Rook r2 = new Rook(Color.BLACK);
+		Bishop b = new Bishop(Color.BLACK);
 		Queen q = new Queen(Color.BRANCO);
 		
 		

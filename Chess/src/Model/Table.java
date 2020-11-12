@@ -57,7 +57,6 @@ public final class Table {
 	}
 	
 	
-	// TODO: Fill this method
 	protected Position[] findPawnAvailablePositions(Position current) {
 		
 		Piece r = current.occupiedBy;
@@ -65,11 +64,102 @@ public final class Table {
 			return null;
 		}
 		
-		Position[] possible = new Position[4];
-	
+		Position[] posible = {};
 		
-		return possible;
+		Coordinate c = current.coordinate;
+		Coordinate aux = new Coordinate(c.x,c.y);
 		
+		if (r.color == Color.WHITE) {
+			Position p1 = new Position(c.x,c.y+1);
+			posible = Position.appendPositionToArray(posible, p1);
+			if (c.y == 2) {
+				Position p2 = new Position(c.x,c.y+2);
+				posible = Position.appendPositionToArray(posible, p2);
+			}
+			
+			// check diagonals
+			// Upper Left
+			aux.x--;
+			aux.y++;
+			
+			Position contested = null;
+			try {
+				contested = getPositionByCoordinate(aux);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			if (contested.occupiedBy != null) {
+				if (contested.occupiedBy.color != r.color) {
+				// Other player, can eat the piece
+					posible = Position.appendPositionToArray(posible, contested);
+				}
+			}
+			
+			// Upper Right
+			aux.x+=2;
+			
+			try {
+				contested = getPositionByCoordinate(aux);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			if (contested.occupiedBy != null) {
+				if (contested.occupiedBy.color != r.color) {
+				// Other player, can eat the piece
+					posible = Position.appendPositionToArray(posible, contested);
+				}
+			}
+		} else {
+			Position p1 = new Position(c.x,c.y-1);
+			posible = Position.appendPositionToArray(posible, p1);
+			if (c.y == 7) {
+				Position p2 = new Position(c.x,c.y-2);
+				posible = Position.appendPositionToArray(posible, p2);
+			}
+			
+			// check diagonals
+			// Down Left
+			aux.x--;
+			aux.y--;
+			
+			Position contested = null;
+			try {
+				contested = getPositionByCoordinate(aux);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			if (contested.occupiedBy != null) {
+				if (contested.occupiedBy.color != r.color) {
+				// Other player, can eat the piece
+					posible = Position.appendPositionToArray(posible, contested);
+				}
+			}
+			
+			// Down Right
+			aux.x+=2;
+			
+			try {
+				contested = getPositionByCoordinate(aux);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			if (contested.occupiedBy != null) {
+				if (contested.occupiedBy.color != r.color) {
+				// Other player, can eat the piece
+					posible = Position.appendPositionToArray(posible, contested);
+				}
+			}
+		}
+		
+		return posible;	
 	}
 	
 	protected Position[] findRookAvailablePositions(Position current) {
@@ -208,6 +298,7 @@ public final class Table {
 		}	
 		return possible;
 	}
+	
 	
 	protected Position[] findBishopAvailablePositions(Position current) {
 		
@@ -351,6 +442,7 @@ public final class Table {
 			return possible;
 		}
  	
+	
 	protected Position[] findKnightAvailablePositions(Position current) {
 		Piece r = current.occupiedBy;
 		if (r == null) {
@@ -556,6 +648,7 @@ public final class Table {
 		
 	}
 
+	
 	protected Position[] findQueenAvailablePositions(Position current) {
 		
 		
@@ -578,16 +671,6 @@ public final class Table {
 			}
 			posible = Position.appendPositionToArray(posible, rookPosible[i]);
 		}
-		
-//		System.out.println(posible.length);
-//		System.out.println(posible[1]);
-//		for (int i = 0; i<posible.length;i++) {
-//			if (posible[i] == null) {
-//				System.out.println("NULL at"+ i);
-//				break;
-//			}
-//			System.out.println(posible[i].coordinate.x+" "+posible[i].coordinate.y);
-//		}
 		
 		return posible;
 	}
