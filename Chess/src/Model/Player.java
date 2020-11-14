@@ -18,8 +18,11 @@ final class Player {
 		
 	}
 	
-	protected String getPlayerName() {
+	protected String getName() {
         return this.name;
     }	
 
+	protected Color getColor() {
+		return this.color;
+	}
 }

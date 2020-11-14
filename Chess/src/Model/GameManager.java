@@ -1,12 +1,6 @@
 package Model;
 //import java.sql.Time;
 
-import Model.Color;
-import Model.GameManager;
-import Model.Piece;
-import Model.Player;
-import Model.Table;
-
 public class GameManager{
 	private Player player1;
     private Player player2;
@@ -23,11 +17,27 @@ public class GameManager{
         return manager;
     }    
 	
-    protected void killPiece(Piece piece){
-        piece.isAlive = false;
+    protected void killPieceAt(Position pos){
+    	Piece p = pos.occupiedBy;
+    	if (p == null) {
+    		return;
+    	}
+        p.isAlive = false;
+        pos.occupiedBy = null;
+        gameTable.updatePositions(pos);
     }
-    protected void ressurectPiece(Piece piece){
-        piece.isAlive = true;
+    
+    protected void ressurectPieceAt(Position pos, Piece newPiece){
+    	Piece p = pos.occupiedBy;
+
+    	if (p == null) {
+    		return;
+    	}
+    	
+    	newPiece.isAlive = true;
+    	p.isAlive = false;
+    	pos.occupiedBy = newPiece;
+        gameTable.updatePositions(pos);
     }
     protected void pause() {
         //drop warning
@@ -36,26 +46,33 @@ public class GameManager{
 //    	timer.wait();
     }
     
-    protected String[] getPlayersName(){
+    protected String[] getPlayersNames(){
     	String names[] = new String[2];
-    	names[0] = this.player1.getPlayerName();
-    	names[1] = this.player2.getPlayerName();
+    	names[0] = this.player1.getName();
+    	names[1] = this.player2.getName();
         return names;
     }
-
-    public void createPlayers(String name1, String name2, Color color1, Color color2) {
-    	this.player1 = new Player(name1, color1);
-    	this.player2 = new Player(name2, color2);
+    
+    protected Color[] getPlayersColors(){
+    	Color colors[] = new Color[2];
+    	colors[0] = this.player1.getColor();
+    	colors[1] = this.player2.getColor();
+        return colors;
     }
-    protected void startGame(String playerName1, String playerName2){
+
+    public void createPlayers(String name1, String name2) {
     	int sort = (int)(Math.random()*10);
     	if(sort%2 == 0) {
-    		createPlayers(playerName1, playerName2, Color.WHITE, Color.BLACK); 	
-    	}
-    	else {
-    		createPlayers(playerName1, playerName2, Color.BLACK, Color.WHITE); 
+    		this.player1 = new Player(name1, Color.WHITE);
+    		this.player2 = new Player(name2, Color.BLACK);
+    	} else {
+    		this.player1 = new Player(name1, Color.BLACK);
+    		this.player2 = new Player(name2, Color.WHITE);
     	}
     }
     
+    protected void startGame(String playerName1, String playerName2){
+    	
+    }
     
 }

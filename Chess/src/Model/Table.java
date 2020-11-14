@@ -32,7 +32,7 @@ public final class Table {
 		throw new Exception("Invalid Coordinate");
 	}
 	
-	protected void changePositions(Position p) {
+	protected void updatePositions(Position p) {
 		for (int i = 0; i < positions.length; i++) {
 			Position indexed = this.positions[i];
 			if (Position.checkEqualCoordinate(indexed, p)) {
@@ -49,7 +49,47 @@ public final class Table {
 		int pos = 0;
 		for (int i = 1; i<9;i++) {
 			for (int j = 1; j<9; j++) {
-				allPositions[pos] = new Position(i,j);
+				if (j==1) {
+					if (i==1 || i==8) {
+						Rook r = new Rook(Color.WHITE);
+						allPositions[pos] = new Position(i,j,r);
+					} else if (i==2 || i==7){
+						Knight k = new Knight(Color.WHITE);
+						allPositions[pos] = new Position(i,j,k);
+					} else if (i==3 || i==6) {
+						Bishop b = new Bishop(Color.WHITE);
+						allPositions[pos] = new Position(i,j,b);
+					} else if (i==4) {
+						King k = new King(Color.WHITE);
+						allPositions[pos] = new Position(i,j,k);
+					} else {
+						Queen q = new Queen(Color.WHITE);
+						allPositions[pos] = new Position(i,j,q);
+					}
+				} else if (j==2) {
+					Pawn p = new Pawn(Color.WHITE);
+					allPositions[pos] = new Position(i,j,p);
+				} else if (j==7) {
+					Pawn p = new Pawn(Color.BLACK);
+					allPositions[pos] = new Position(i,j,p);
+				} else if (j==8) {
+					if (i==1 || i==8) {
+						Rook r = new Rook(Color.BLACK);
+						allPositions[pos] = new Position(i,j,r);
+					} else if (i==2 || i==7){
+						Knight k = new Knight(Color.BLACK);
+						allPositions[pos] = new Position(i,j,k);
+					} else if (i==3 || i==6) {
+						Bishop b = new Bishop(Color.BLACK);
+						allPositions[pos] = new Position(i,j,b);
+					} else if (i==4) {
+						King k = new King(Color.BLACK);
+						allPositions[pos] = new Position(i,j,k);
+					} else {
+						Queen q = new Queen(Color.BLACK);
+						allPositions[pos] = new Position(i,j,q);
+					}
+				}
 				pos++;
 			}
 		}

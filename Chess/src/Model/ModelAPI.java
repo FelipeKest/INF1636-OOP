@@ -10,10 +10,20 @@ public final class ModelAPI {
 	}
 	
 
-	protected static ModelAPI getAPIInstance() {
+	public static ModelAPI getAPIInstance() {
 		if (ModelAPI == null) {
 			ModelAPI = new ModelAPI();
 		}
 		return ModelAPI;
 	}
+	
+	public String[] getPlayersNames() {
+		return GM.getPlayersNames();
+	}
+	
+	public void createPlayers(String name1, String name2) {
+		
+	}
+	
+	
 }
