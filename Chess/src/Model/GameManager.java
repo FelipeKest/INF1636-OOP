@@ -7,10 +7,10 @@ import Model.Piece;
 import Model.Player;
 import Model.Table;
 
-public class GameManager{
+public class GameManager {
 	private Player player1;
     private Player player2;
-//    private Round currentRound;
+    private Round currentRound;
     private Table gameTable;
 //    public Time timer;
     protected static GameManager manager;
@@ -23,10 +23,10 @@ public class GameManager{
         return manager;
     }    
 	
-    protected void killPiece(Piece piece){
+    protected void killPiece(Piece piece) {
         piece.isAlive = false;
     }
-    protected void ressurectPiece(Piece piece){
+    protected void ressurectPiece(Piece piece) {
         piece.isAlive = true;
     }
     protected void pause() {
@@ -36,7 +36,7 @@ public class GameManager{
 //    	timer.wait();
     }
     
-    protected String[] getPlayersName(){
+    protected String[] getPlayersName() {
     	String names[] = new String[2];
     	names[0] = this.player1.getPlayerName();
     	names[1] = this.player2.getPlayerName();
@@ -47,7 +47,13 @@ public class GameManager{
     	this.player1 = new Player(name1, color1);
     	this.player2 = new Player(name2, color2);
     }
-    protected void startGame(String playerName1, String playerName2){
+    
+    public void createRound() {
+    	this.currentRound = new Round();
+    }
+    
+    protected void startGame(String playerName1, String playerName2) {
+    	createRound();
     	int sort = (int)(Math.random()*10);
     	if(sort%2 == 0) {
     		createPlayers(playerName1, playerName2, Color.WHITE, Color.BLACK); 	
