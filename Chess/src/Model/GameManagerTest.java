@@ -22,7 +22,7 @@ class GameManagerTest {
 
 	@Test
 	void test() {
-		GM.createPlayers("Joao", "Nino");
+		GM.startGame("Joao", "Nino");
 		assertEquals(GM.getPlayersNames()[0],"Joao");
 		assertEquals(GM.getPlayersNames()[1],"Nino");
 		assertNotEquals(GM.getPlayersColors()[0],null);

@@ -44,7 +44,7 @@ public final class Table {
 	}
 	
 	private Position[] fillTable() {
-		// TODO: Fill Positions with correct pieces
+		// TODO: Test method
 		Position allPositions[] = new Position[64];
 		int pos = 0;
 		for (int i = 1; i<9;i++) {
@@ -83,11 +83,11 @@ public final class Table {
 						Bishop b = new Bishop(Color.BLACK);
 						allPositions[pos] = new Position(i,j,b);
 					} else if (i==4) {
-						King k = new King(Color.BLACK);
-						allPositions[pos] = new Position(i,j,k);
-					} else {
 						Queen q = new Queen(Color.BLACK);
 						allPositions[pos] = new Position(i,j,q);
+					} else {
+						King k = new King(Color.BLACK);
+						allPositions[pos] = new Position(i,j,k);
 					}
 				}
 				pos++;
@@ -95,7 +95,6 @@ public final class Table {
 		}
 		return allPositions;
 	}
-	
 	
 	protected Position[] findPawnAvailablePositions(Position current) {
 		
@@ -339,7 +338,6 @@ public final class Table {
 		return possible;
 	}
 	
-	
 	protected Position[] findBishopAvailablePositions(Position current) {
 		
 			Piece r = current.occupiedBy;
@@ -482,7 +480,6 @@ public final class Table {
 			return possible;
 		}
  	
-	
 	protected Position[] findKnightAvailablePositions(Position current) {
 		Piece r = current.occupiedBy;
 		if (r == null) {
@@ -688,7 +685,6 @@ public final class Table {
 		
 	}
 
-	
 	protected Position[] findQueenAvailablePositions(Position current) {
 		
 		

@@ -21,9 +21,11 @@ public final class ModelAPI {
 		return GM.getPlayersNames();
 	}
 	
-	public void createPlayers(String name1, String name2) {
-		
+	public void startGame(String name1, String name2) {
+		GM.startGame(name1, name2);
 	}
 	
-	
+	public void movePiece(int posX, int posY) {
+		
+	}
 }

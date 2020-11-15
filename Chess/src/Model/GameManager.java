@@ -17,13 +17,13 @@ public class GameManager{
         return manager;
     }    
 	
-    protected void killPieceAt(Position pos){
+    protected void killPieceAt(Position pos, Piece killer){
     	Piece p = pos.occupiedBy;
-    	if (p == null) {
+    	if (p == null || killer == null) {
     		return;
     	}
         p.isAlive = false;
-        pos.occupiedBy = null;
+        pos.occupiedBy = killer;
         gameTable.updatePositions(pos);
     }
     
@@ -60,7 +60,7 @@ public class GameManager{
         return colors;
     }
 
-    public void createPlayers(String name1, String name2) {
+    private void createPlayers(String name1, String name2) {
     	int sort = (int)(Math.random()*10);
     	if(sort%2 == 0) {
     		this.player1 = new Player(name1, Color.WHITE);
@@ -72,7 +72,7 @@ public class GameManager{
     }
     
     protected void startGame(String playerName1, String playerName2){
-    	
+    	manager.createPlayers(playerName1,playerName2);
     }
     
 }
