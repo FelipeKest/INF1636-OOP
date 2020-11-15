@@ -12,7 +12,6 @@ public class GameManager{
     protected static GameManager getGameManagerInstance() {
         if (manager == null) {
             manager = new GameManager();
-            manager.gameTable = Table.getTableInstance();
         }
         return manager;
     }    
@@ -46,7 +45,7 @@ public class GameManager{
 //    	timer.wait();
     }
     
-    protected String[] getPlayersNames(){
+    protected String[] getPlayersNames() {
     	String names[] = new String[2];
     	names[0] = this.player1.getName();
     	names[1] = this.player2.getName();
@@ -71,8 +70,9 @@ public class GameManager{
     	}
     }
     
-    protected void startGame(String playerName1, String playerName2){
+    protected void startGame(String playerName1, String playerName2) {
     	manager.createPlayers(playerName1,playerName2);
+    	manager.gameTable = Table.getTableInstance();
     }
     
 }

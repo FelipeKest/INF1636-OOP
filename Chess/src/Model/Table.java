@@ -1,9 +1,14 @@
 package Model;
 
-public final class Table {
+import java.util.ArrayList;
+import java.util.List;
+
+final class Table extends PieceObserver {
 	
 	private Position positions[];
 
+	List<PieceObserved> list = new ArrayList<PieceObserved>();
+	
 	protected static Table table;
 	
 	private Table() {
@@ -32,6 +37,10 @@ public final class Table {
 		throw new Exception("Invalid Coordinate");
 	}
 	
+	protected void update(Position p) {
+		
+	}
+	
 	protected void updatePositions(Position p) {
 		for (int i = 0; i < positions.length; i++) {
 			Position indexed = this.positions[i];
@@ -40,7 +49,6 @@ public final class Table {
 				return;
 			}
 		}
-		
 	}
 	
 	private Position[] fillTable() {
@@ -125,7 +133,6 @@ public final class Table {
 			try {
 				contested = getPositionByCoordinate(aux);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
@@ -142,7 +149,6 @@ public final class Table {
 			try {
 				contested = getPositionByCoordinate(aux);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
@@ -169,7 +175,6 @@ public final class Table {
 			try {
 				contested = getPositionByCoordinate(aux);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
@@ -186,8 +191,7 @@ public final class Table {
 			try {
 				contested = getPositionByCoordinate(aux);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				e.printStackTrace(); 
 			}
 			
 			if (contested.occupiedBy != null) {
