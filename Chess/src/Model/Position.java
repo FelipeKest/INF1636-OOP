@@ -2,7 +2,7 @@ package Model;
 
 import java.util.Arrays;
 
-final class Position {
+final class Position extends PieceObserved {
 	
 	public Coordinate coordinate;
 	public Color color;
@@ -35,5 +35,9 @@ final class Position {
 		Position ps[] = Arrays.copyOf(arr, arr.length + 1);
 		ps[ps.length-1] = p;
 		return ps;
+	}
+
+	protected void update(Piece p) {
+		this.occupiedBy = p;
 	}
 }

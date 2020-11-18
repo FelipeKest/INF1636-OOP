@@ -41,8 +41,9 @@ class TableTest {
 		
 //		this.t.changePositions(pB);
 //		this.t.changePositions(pR1);
-		this.t.changePositions(pQ);
-
+		this.t.updatePositions(pQ);
+		
+		
 //		Position[] ret1 = t.findBishopAvailablePositions(pB);
 		Position[] ret1 = t.findQueenAvailablePositions(pQ);
 

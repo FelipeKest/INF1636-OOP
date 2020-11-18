@@ -9,10 +9,12 @@ public abstract class Piece {
 		this.color = c;
 	}
 	
-	public void move(Position newPosition) { }
-	
-	public void die() {
+	protected void die() {
 		this.isAlive = false;
+	}
+	
+	protected void live() {
+		this.isAlive = true;
 	}
 	
 }
