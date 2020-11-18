@@ -11,15 +11,12 @@ public class Frame extends JFrame {
 	
 	public Frame(String s) {
 		super(s);
-		Toolkit tk=Toolkit.getDefaultToolkit();
-		Dimension screenSize=tk.getScreenSize();
-		int sl=screenSize.width;
-		int sa=screenSize.height;
-		int x=sl/2-LARG_DEFAULT/2;
-		int y=sa/2-ALT_DEFAULT/2;
-		setBounds(x,y,LARG_DEFAULT,ALT_DEFAULT);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		getContentPane().add(new Panel());
+		this.setSize(700,700);
+		this.getContentPane().add(new Panel());
+		this.setLocationRelativeTo(null);
+		this.setBackground(Color.WHITE);
+		this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
+		this.setVisible(true);
 	}
 	
 	
