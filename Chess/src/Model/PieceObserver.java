@@ -2,6 +2,6 @@ package Model;
 
 abstract class PieceObserver {
 
-	abstract protected void update(Position p);
+	abstract protected void notifyPositions(Position p);
 	
 }

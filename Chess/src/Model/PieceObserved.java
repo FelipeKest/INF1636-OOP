@@ -2,6 +2,6 @@ package Model;
 
 abstract class PieceObserved {
 	
-	abstract protected int get(int i);
+	abstract protected void update(Piece p);
 	
 }

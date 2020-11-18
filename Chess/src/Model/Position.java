@@ -37,8 +37,7 @@ final class Position extends PieceObserved {
 		return ps;
 	}
 
-	protected int get(int i) {
-		
-		return 0;
+	protected void update(Piece p) {
+		this.occupiedBy = p;
 	}
 }

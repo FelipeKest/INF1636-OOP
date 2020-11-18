@@ -37,7 +37,8 @@ final class Table extends PieceObserver {
 		throw new Exception("Invalid Coordinate");
 	}
 	
-	protected void update(Position p) {
+	@Override
+	protected void notifyPositions(Position p) {
 		
 	}
 	
@@ -713,5 +714,27 @@ final class Table extends PieceObserver {
 		}
 		
 		return posible;
+	}
+
+	protected Position[] findKingAvailablePositions(Position current) throws Exception {
+		Piece r = current.occupiedBy;
+		if (r == null) {
+			return null;
+		}
+		
+		Color team = r.color;
+		Color oponent = r.color == Color.BLACK ? Color.WHITE: Color.BLACK;
+		
+		Position[] initialPosible = {};
+		
+		//
+		
+		
+		if (initialPosible.length == 0) {
+			// Verify if other pieces can block
+			throw new Checkmate();
+		}
+		
+		return initialPosible;
 	}
 }
