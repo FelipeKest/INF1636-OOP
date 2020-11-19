@@ -8,6 +8,7 @@ public class Panel extends JPanel {
 	public static final int TXT_X=120;
 	public static final int TXT_Y=140;
 	
+	@Override
 	public void paintComponent(Graphics g) {
 	super.paintComponent(g);
 		g.fillRect(50,50,600,600);

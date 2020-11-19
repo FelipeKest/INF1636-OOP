@@ -15,7 +15,7 @@ public class Frame extends JFrame {
 		this.getContentPane().add(new Panel());
 		this.setLocationRelativeTo(null);
 		this.setBackground(Color.WHITE);
-		this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		this.setVisible(true);
 	}
 	

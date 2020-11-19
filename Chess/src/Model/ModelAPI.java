@@ -26,7 +26,6 @@ public final class ModelAPI {
 	
 	public int[] getPossiblePositions(int posX,int posY) {
 		int[] positions = null;
-		
 		return positions;
 	}
 }
