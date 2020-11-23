@@ -1,6 +1,8 @@
 package Model;
 
-protected class Piece {
+import Utils.PieceType;
+
+class Piece {
 	boolean isAlive;
 	private PieceType type;
 	private Color color;
@@ -17,7 +19,7 @@ protected class Piece {
 		
 	}
 	
-	protected PieceType setPieceType(PieceType type) { 
+	protected void setPieceType(PieceType type) { 
 		this.type = type;
 		
 	}

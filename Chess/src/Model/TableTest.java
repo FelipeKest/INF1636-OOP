@@ -3,6 +3,8 @@ package Model;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.platform.runner.JUnitPlatform;
 
+import Utils.PieceType;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,12 +28,11 @@ class TableTest {
 		Coordinate c = new Coordinate(1,1);
 		Coordinate c2 = new Coordinate(5,4);
 		
-		
-		Knight k = new Knight(Color.WHITE);
-		Rook r = new Rook(Color.WHITE);
-		Rook r2 = new Rook(Color.BLACK);
-		Bishop b = new Bishop(Color.BLACK);
-		Queen q = new Queen(Color.WHITE);
+		Piece k = new Piece(PieceType.KNIGHT,Color.WHITE);
+		Piece r = new Piece(PieceType.ROOK,Color.WHITE);
+		Piece r2 = new Piece(PieceType.ROOK,Color.BLACK);
+		Piece b = new Piece(PieceType.BISHOP,Color.BLACK);
+		Piece q = new Piece(PieceType.QUEEN,Color.WHITE);
 		
 		
 		Position pK = new Position(3,3,k);
@@ -42,7 +43,7 @@ class TableTest {
 		
 //		this.t.changePositions(pB);
 //		this.t.changePositions(pR1);
-		this.t.updatePositions(pQ);
+		this.t.notifyPositions(pQ);
 		
 		
 //		Position[] ret1 = t.findBishopAvailablePositions(pB);
