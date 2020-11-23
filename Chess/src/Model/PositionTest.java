@@ -48,7 +48,6 @@ class PositionTest {
 		assertEquals(this.p.coordinate.x,0);
 		assertEquals(this.p.coordinate.y,1);
 		assertFalse(Position.checkEqualCoordinate(this.p3, this.p2));
-		assertEquals(this.p.color,Color.WHITE);
 	}
 
 }

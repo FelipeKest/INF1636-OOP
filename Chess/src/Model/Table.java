@@ -3,6 +3,8 @@ package Model;
 import java.util.ArrayList;
 import java.util.List;
 
+import Utils.PieceType;
+
 final class Table extends PieceObserver {
 	
 	private Position positions[];
@@ -39,10 +41,10 @@ final class Table extends PieceObserver {
 	
 	@Override
 	protected void notifyPositions(Position p) {
-		
+		updatePositions(p);
 	}
 	
-	protected void updatePositions(Position p) {
+	private void updatePositions(Position p) {
 		for (int i = 0; i < positions.length; i++) {
 			Position indexed = this.positions[i];
 			if (Position.checkEqualCoordinate(indexed, p)) {
@@ -60,42 +62,43 @@ final class Table extends PieceObserver {
 			for (int j = 1; j<9; j++) {
 				if (j==1) {
 					if (i==1 || i==8) {
-						Rook r = new Rook(Color.WHITE);
+//						Piece r = new Piece(PieceType.ROOK,Color.WHITE);
+						Piece r = new Piece(PieceType.ROOK,Color.WHITE);
 						allPositions[pos] = new Position(i,j,r);
 					} else if (i==2 || i==7){
-						Knight k = new Knight(Color.WHITE);
+						Piece k = new Piece(PieceType.KNIGHT,Color.WHITE);
 						allPositions[pos] = new Position(i,j,k);
 					} else if (i==3 || i==6) {
-						Bishop b = new Bishop(Color.WHITE);
+						Piece b = new Piece(PieceType.BISHOP,Color.WHITE);
 						allPositions[pos] = new Position(i,j,b);
 					} else if (i==4) {
-						King k = new King(Color.WHITE);
+						Piece k = new Piece(PieceType.KING,Color.WHITE);
 						allPositions[pos] = new Position(i,j,k);
 					} else {
-						Queen q = new Queen(Color.WHITE);
+						Piece q = new Piece(PieceType.QUEEN,Color.WHITE);
 						allPositions[pos] = new Position(i,j,q);
 					}
 				} else if (j==2) {
-					Pawn p = new Pawn(Color.WHITE);
+					Piece p = new Piece(PieceType.PAWN,Color.WHITE);
 					allPositions[pos] = new Position(i,j,p);
 				} else if (j==7) {
-					Pawn p = new Pawn(Color.BLACK);
+					Piece p = new Piece(PieceType.PAWN,Color.BLACK);
 					allPositions[pos] = new Position(i,j,p);
 				} else if (j==8) {
 					if (i==1 || i==8) {
-						Rook r = new Rook(Color.BLACK);
+						Piece r = new Piece(PieceType.ROOK,Color.BLACK);
 						allPositions[pos] = new Position(i,j,r);
 					} else if (i==2 || i==7){
-						Knight k = new Knight(Color.BLACK);
+						Piece k = new Piece(PieceType.KNIGHT,Color.BLACK);
 						allPositions[pos] = new Position(i,j,k);
 					} else if (i==3 || i==6) {
-						Bishop b = new Bishop(Color.BLACK);
+						Piece b = new Piece(PieceType.BISHOP,Color.BLACK);
 						allPositions[pos] = new Position(i,j,b);
 					} else if (i==4) {
-						Queen q = new Queen(Color.BLACK);
+						Piece q = new Piece(PieceType.QUEEN,Color.BLACK);
 						allPositions[pos] = new Position(i,j,q);
 					} else {
-						King k = new King(Color.BLACK);
+						Piece k = new Piece(PieceType.KING,Color.BLACK);
 						allPositions[pos] = new Position(i,j,k);
 					}
 				}
@@ -117,7 +120,7 @@ final class Table extends PieceObserver {
 		Coordinate c = current.coordinate;
 		Coordinate aux = new Coordinate(c.x,c.y);
 		
-		if (r.color == Color.WHITE) {
+		if (r.getColor() == Color.WHITE) {
 			Position p1 = new Position(c.x,c.y+1);
 			posible = Position.appendPositionToArray(posible, p1);
 			if (c.y == 2) {
@@ -138,7 +141,7 @@ final class Table extends PieceObserver {
 			}
 			
 			if (contested.occupiedBy != null) {
-				if (contested.occupiedBy.color != r.color) {
+				if (contested.occupiedBy.getColor() != r.getColor()) {
 				// Other player, can eat the piece
 					posible = Position.appendPositionToArray(posible, contested);
 				}
@@ -154,7 +157,7 @@ final class Table extends PieceObserver {
 			}
 			
 			if (contested.occupiedBy != null) {
-				if (contested.occupiedBy.color != r.color) {
+				if (contested.occupiedBy.getColor() != r.getColor()) {
 				// Other player, can eat the piece
 					posible = Position.appendPositionToArray(posible, contested);
 				}
@@ -180,7 +183,7 @@ final class Table extends PieceObserver {
 			}
 			
 			if (contested.occupiedBy != null) {
-				if (contested.occupiedBy.color != r.color) {
+				if (contested.occupiedBy.getColor() != r.getColor()) {
 				// Other player, can eat the piece
 					posible = Position.appendPositionToArray(posible, contested);
 				}
@@ -196,7 +199,7 @@ final class Table extends PieceObserver {
 			}
 			
 			if (contested.occupiedBy != null) {
-				if (contested.occupiedBy.color != r.color) {
+				if (contested.occupiedBy.getColor() != r.getColor()) {
 				// Other player, can eat the piece
 					posible = Position.appendPositionToArray(posible, contested);
 				}
@@ -235,7 +238,7 @@ final class Table extends PieceObserver {
 			}
 			
 			if (nextXPosition.occupiedBy != null) {
-				if (nextXPosition.occupiedBy.color == r.color) {
+				if (nextXPosition.occupiedBy.getColor() == r.getColor()) {
 					// same player
 					break;
 				} else {
@@ -266,7 +269,7 @@ final class Table extends PieceObserver {
 			}
 			
 			if (nextXPosition.occupiedBy != null) {
-				if (nextXPosition.occupiedBy.color == r.color) {
+				if (nextXPosition.occupiedBy.getColor() == r.getColor()) {
 					// same player
 					break;
 				} else {
@@ -296,7 +299,7 @@ final class Table extends PieceObserver {
 			}
 			
 			if (nextYPosition.occupiedBy != null) {
-				if (nextYPosition.occupiedBy.color == r.color) {
+				if (nextYPosition.occupiedBy.getColor() == r.getColor()) {
 					// same player
 					break;
 				} else {
@@ -326,7 +329,7 @@ final class Table extends PieceObserver {
 			}
 			
 			if (nextYPosition.occupiedBy != null) {
-				if (nextYPosition.occupiedBy.color == r.color) {
+				if (nextYPosition.occupiedBy.getColor() == r.getColor()) {
 					// same player
 					break;
 				} else {
@@ -373,7 +376,7 @@ final class Table extends PieceObserver {
 				}
 				
 				if (nextXPosition.occupiedBy != null) {
-					if (nextXPosition.occupiedBy.color == r.color) {
+					if (nextXPosition.occupiedBy.getColor() == r.getColor()) {
 						// same player
 						break;
 					} else {
@@ -406,7 +409,7 @@ final class Table extends PieceObserver {
 				}
 				
 				if (nextXPosition.occupiedBy != null) {
-					if (nextXPosition.occupiedBy.color == r.color) {
+					if (nextXPosition.occupiedBy.getColor() == r.getColor()) {
 						// same player
 						break;
 					} else {
@@ -437,7 +440,7 @@ final class Table extends PieceObserver {
 				}
 				
 				if (nextYPosition.occupiedBy != null) {
-					if (nextYPosition.occupiedBy.color == r.color) {
+					if (nextYPosition.occupiedBy.getColor() == r.getColor()) {
 						// same player
 						break;
 					} else {
@@ -468,7 +471,7 @@ final class Table extends PieceObserver {
 				}
 				
 				if (nextYPosition.occupiedBy != null) {
-					if (nextYPosition.occupiedBy.color == r.color) {
+					if (nextYPosition.occupiedBy.getColor() == r.getColor()) {
 						// same player
 						break;
 					} else {
@@ -507,7 +510,7 @@ final class Table extends PieceObserver {
 			// Verify if position is on table, and gets its position if exists
 			nextXPosition = this.getPositionByCoordinate(aux);
 			if (nextXPosition.occupiedBy != null) {
-				if (nextXPosition.occupiedBy.color != r.color) {
+				if (nextXPosition.occupiedBy.getColor() != r.getColor()) {
 					// other player
 					possible[i] = nextXPosition;
 					i++;
@@ -530,7 +533,7 @@ final class Table extends PieceObserver {
 			// Verify if position is on table, and gets its position if exists
 			nextXPosition = this.getPositionByCoordinate(aux);
 			if (nextXPosition.occupiedBy != null) {
-				if (nextXPosition.occupiedBy.color != r.color) {
+				if (nextXPosition.occupiedBy.getColor() != r.getColor()) {
 					// other player
 					possible[i] = nextXPosition;
 					i++;
@@ -554,7 +557,7 @@ final class Table extends PieceObserver {
 			// Verify if position is on table, and gets its position if exists
 			nextXPosition = this.getPositionByCoordinate(aux);
 			if (nextXPosition.occupiedBy != null) {
-				if (nextXPosition.occupiedBy.color != r.color) {
+				if (nextXPosition.occupiedBy.getColor() != r.getColor()) {
 					// other player
 					possible[i] = nextXPosition;
 					i++;
@@ -577,7 +580,7 @@ final class Table extends PieceObserver {
 			// Verify if position is on table, and gets its position if exists
 			nextXPosition = this.getPositionByCoordinate(aux);
 			if (nextXPosition.occupiedBy != null) {
-				if (nextXPosition.occupiedBy.color != r.color) {
+				if (nextXPosition.occupiedBy.getColor() != r.getColor()) {
 					// other player
 					possible[i] = nextXPosition;
 					i++;
@@ -602,7 +605,7 @@ final class Table extends PieceObserver {
 			// Verify if position is on table, and gets its position if exists
 			nextXPosition = this.getPositionByCoordinate(aux);
 			if (nextXPosition.occupiedBy != null) {
-				if (nextXPosition.occupiedBy.color != r.color) {
+				if (nextXPosition.occupiedBy.getColor() != r.getColor()) {
 					// other player
 					possible[i] = nextXPosition;
 					i++;
@@ -625,7 +628,7 @@ final class Table extends PieceObserver {
 			// Verify if position is on table, and gets its position if exists
 			nextXPosition = this.getPositionByCoordinate(aux);
 			if (nextXPosition.occupiedBy != null) {
-				if (nextXPosition.occupiedBy.color != r.color) {
+				if (nextXPosition.occupiedBy.getColor() != r.getColor()) {
 					// other player
 					possible[i] = nextXPosition;
 					i++;
@@ -649,7 +652,7 @@ final class Table extends PieceObserver {
 			// Verify if position is on table, and gets its position if exists
 			nextXPosition = this.getPositionByCoordinate(aux);
 			if (nextXPosition.occupiedBy != null) {
-				if (nextXPosition.occupiedBy.color != r.color) {
+				if (nextXPosition.occupiedBy.getColor() != r.getColor()) {
 					// other player
 					possible[i] = nextXPosition;
 					i++;
@@ -672,7 +675,7 @@ final class Table extends PieceObserver {
 			// Verify if position is on table, and gets its position if exists
 			nextXPosition = this.getPositionByCoordinate(aux);
 			if (nextXPosition.occupiedBy != null) {
-				if (nextXPosition.occupiedBy.color != r.color) {
+				if (nextXPosition.occupiedBy.getColor() != r.getColor()) {
 					// other player
 					possible[i] = nextXPosition;
 					i++;
@@ -722,8 +725,8 @@ final class Table extends PieceObserver {
 			return null;
 		}
 		
-		Color team = r.color;
-		Color oponent = r.color == Color.BLACK ? Color.WHITE: Color.BLACK;
+		Color team = r.getColor();
+		Color oponent = r.getColor() == Color.BLACK ? Color.WHITE: Color.BLACK;
 		
 		Position[] initialPosible = {};
 		

@@ -30,8 +30,8 @@ final class Position extends PieceObserved {
 		this.occupiedBy = p;
 	}
 	
-	protected int[3] mapToInt() {
-		int[3] val = {};
+	protected int[] mapToInt() {
+		int val[] = new int[3];
 		val[0] = this.coordinate.x;
 		val[1] = this.coordinate.y;
 		val[2] = this.occupiedBy.getPieceType().ordinal(); // opposite of PieceType.values()[val];
