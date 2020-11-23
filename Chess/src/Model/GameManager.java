@@ -4,7 +4,7 @@ package Model;
 public class GameManager{
 	private Player player1;
     private Player player2;
-//    private Round currentRound;
+    private Round currentRound;
     private Table gameTable;
 //    public Time timer;
     protected static GameManager manager;

@@ -1,14 +1,32 @@
 package Model;
 
-public abstract class Piece {
+protected class Piece {
 	boolean isAlive;
-	Color color;
+	private PieceType type;
+	private Color color;
 	
-	Piece(Color c) {
+	protected Piece(PieceType type, Color color) {
 		this.isAlive = true;
-		this.color = c;
+		this.type = type;
+		this.color = color;
+		
 	}
 	
+	protected PieceType getPieceType() {
+		return this.type;
+		
+	}
+	
+	protected PieceType setPieceType(PieceType type) { 
+		this.type = type;
+		
+	}
+	
+	protected Color getColor() {
+		return this.color;
+		
+	}	
+
 	protected void die() {
 		this.isAlive = false;
 	}
