@@ -47,7 +47,7 @@ class TableTest {
 		
 		
 //		Position[] ret1 = t.findBishopAvailablePositions(pB);
-		Position[] ret1 = t.findQueenAvailablePositions(pQ);
+		Position[] ret1 = t.findAvailablePositions(pQ);
 
 		for (int i = 0; i<ret1.length;i++) {
 			if (ret1[i] == null) {

@@ -9,7 +9,7 @@ public final class ModelAPI {
 		this.GM = GameManager.getGameManagerInstance();
 	}
 
-	protected static ModelAPI getAPIInstance() {
+	public static ModelAPI getAPIInstance() {
 		if (ModelAPI == null) {
 			ModelAPI = new ModelAPI();
 		}
@@ -24,8 +24,7 @@ public final class ModelAPI {
 
 	}
 	
-	public int[] getPossiblePositions(int posX,int posY) {
-		int[] positions = null;
-		return positions;
+	public int[][] getPossiblePositions(int posX,int posY) {
+		return GM.getAvailablePositions(posX, posY);
 	}
 }

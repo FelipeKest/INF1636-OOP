@@ -108,7 +108,38 @@ final class Table extends PieceObserver {
 		return allPositions;
 	}
 	
-	protected Position[] findPawnAvailablePositions(Position current) {
+	protected Position[] findAvailablePositions(Position current) {
+
+		Piece r = current.occupiedBy;
+		if (r == null) {
+			return null;
+		}
+		
+		
+		switch (current.occupiedBy.getPieceType()) {
+		case QUEEN:
+			return findQueenAvailablePositions(current);
+		case PAWN:
+			return findPawnAvailablePositions(current);
+		case KNIGHT:
+			return findKnightAvailablePositions(current);
+		case BISHOP:
+			return findBishopAvailablePositions(current);
+		case ROOK:
+			return findRookAvailablePositions(current);
+		case KING:
+			try {
+				return findKingAvailablePositions(current);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		return null;
+	}
+	
+	private Position[] findPawnAvailablePositions(Position current) {
 		
 		Piece r = current.occupiedBy;
 		if (r == null) {
@@ -209,7 +240,7 @@ final class Table extends PieceObserver {
 		return posible;	
 	}
 	
-	protected Position[] findRookAvailablePositions(Position current) {
+	private Position[] findRookAvailablePositions(Position current) {
 		
 		Piece r = current.occupiedBy;
 		if (r == null) {
@@ -346,7 +377,7 @@ final class Table extends PieceObserver {
 		return possible;
 	}
 	
-	protected Position[] findBishopAvailablePositions(Position current) {
+	private Position[] findBishopAvailablePositions(Position current) {
 		
 			Piece r = current.occupiedBy;
 			if (r == null) {
@@ -488,7 +519,7 @@ final class Table extends PieceObserver {
 			return possible;
 		}
  	
-	protected Position[] findKnightAvailablePositions(Position current) {
+	private Position[] findKnightAvailablePositions(Position current) {
 		Piece r = current.occupiedBy;
 		if (r == null) {
 			return null;
@@ -693,7 +724,7 @@ final class Table extends PieceObserver {
 		
 	}
 
-	protected Position[] findQueenAvailablePositions(Position current) {
+	private Position[] findQueenAvailablePositions(Position current) {
 		
 		
 		Position posible[] = {};
@@ -719,7 +750,7 @@ final class Table extends PieceObserver {
 		return posible;
 	}
 
-	protected Position[] findKingAvailablePositions(Position current) throws Exception {
+	private Position[] findKingAvailablePositions(Position current) throws Exception {
 		Piece r = current.occupiedBy;
 		if (r == null) {
 			return null;

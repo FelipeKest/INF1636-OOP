@@ -23,7 +23,7 @@ public class GameManager{
     	}
         p.isAlive = false;
         pos.occupiedBy = killer;
-        gameTable.updatePositions(pos);
+        gameTable.notifyPositions(pos);
     }
     
     protected void ressurectPieceAt(Position pos, Piece newPiece){
@@ -36,8 +36,9 @@ public class GameManager{
     	newPiece.isAlive = true;
     	p.isAlive = false;
     	pos.occupiedBy = newPiece;
-        gameTable.updatePositions(pos);
+        gameTable.notifyPositions(pos);
     }
+
     protected void pause() {
         //drop warning
         //freeze movements
@@ -59,6 +60,28 @@ public class GameManager{
         return colors;
     }
 
+    protected int[][] getAvailablePositions(int cx, int cy) {
+    	
+    	Position current;
+    	try {
+    		Coordinate c = new Coordinate(cx,cy);
+    		current  = gameTable.getPositionByCoordinate(c);
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    		return null;
+    	}
+    	
+    	Position[] posible = gameTable.findAvailablePositions(current);
+    	int[][] codedPositions = new int[posible.length][4];
+    	int i = 0;
+    	for (Position p: gameTable.findAvailablePositions(current)) {
+    		codedPositions[i] = p.mapToInt();
+    		i++;
+    	}
+    	
+    	return codedPositions;
+    }
+    
     private void createPlayers(String name1, String name2) {
     	int sort = (int)(Math.random()*10);
     	if(sort%2 == 0) {
