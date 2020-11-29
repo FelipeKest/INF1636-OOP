@@ -1,15 +1,35 @@
 package Model;
+import Utils.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import Utils.PieceObserved;
+import Utils.PieceObserver;
 import Utils.PieceType;
 
-final class Table extends PieceObserver {
+final class Table implements PieceObserved {
 	
 	private Position positions[];
+	
+	private int[][] visualPositions;
 
-	List<PieceObserved> list = new ArrayList<PieceObserved>();
+	List<PieceObserver> list = new ArrayList<PieceObserver>();
+	
+	@Override
+	public void add(PieceObserver observer) {
+		this.list.add(observer);
+	}
+
+	@Override
+	public void remove(PieceObserver observer) {
+		this.list.remove(observer);
+	}
+
+	@Override
+	public int[][] getPositions(int[][] positions) {
+		return this.visualPositions;
+	}
 	
 	protected static Table table;
 	
@@ -37,11 +57,6 @@ final class Table extends PieceObserver {
 			}
 		}
 		throw new Exception("Invalid Coordinate");
-	}
-	
-	@Override
-	protected void notifyPositions(Position p) {
-		updatePositions(p);
 	}
 	
 	private void updatePositions(Position p) {

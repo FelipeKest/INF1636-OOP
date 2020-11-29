@@ -43,7 +43,7 @@ class TableTest {
 		
 //		this.t.changePositions(pB);
 //		this.t.changePositions(pR1);
-		this.t.notifyPositions(pQ);
+//		this.t.notifyPositions(pQ);
 		
 		
 //		Position[] ret1 = t.findBishopAvailablePositions(pB);

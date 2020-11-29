@@ -15,6 +15,10 @@ public class GameManager{
         }
         return manager;
     }    
+    
+    protected Table getTable() {
+    	return this.gameTable;
+    }
 	
     protected void killPieceAt(Position pos, Piece killer){
     	Piece p = pos.occupiedBy;
