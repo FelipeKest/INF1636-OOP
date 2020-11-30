@@ -31,10 +31,16 @@ final class Position extends PieceObserved {
 	}
 	
 	protected int[] mapToInt() {
-		int val[] = new int[3];
+		int val[] = new int[4];
 		val[0] = this.coordinate.x;
 		val[1] = this.coordinate.y;
-		val[2] = this.occupiedBy.getPieceType().ordinal(); // opposite of PieceType.values()[val];
+		if (this.occupiedBy == null) {
+			val[2] = -1;
+			val[3] = -1;
+		} else {
+			val[2] = this.occupiedBy.getPieceType().ordinal(); // opposite of PieceType.values()[val];
+			val[3] = this.occupiedBy.getColor().ordinal();
+		} 
 		return val;
 	}
 }
