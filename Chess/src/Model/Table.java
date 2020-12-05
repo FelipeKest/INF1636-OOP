@@ -59,6 +59,10 @@ final class Table implements PieceObserved {
 		throw new Exception("Invalid Coordinate");
 	}
 	
+    protected void notifyPositions(Position p) {
+        updatePositions(p);
+    }
+	
 	private void updatePositions(Position p) {
 		for (int i = 0; i < positions.length; i++) {
 			Position indexed = this.positions[i];
