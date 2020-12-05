@@ -1,7 +1,7 @@
 package Model;
 //import java.sql.Time;
 
-public class GameManager{
+final class GameManager{
 	private Player player1;
     private Player player2;
     private Round currentRound;
