@@ -101,6 +101,8 @@ final public class Table extends PieceObserver {
 						Piece k = new Piece(PieceType.KING,Color.BLACK);
 						allPositions[pos] = new Position(i,j,k);
 					}
+				} else {
+					allPositions[pos] = new Position(i,j);
 				}
 				pos++;
 			}

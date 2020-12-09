@@ -25,6 +25,8 @@ class TableTest {
 
 	@Test
 	void test() {
+		Position[] allPositions = t.getAllPositions();
+		
 		Coordinate c = new Coordinate(1,1);
 		Coordinate c2 = new Coordinate(5,4);
 		
@@ -35,26 +37,27 @@ class TableTest {
 		Piece q = new Piece(PieceType.QUEEN,Color.WHITE);
 		
 		
-		Position pK = new Position(3,3,k);
-		Position pR1 = new Position(1,1,r);
-		Position pR2 = new Position(3,4,r2);
-		Position pB = new Position(2,2,b);
-		Position pQ = new Position(1,1,q);
-		
-//		this.t.changePositions(pB);
-//		this.t.changePositions(pR1);
+//		Position pK = new Position(3,3,k);
+//		Position pR1 = new Position(1,2,r);
+//		Position pR2 = new Position(3,4,r2);
+//		Position pB = new Position(2,2,b);
+//		Position pQ = new Position(1,1,q);
+//		
+//		this.t.notifyPositions(pB);
+//		this.t.notifyPositions(pR1);
 //		this.t.notifyPositions(pQ);
 //		
 //		
-////		Position[] ret1 = t.findBishopAvailablePositions(pB);
-//		Position[] ret1 = t.findAvailablePositions(pQ);
-
-//		for (int i = 0; i<ret1.length;i++) {
-//			if (ret1[i] == null) {
-//				break;
-//			}
-//			System.out.println(ret1[i].coordinate.x+" "+ret1[i].coordinate.y);
-//		}
+//		Position[] ret1 = t.findBishopAvailablePositions(pB);
+//		Position[] ret1 = t.findAvailablePositions(pB);
+		
+		for (int i = 0; i<allPositions.length;i++) {
+			if (allPositions[i].occupiedBy == null) {
+			
+			} else {
+				System.out.println(allPositions[i].occupiedBy.getPieceType() + "  " + allPositions[i].occupiedBy.getColor());
+			}
+		}
 		
 		
 		assertEquals(this.t.getAllPositions().length,64);
