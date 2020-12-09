@@ -16,17 +16,14 @@ final class Table implements PieceObserved {
 
 	List<PieceObserver> list = new ArrayList<PieceObserver>();
 	
-	@Override
 	public void add(PieceObserver observer) {
 		this.list.add(observer);
 	}
 
-	@Override
 	public void remove(PieceObserver observer) {
 		this.list.remove(observer);
 	}
 
-	@Override
 	public int[][] getPositions(int[][] positions) {
 		return this.visualPositions;
 	}
@@ -120,6 +117,8 @@ final class Table implements PieceObserved {
 						Piece k = new Piece(PieceType.KING,Color.BLACK);
 						allPositions[pos] = new Position(i,j,k);
 					}
+				} else {
+					allPositions[pos] = new Position(i,j);
 				}
 				pos++;
 			}
@@ -813,4 +812,6 @@ final class Table implements PieceObserved {
 		
 		return initialPosible;
 	}
+
+
 }

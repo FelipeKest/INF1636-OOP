@@ -2,7 +2,7 @@ package Model;
 
 import java.util.Arrays;
 
-import Utils.PieceObserved;
+//import Utils.PieceObserved;
 
 final class Position {
 	
