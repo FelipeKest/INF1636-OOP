@@ -43,26 +43,26 @@ class TableTest {
 		
 //		this.t.changePositions(pB);
 //		this.t.changePositions(pR1);
-		this.t.notifyPositions(pQ);
-		
-		
-//		Position[] ret1 = t.findBishopAvailablePositions(pB);
-		Position[] ret1 = t.findAvailablePositions(pQ);
+//		this.t.notifyPositions(pQ);
+//		
+//		
+////		Position[] ret1 = t.findBishopAvailablePositions(pB);
+//		Position[] ret1 = t.findAvailablePositions(pQ);
 
-		for (int i = 0; i<ret1.length;i++) {
-			if (ret1[i] == null) {
-				break;
-			}
-			System.out.println(ret1[i].coordinate.x+" "+ret1[i].coordinate.y);
-		}
+//		for (int i = 0; i<ret1.length;i++) {
+//			if (ret1[i] == null) {
+//				break;
+//			}
+//			System.out.println(ret1[i].coordinate.x+" "+ret1[i].coordinate.y);
+//		}
 		
 		
 		assertEquals(this.t.getAllPositions().length,64);
 		try {
-			assertEquals(this.t.getPositionByCoordinate(c).coordinate.x,1);
-			assertEquals(this.t.getPositionByCoordinate(c).coordinate.y,1);
-			assertEquals(this.t.getPositionByCoordinate(c2).coordinate.x,5);
-			assertEquals(this.t.getPositionByCoordinate(c2).coordinate.y,4);
+//			assertEquals(this.t.getPositionByCoordinate(c).coordinate.x,1);
+//			assertEquals(this.t.getPositionByCoordinate(c).coordinate.y,1);
+//			assertEquals(this.t.getPositionByCoordinate(c2).coordinate.x,5);
+//			assertEquals(this.t.getPositionByCoordinate(c2).coordinate.y,4);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
