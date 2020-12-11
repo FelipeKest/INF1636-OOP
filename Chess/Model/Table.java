@@ -45,7 +45,7 @@ final class Table implements PieceObserved {
 		return this.positions;
 	}	
 	
-	protected Position getPositionByCoordinate(Coordinate c) throws Exception {
+	protected Position getPositionByCoordinate(Coordinate c) {
 		Position[] positions = getAllPositions();
 		Position p = new Position(c.x,c.y);
 		for (int i = 0; i<positions.length; i++) {
@@ -53,7 +53,7 @@ final class Table implements PieceObserved {
 				return positions[i];
 			}
 		}
-		throw new Exception("Invalid Coordinate");
+		return null;
 	}
 	
     protected void notifyPositions(Position p) {
@@ -71,7 +71,6 @@ final class Table implements PieceObserved {
 	}
 	
 	private Position[] fillTable() {
-		// TODO: Test method
 		Position allPositions[] = new Position[64];
 		int pos = 0;
 		for (int i = 1; i<9;i++) {

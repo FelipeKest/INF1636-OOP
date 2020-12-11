@@ -5,7 +5,7 @@ import Utils.PieceObserver;
 public final class ModelAPI {
 
 	public static ModelAPI ModelAPI;
-	private GameManager GM;
+	protected GameManager GM;
 	
 	private ModelAPI() {
 		this.GM = GameManager.getGameManagerInstance();
@@ -23,7 +23,22 @@ public final class ModelAPI {
 	}
 	
 	public void movePiece(int x0, int y0, int xF, int yF) {
-
+		Coordinate c0 = new Coordinate(x0,y0);
+		Coordinate cF = new Coordinate(xF,yF);
+		
+		Position p0 = GM.getTable().getPositionByCoordinate(c0);
+		Position pF = GM.getTable().getPositionByCoordinate(cF);
+		
+		Piece p = null;
+		if (p0.occupiedBy != null) {
+			p = p0.occupiedBy;
+		}
+		
+		p0.occupiedBy = null;
+		pF.occupiedBy = p;
+		
+		GM.getTable().notifyPositions(p0);
+		GM.getTable().notifyPositions(pF);
 	}
 	
 	public int[][] getPossiblePositions(int posX,int posY) {
@@ -31,6 +46,6 @@ public final class ModelAPI {
 	}
 	
 	public void registerObserver(PieceObserver observer) {
-		GM.getGameManagerInstance().getTable().add(observer);
+		GM.getTable().add(observer);
 	}
 }
