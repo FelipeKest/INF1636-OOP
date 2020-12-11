@@ -1,5 +1,7 @@
 package Model;
 
+import Utils.PieceObserver;
+
 public final class ModelAPI {
 
 	public static ModelAPI ModelAPI;
@@ -26,5 +28,9 @@ public final class ModelAPI {
 	
 	public int[][] getPossiblePositions(int posX,int posY) {
 		return GM.getAvailablePositions(posX, posY);
+	}
+	
+	public void registerObserver(PieceObserver observer) {
+		GM.getGameManagerInstance().getTable().add(observer);
 	}
 }

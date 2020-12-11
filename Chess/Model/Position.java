@@ -2,7 +2,9 @@ package Model;
 
 import java.util.Arrays;
 
-final class Position extends PieceObserved {
+//import Utils.PieceObserved;
+
+final class Position {
 	
 	public Coordinate coordinate;
 	protected Piece occupiedBy;
