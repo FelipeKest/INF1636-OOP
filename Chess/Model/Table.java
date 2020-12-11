@@ -5,7 +5,7 @@ import java.util.List;
 
 import Utils.PieceType;
 
-final public class Table extends PieceObserver {
+final class Table extends PieceObserver {
 	
 	private Position positions[];
 
@@ -55,7 +55,6 @@ final public class Table extends PieceObserver {
 	}
 	
 	private Position[] fillTable() {
-		// TODO: Test method
 		Position allPositions[] = new Position[64];
 		int pos = 0;
 		for (int i = 1; i<9;i++) {
@@ -133,7 +132,6 @@ final public class Table extends PieceObserver {
 			try {
 				return findKingAvailablePositions(current);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

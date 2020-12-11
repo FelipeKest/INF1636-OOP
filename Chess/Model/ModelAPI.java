@@ -21,7 +21,7 @@ public final class ModelAPI {
 	}
 	
 	public void movePiece(int x0, int y0, int xF, int yF) {
-
+		
 	}
 	
 	public int[][] getPossiblePositions(int posX,int posY) {
