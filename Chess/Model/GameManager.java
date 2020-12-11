@@ -8,6 +8,13 @@ final class GameManager{
     private Table gameTable;
 //    public Time timer;
     protected static GameManager manager;
+    
+    protected Table getTable() {
+    	if (this.gameTable == null) {
+    		this.gameTable = Table.getTableInstance();
+    	}
+    	return this.gameTable;
+    }
 
     protected static GameManager getGameManagerInstance() {
         if (manager == null) {

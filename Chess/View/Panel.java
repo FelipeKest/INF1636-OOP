@@ -1,12 +1,21 @@
 package View;
 
 import javax.swing.*;
+
+import Model.*;
+import Utils.*;
+
 import java.awt.*;
 
-public class Panel extends JPanel {
+public class Panel extends JPanel implements PieceObserver {
 
 	public static final int TXT_X=120;
 	public static final int TXT_Y=140;
+	
+	public Panel() {
+		// Cadastrando o Panel para que possa receber as notificações 
+		ModelAPI.getAPIInstance().registerObserver(this);
+	}
 	
 	@Override
 	public void paintComponent(Graphics g) {
@@ -25,10 +34,12 @@ public class Panel extends JPanel {
 		}
 	}
 	
-	
+	public void notifyPositions(PieceObserved observed) {
+		// utilizar o getPositions para desenhar o tabuleiro
+	}
 	
 	public static void main(String[] args) {
-		Frame f = new Frame("Chess");
+		Frame f = new Frame("Chess");	
 	}
 
 
