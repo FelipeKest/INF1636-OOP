@@ -751,29 +751,6 @@ final public class Table extends PieceObserver {
 		
 		return posible;
 	}
-
-	// TODO: Change Visibility
-	public boolean lookForCheck(Player p) {
-		
-		Color c = p.getColor();
-		Color enemyColor = c == Color.WHITE ? Color.BLACK : Color.WHITE;
-		
-		for (Position pos: this.getAllPositions()) {
-			Piece pc = pos.occupiedBy;
-			if (pc != null && pc.getColor() == enemyColor) {
-				Position posible[] = this.findAvailablePositions(pos);
-				for (Position posibleCheck: posible) {
-					if (posibleCheck.occupiedBy.getPieceType() == PieceType.KING) {
-						return true;
-					}
-				}
-			}
-		}
-		
-		
-		return false;
-	}
-	
 	
 	private Position[] findKingAvailablePositions(Position current) throws Exception {
 		Piece r = current.occupiedBy;
@@ -795,5 +772,31 @@ final public class Table extends PieceObserver {
 		}
 		
 		return initialPosible;
+	}
+
+	protected boolean lookForCheck(Player p) {
+		
+		Color c = p.getColor();
+		Color enemyColor = c == Color.WHITE ? Color.BLACK : Color.WHITE;
+		
+		System.out.println(c+" "+enemyColor);
+		
+		for (Position pos: this.getAllPositions()) {
+			
+			Piece pc = pos.occupiedBy;
+			if (pc != null && pc.getColor() == enemyColor) {
+				System.out.println("Piece Type "+pc.getPieceType());
+				Position posible[] = this.findAvailablePositions(pos);
+				for (Position posibleCheck: posible) {
+					
+					if (posibleCheck.occupiedBy != null && posibleCheck.occupiedBy.getPieceType() == PieceType.KING) {
+						return true;
+					}
+				}
+			}
+		}
+		
+		
+		return false;
 	}
 }
