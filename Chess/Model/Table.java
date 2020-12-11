@@ -8,7 +8,7 @@ import Utils.PieceObserved;
 import Utils.PieceObserver;
 import Utils.PieceType;
 
-final class Table implements PieceObserved {
+final public class Table extends PieceObserver {
 	
 	private Position positions[];
 	
@@ -71,7 +71,6 @@ final class Table implements PieceObserved {
 	}
 	
 	private Position[] fillTable() {
-		// TODO: Test method
 		Position allPositions[] = new Position[64];
 		int pos = 0;
 		for (int i = 1; i<9;i++) {
@@ -149,7 +148,6 @@ final class Table implements PieceObserved {
 			try {
 				return findKingAvailablePositions(current);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -767,29 +765,6 @@ final class Table implements PieceObserved {
 		
 		return posible;
 	}
-
-	// TODO: Change Visibility
-	public boolean lookForCheck(Player p) {
-		
-		Color c = p.getColor();
-		Color enemyColor = c == Color.WHITE ? Color.BLACK : Color.WHITE;
-		
-		for (Position pos: this.getAllPositions()) {
-			Piece pc = pos.occupiedBy;
-			if (pc != null && pc.getColor() == enemyColor) {
-				Position posible[] = this.findAvailablePositions(pos);
-				for (Position posibleCheck: posible) {
-					if (posibleCheck.occupiedBy.getPieceType() == PieceType.KING) {
-						return true;
-					}
-				}
-			}
-		}
-		
-		
-		return false;
-	}
-	
 	
 	private Position[] findKingAvailablePositions(Position current) throws Exception {
 		Piece r = current.occupiedBy;
@@ -813,5 +788,29 @@ final class Table implements PieceObserved {
 		return initialPosible;
 	}
 
-
+	protected boolean lookForCheck(Player p) {
+		
+		Color c = p.getColor();
+		Color enemyColor = c == Color.WHITE ? Color.BLACK : Color.WHITE;
+		
+		System.out.println(c+" "+enemyColor);
+		
+		for (Position pos: this.getAllPositions()) {
+			
+			Piece pc = pos.occupiedBy;
+			if (pc != null && pc.getColor() == enemyColor) {
+				System.out.println("Piece Type "+pc.getPieceType());
+				Position posible[] = this.findAvailablePositions(pos);
+				for (Position posibleCheck: posible) {
+					
+					if (posibleCheck.occupiedBy != null && posibleCheck.occupiedBy.getPieceType() == PieceType.KING) {
+						return true;
+					}
+				}
+			}
+		}
+		
+		
+		return false;
+	}
 }
