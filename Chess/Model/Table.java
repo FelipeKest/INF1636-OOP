@@ -12,7 +12,7 @@ final class Table implements PieceObserved {
 	
 	private Position positions[];
 	
-	private int[][] visualPositions;
+	private int[][] visualPositions = new int[64][4];
 
 	List<PieceObserver> list = new ArrayList<PieceObserver>();
 	
@@ -24,14 +24,15 @@ final class Table implements PieceObserved {
 		this.list.remove(observer);
 	}
 
-	public int[][] getPositions(int[][] positions) {
+	public int[][] getVisualPositions() {
 		return this.visualPositions;
 	}
-	
+		
 	protected static Table table;
 	
 	private Table() {
 		this.positions = fillTable();
+		this.generateVisualPositions();
 	}
 	
 	protected static Table getTableInstance() {
@@ -57,7 +58,11 @@ final class Table implements PieceObserved {
 	}
 	
     protected void notifyPositions(Position p) {
+    	System.out.println("hello");
         updatePositions(p);
+        for (PieceObserver observer: list) {
+        	observer.notifyPositions(this);
+        }
     }
 	
 	private void updatePositions(Position p) {
@@ -68,6 +73,15 @@ final class Table implements PieceObserved {
 				return;
 			}
 		}
+		this.generateVisualPositions();
+	}
+	
+	protected void generateVisualPositions() {
+		int i = 0;
+		for (Position p: this.getAllPositions()) {
+			this.visualPositions[i] = p.mapToInt();
+			i++;
+		} 
 	}
 	
 	private Position[] fillTable() {

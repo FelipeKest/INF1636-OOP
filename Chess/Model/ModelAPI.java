@@ -18,6 +18,10 @@ public final class ModelAPI {
 		return ModelAPI;
 	}
 	
+	public void setupObservers(PieceObserver observer) {
+		this.GM.getTable().add(observer);
+	}
+	
 	public void startGame(String name1, String name2) {
 		GM.startGame(name1, name2);
 	}
@@ -39,10 +43,24 @@ public final class ModelAPI {
 		
 		GM.getTable().notifyPositions(p0);
 		GM.getTable().notifyPositions(pF);
+		
+		for (int[] felipe: this.getVisualPositions()) {
+			System.out.println(
+					"visual: " +
+felipe[0] + " " +
+							felipe[1] + " " +
+felipe[2] + " " +
+							felipe[3] + " "
+							);
+		}
 	}
 	
 	public int[][] getPossiblePositions(int posX,int posY) {
 		return GM.getAvailablePositions(posX, posY);
+	}
+	
+	public int[][] getVisualPositions() {
+		return GM.getTable().getVisualPositions();
 	}
 	
 	public void registerObserver(PieceObserver observer) {
