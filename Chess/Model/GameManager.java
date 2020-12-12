@@ -28,7 +28,7 @@ final class GameManager{
     	if (p == null || killer == null) {
     		return;
     	}
-        p.isAlive = false;
+        p.die();
         pos.occupiedBy = killer;
         gameTable.notifyPositions(pos);
     }
@@ -40,8 +40,8 @@ final class GameManager{
     		return;
     	}
     	
-    	newPiece.isAlive = true;
-    	p.isAlive = false;
+    	newPiece.live();
+    	p.die();
     	pos.occupiedBy = newPiece;
         gameTable.notifyPositions(pos);
     }

@@ -82,7 +82,7 @@ class TableTest {
 		
 		assertEquals(this.t.getAllPositions().length,64);
 		try {
-			assertEquals(this.t.lookForCheck(w),true);
+			assertEquals(this.t.lookForCheck(Color.WHITE),true);
 //			assertEquals(this.t.getPositionByCoordinate(c).coordinate.y,1);
 //			assertEquals(this.t.getPositionByCoordinate(c2).coordinate.x,5);
 //			assertEquals(this.t.getPositionByCoordinate(c2).coordinate.y,4);

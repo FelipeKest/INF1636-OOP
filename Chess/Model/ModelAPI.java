@@ -30,22 +30,10 @@ public final class ModelAPI {
 		Coordinate c0 = new Coordinate(x0,y0);
 		Coordinate cF = new Coordinate(xF,yF);
 		
-		Position p0 = GM.getTable().getPositionByCoordinate(c0);
-		Position pF = GM.getTable().getPositionByCoordinate(cF);
+		GM.getTable().movePiece(c0,cF);
 		
-		Piece p = null;
-		if (p0.occupiedBy != null) {
-			p = p0.occupiedBy;
-		}
-		
-		p0.occupiedBy = null;
-		pF.occupiedBy = p;
-		
-		GM.getTable().notifyPositions(p0);
-		GM.getTable().notifyPositions(pF);
-		
-		for (int[] felipe: this.getVisualPositions()) {
-			System.out.println("visual: " + felipe[0] + " " + felipe[1] + " " + felipe[2] + " " + felipe[3] + " ");
+		for (int[] position: this.getVisualPositions()) {
+			System.out.println("vis : " + position[0] + " " + position[1] + " " + position[2] + " " + position[3]);
 		}
 	}
 	

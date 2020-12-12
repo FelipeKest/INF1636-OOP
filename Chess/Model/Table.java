@@ -76,6 +76,25 @@ final class Table implements PieceObserved {
 		}
 	}
 	
+	protected void movePiece(Coordinate c0, Coordinate cF) {
+	
+		Position p0 = this.getPositionByCoordinate(c0);
+		Position pF = this.getPositionByCoordinate(cF);
+	
+		Piece p = null;
+		if (p0.occupiedBy != null) {
+			p = p0.occupiedBy;
+		}
+		
+		p.moved();
+		
+		p0.occupiedBy = null;
+		pF.occupiedBy = p;
+		
+		this.notifyPositions(p0);
+		this.notifyPositions(pF);
+	}
+	
 	protected void generateVisualPositions() {
 		int i = 0;
 		for (Position p: this.getAllPositions()) {
@@ -278,6 +297,9 @@ final class Table implements PieceObserved {
 			return null;
 		}
 		
+		
+		boolean roqueIsPossible = !r.getHasMoved();
+		Position[] currentTable = this.getAllPositions();
 		// Vector of possible positions for a rook (8V - Current)+(8H-Current) = 14
 		Position possible[] = new Position[14];
 		int i=0;
@@ -299,9 +321,18 @@ final class Table implements PieceObserved {
 				break;
 			}
 			
-			if (nextXPosition.occupiedBy != null) {
-				if (nextXPosition.occupiedBy.getColor() == r.getColor()) {
+			Piece nextPiece = nextXPosition.occupiedBy;
+			if (nextPiece != null) {
+				if (nextPiece.getColor() == r.getColor()) {
 					// same player
+					if (nextPiece.getPieceType() == PieceType.KING) {
+						if (!nextPiece.getHasMoved() && roqueIsPossible) {
+							// Both pieces didnt move yet
+							if (!lookForCheck(r.getColor())) {
+//								
+							}
+						}
+					}
 					break;
 				} else {
 					// other player
@@ -755,8 +786,7 @@ final class Table implements PieceObserved {
 		
 	}
 
-	private Position[] findQueenAvailablePositions(Position current) {
-		
+	private Position[] findQueenAvailablePositions(Position current) {	
 		
 		Position posible[] = {};
 				
@@ -792,7 +822,6 @@ final class Table implements PieceObserved {
 		
 		Position[] initialPosible = {};
 		
-		//
 		
 		
 		if (initialPosible.length == 0) {
@@ -803,21 +832,15 @@ final class Table implements PieceObserved {
 		return initialPosible;
 	}
 
-	protected boolean lookForCheck(Player p) {
+	protected boolean lookForCheck(Color c) {
 		
-		Color c = p.getColor();
 		Color enemyColor = c == Color.WHITE ? Color.BLACK : Color.WHITE;
 		
-		System.out.println(c+" "+enemyColor);
-		
 		for (Position pos: this.getAllPositions()) {
-			
 			Piece pc = pos.occupiedBy;
 			if (pc != null && pc.getColor() == enemyColor) {
-				System.out.println("Piece Type "+pc.getPieceType());
 				Position posible[] = this.findAvailablePositions(pos);
 				for (Position posibleCheck: posible) {
-					
 					if (posibleCheck.occupiedBy != null && posibleCheck.occupiedBy.getPieceType() == PieceType.KING) {
 						return true;
 					}
