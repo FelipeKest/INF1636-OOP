@@ -8,7 +8,7 @@ import Utils.PieceObserved;
 import Utils.PieceObserver;
 import Utils.PieceType;
 
-final class Table implements PieceObserved {
+final public class Table extends PieceObserver {
 	
 	private Position positions[];
 	
@@ -162,7 +162,6 @@ final class Table implements PieceObserved {
 			try {
 				return findKingAvailablePositions(current);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
