@@ -8,72 +8,72 @@ import Utils.PieceObserved;
 import Utils.PieceObserver;
 import Utils.PieceType;
 
-final public class Table extends PieceObserver {
-	
-	private Position positions[];
-	
-	private int[][] visualPositions = new int[64][4];
+final class Table implements PieceObserved {
 
-	List<PieceObserver> list = new ArrayList<PieceObserver>();
-	
-	public void add(PieceObserver observer) {
-		this.list.add(observer);
-	}
+    private Position positions[];
 
-	public void remove(PieceObserver observer) {
-		this.list.remove(observer);
-	}
+    private int[][] visualPositions = new int[64][4];
 
-	public int[][] getVisualPositions() {
-		return this.visualPositions;
-	}
-		
-	protected static Table table;
-	
-	private Table() {
-		this.positions = fillTable();
-		this.generateVisualPositions();
-	}
-	
-	protected static Table getTableInstance() {
-		if (table == null) {
-			table = new Table();
-		}
-		return table;
-	}
-	
-	protected Position[] getAllPositions() {
-		return this.positions;
-	}	
-	
-	protected Position getPositionByCoordinate(Coordinate c) throws Exception {
-		Position[] positions = getAllPositions();
-		Position p = new Position(c.x,c.y);
-		for (int i = 0; i<positions.length; i++) {
-			if (Position.checkEqualCoordinate(positions[i], p)) {
-				return positions[i];
-			}
-		}
-		throw new Exception("Invalid Coordinate");
-	}
-	
+    List<PieceObserver> list = new ArrayList<PieceObserver>();
+
+    public void add(PieceObserver observer) {
+        this.list.add(observer);
+    }
+
+    public void remove(PieceObserver observer) {
+        this.list.remove(observer);
+    }
+
+    public int[][] getVisualPositions() {
+        return this.visualPositions;
+    }
+
+    protected static Table table;
+
+    private Table() {
+        this.positions = fillTable();
+        this.generateVisualPositions();
+    }
+
+    protected static Table getTableInstance() {
+        if (table == null) {
+            table = new Table();
+        }
+        return table;
+    }
+
+    protected Position[] getAllPositions() {
+        return this.positions;
+    }
+
+    protected Position getPositionByCoordinate(Coordinate c) throws Exception {
+        Position[] positions = getAllPositions();
+        Position p = new Position(c.x,c.y);
+        for (int i = 0; i<positions.length; i++) {
+            if (Position.checkEqualCoordinate(positions[i], p)) {
+                return positions[i];
+            }
+        }
+        throw new Exception("Invalid Coordinate");
+    }
+
     protected void notifyPositions(Position p) {
         updatePositions(p);
         for (PieceObserver observer: list) {
-        	observer.notifyPositions(this);
+            observer.notifyPositions(this);
         }
     }
-	
-	private void updatePositions(Position p) {
-		for (int i = 0; i < positions.length; i++) {
-			Position indexed = this.positions[i];
-			if (Position.checkEqualCoordinate(indexed, p)) {
-				this.positions[i] = p;
-				this.generateVisualPositions();
-				return;
-			}
-		}
-	}
+
+    private void updatePositions(Position p) {
+        for (int i = 0; i < positions.length; i++) {
+            Position indexed = this.positions[i];
+            if (Position.checkEqualCoordinate(indexed, p)) {
+                this.positions[i] = p;
+                this.generateVisualPositions();
+                return;
+            }
+        }
+    }
 	
 	protected void movePiece(Coordinate c0, Coordinate cF) {
 	
