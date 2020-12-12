@@ -20,7 +20,7 @@ public class GameController {
     public static void main(String[] args) throws InterruptedException
     {
     	GameController controller = new GameController();
-    	controller.board.startDraw();
+//    	controller.board.startDraw();
     	controller.board.addMouseListener(controller.getMouse());
     }
 	
@@ -37,6 +37,7 @@ public class GameController {
 			public void mouseClicked(MouseEvent e) { 
 				System.out.println("coord x: " + e.getX());
 				System.out.println("coord y: " + e.getY());
+				
 			}
 
 			@Override

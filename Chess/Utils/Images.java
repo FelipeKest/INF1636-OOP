@@ -24,37 +24,37 @@ public class Images {
 		//MARK: - White Pieces 
 		
 		try {
-			whitePawn = ImageIO.read(new File("PieceImages/CyanP.png"));
+			whitePawn = ImageIO.read(new File("PiecesImages/CyanP.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 		try {
-			whiteKing = ImageIO.read(new File("PieceImages/CyanK.png"));
+			whiteKing = ImageIO.read(new File("PiecesImages/CyanK.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 		try {
-			whiteQueen = ImageIO.read(new File("PieceImages/CyanQ.png"));
+			whiteQueen = ImageIO.read(new File("PiecesImages/CyanQ.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 		try {
-			whiteKnight = ImageIO.read(new File("PieceImages/CyanN.png"));
+			whiteKnight = ImageIO.read(new File("PiecesImages/CyanN.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 		try {
-			whiteRook = ImageIO.read(new File("PieceImages/CyanR.png"));
+			whiteRook = ImageIO.read(new File("PiecesImages/CyanR.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 		try {
-			whiteBishop = ImageIO.read(new File("PieceImages/CyanB.png"));
+			whiteBishop = ImageIO.read(new File("PiecesImages/CyanB.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -62,37 +62,37 @@ public class Images {
 		//MARK: - Black Pieces 
 
 		try {
-			blackPawn = ImageIO.read(new File("PieceImages/PurpleP.png"));
+			blackPawn = ImageIO.read(new File("PiecesImages/PurpleP.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 		try {
-			blackKing = ImageIO.read(new File("PieceImages/PurpleK.png"));
+			blackKing = ImageIO.read(new File("PiecesImages/PurpleK.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 		try {
-			blackQueen = ImageIO.read(new File("PieceImages/PurpleQ.png"));
+			blackQueen = ImageIO.read(new File("PiecesImages/PurpleQ.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 		try {
-			blackKnight = ImageIO.read(new File("PieceImages/PurpleN.png"));
+			blackKnight = ImageIO.read(new File("PiecesImages/PurpleN.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 		try {
-			blackRook = ImageIO.read(new File("PieceImages/PurpleR.png"));
+			blackRook = ImageIO.read(new File("PiecesImages/PurpleR.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 		try {
-			blackBishop = ImageIO.read(new File("PieceImages/PurpleB.png"));
+			blackBishop = ImageIO.read(new File("PiecesImages/PurpleB.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

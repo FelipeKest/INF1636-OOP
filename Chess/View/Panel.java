@@ -15,14 +15,27 @@ public class Panel extends JPanel implements PieceObserver {
 	
 	public static final int TXT_X=120;
 	public static final int TXT_Y=140;
+	private int[][] visualPiecePosition = new int[64][4];
+	private Images piecesImages;
 	
 	JFrame frame;
 	
 	public Panel(MouseListener l) {
 		// Cadastrando o Panel para que possa receber as notificações 
 		ModelAPI.getAPIInstance().registerObserver(this);
+		this.piecesImages = new Images();
 		this.setupFrame(l);
 	}
+	
+    private void setupFrame(MouseListener l)
+    {
+    	frame = new JFrame("Chess");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.add(this);
+        frame.setSize(600,620);
+        frame.addMouseListener(l);
+        frame.setVisible(true);
+    }
 	
 	@Override
 	public void paintComponent(Graphics g) {
@@ -41,22 +54,86 @@ public class Panel extends JPanel implements PieceObserver {
 		}
 	}
 	
-	public void notifyPositions(PieceObserved observed) {
-		observed.getVisualPositions();
-		// utilizar o getPositions para desenhar o tabuleiro
-	}
-	
-	public void startDraw() {
-		Frame f = new Frame("Chess");	
-	}
-	
-    private void setupFrame(MouseListener l)
+	@Override
+    public void paint(Graphics g)
     {
-    	frame = new JFrame("Chess");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(this);
-        frame.setSize(600,620);
-        frame.addMouseListener(l);
-        frame.setVisible(true);
+		super.paint(g);
+        displayPieces(g);
     }
+	
+	public void notifyPositions(PieceObserved observed) {
+		this.visualPiecePosition = observed.getVisualPositions();
+		this.repaint();		
+		System.out.print("hello");
+	}
+	
+	public void displayPieces(Graphics g) {
+		for (int[] piece: this.visualPiecePosition) {
+//			System.out.print("hello");
+			Image pieceImage = this.getPieceImage(piece[3], piece[2]);
+			g.drawImage(pieceImage, 100, 100, null);
+		}
+	}
+	
+	private Image getPieceImage(int color, int type) {
+		// Color == Black
+		if (color == 0) {
+			switch (type) {
+			// PAWN
+			case 0:
+				return this.piecesImages.blackPawn;
+			// KING
+			case 1:
+				return this.piecesImages.blackKing;
+				
+			// QUEEN
+			case 2:
+				return this.piecesImages.blackQueen;
+				
+			// KNIGHT
+			case 3:
+				return this.piecesImages.blackKing;
+				
+			// ROOK
+			case 4:
+				return this.piecesImages.blackRook;
+				
+			// BISHOP
+			case 5:
+				return this.piecesImages.blackBishop;
+				
+			}
+		}
+		// Color == White
+		else {
+			switch (type) {
+			// PAWN
+			case 0:
+				return this.piecesImages.whitePawn;
+				
+			// KING
+			case 1:
+				return this.piecesImages.whiteKing;
+				
+			// QUEEN
+			case 2:
+				return this.piecesImages.whiteQueen;
+				
+			// KNIGHT
+			case 3:
+				return this.piecesImages.whiteKing;
+				
+			// ROOK
+			case 4:
+				return this.piecesImages.whiteRook;
+				
+			// BISHOP
+			case 5:
+				return this.piecesImages.whiteBishop;
+				
+			}
+		}
+		
+		return null;
+	}
 }
