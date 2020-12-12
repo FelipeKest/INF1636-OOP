@@ -35,6 +35,7 @@ public class Panel extends JPanel implements PieceObserver {
 	}
 	
 	public void notifyPositions(PieceObserved observed) {
+		observed.getVisualPositions();
 		// utilizar o getPositions para desenhar o tabuleiro
 	}
 	

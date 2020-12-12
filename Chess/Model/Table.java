@@ -12,7 +12,7 @@ final public class Table extends PieceObserver {
 	
 	private Position positions[];
 	
-	private int[][] visualPositions;
+	private int[][] visualPositions = new int[64][4];
 
 	List<PieceObserver> list = new ArrayList<PieceObserver>();
 	
@@ -24,14 +24,15 @@ final public class Table extends PieceObserver {
 		this.list.remove(observer);
 	}
 
-	public int[][] getPositions(int[][] positions) {
+	public int[][] getVisualPositions() {
 		return this.visualPositions;
 	}
-	
+		
 	protected static Table table;
 	
 	private Table() {
 		this.positions = fillTable();
+		this.generateVisualPositions();
 	}
 	
 	protected static Table getTableInstance() {
@@ -58,6 +59,9 @@ final public class Table extends PieceObserver {
 	
     protected void notifyPositions(Position p) {
         updatePositions(p);
+        for (PieceObserver observer: list) {
+        	observer.notifyPositions(this);
+        }
     }
 	
 	private void updatePositions(Position p) {
@@ -65,9 +69,49 @@ final public class Table extends PieceObserver {
 			Position indexed = this.positions[i];
 			if (Position.checkEqualCoordinate(indexed, p)) {
 				this.positions[i] = p;
+				this.generateVisualPositions();
 				return;
 			}
 		}
+	}
+	
+	protected void movePiece(Coordinate c0, Coordinate cF) {
+	
+		Position p0 = null;
+		try {
+			p0 = this.getPositionByCoordinate(c0);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+		Position pF = null;
+		try {
+			pF = this.getPositionByCoordinate(cF);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	
+		Piece p = null;
+		if (p0.occupiedBy != null) {
+			p = p0.occupiedBy;
+			p.moved();
+		}
+		
+		
+		p0.occupiedBy = null;
+		pF.occupiedBy = p;
+		
+		this.notifyPositions(p0);
+		this.notifyPositions(pF);
+	}
+	
+	protected void generateVisualPositions() {
+		int i = 0;
+		for (Position p: this.getAllPositions()) {
+			this.visualPositions[i] = p.mapToInt();
+			i++;
+		} 
 	}
 	
 	private Position[] fillTable() {
@@ -263,6 +307,11 @@ final public class Table extends PieceObserver {
 			return null;
 		}
 		
+		
+		boolean roqueIsPossible = !r.getHasMoved();
+		Color pColor = r.getColor();
+		
+		Position[] currentTable = this.getAllPositions();
 		// Vector of possible positions for a rook (8V - Current)+(8H-Current) = 14
 		Position possible[] = new Position[14];
 		int i=0;
@@ -272,7 +321,6 @@ final public class Table extends PieceObserver {
 		
 		// Check for available positions in x coordinate
 		while (aux.x<9) {
-			
 			Position nextXPosition;
 			try {	
 				aux.x++;
@@ -283,10 +331,32 @@ final public class Table extends PieceObserver {
 				System.out.println("Position Doesnt exist on table");
 				break;
 			}
-			
 			if (nextXPosition.occupiedBy != null) {
-				if (nextXPosition.occupiedBy.getColor() == r.getColor()) {
-					// same player
+				Piece nextPiece = nextXPosition.occupiedBy;
+				System.out.println(nextPiece.getPieceType());
+				if (nextPiece.getColor() == pColor) {
+//					 same player
+					if (nextPiece.getPieceType() == PieceType.KING) {
+						if (!nextPiece.getHasMoved() && roqueIsPossible) {
+							// Both pieces didnt move yet
+							// TODO
+							if (!lookForCheck(pColor)) {
+								System.out.println("Can execute");
+								// Analyse if there is a rook a check doesnt happen
+								Coordinate aux2 = new Coordinate(aux.x--,aux.y);
+								this.movePiece(aux,aux2);
+								this.movePiece(c, aux);
+								if(!lookForCheck(pColor)) {
+									System.out.println("Roq at x coord "+nextXPosition.coordinate.x);
+									possible[i] = nextXPosition;
+									i++;
+									System.out.println("pos i + "+ i +"= "+possible[i].coordinate.x);
+								}
+								this.movePiece(aux,c);
+								this.movePiece(aux2, aux);
+							}
+						}
+					}
 					break;
 				} else {
 					// other player
@@ -299,7 +369,7 @@ final public class Table extends PieceObserver {
 				i++;
 			}
 		}
-		
+				
 		aux.x = c.x;
 		aux.y = c.y;
 		
@@ -740,8 +810,7 @@ final public class Table extends PieceObserver {
 		
 	}
 
-	private Position[] findQueenAvailablePositions(Position current) {
-		
+	private Position[] findQueenAvailablePositions(Position current) {	
 		
 		Position posible[] = {};
 				
@@ -777,7 +846,6 @@ final public class Table extends PieceObserver {
 		
 		Position[] initialPosible = {};
 		
-		//
 		
 		
 		if (initialPosible.length == 0) {
@@ -788,29 +856,22 @@ final public class Table extends PieceObserver {
 		return initialPosible;
 	}
 
-	protected boolean lookForCheck(Player p) {
+	protected boolean lookForCheck(Color c) {
 		
-		Color c = p.getColor();
 		Color enemyColor = c == Color.WHITE ? Color.BLACK : Color.WHITE;
 		
-		System.out.println(c+" "+enemyColor);
-		
 		for (Position pos: this.getAllPositions()) {
-			
 			Piece pc = pos.occupiedBy;
 			if (pc != null && pc.getColor() == enemyColor) {
-				System.out.println("Piece Type "+pc.getPieceType());
+				
 				Position posible[] = this.findAvailablePositions(pos);
 				for (Position posibleCheck: posible) {
-					
 					if (posibleCheck.occupiedBy != null && posibleCheck.occupiedBy.getPieceType() == PieceType.KING) {
 						return true;
 					}
 				}
 			}
 		}
-		
-		
 		return false;
 	}
 }

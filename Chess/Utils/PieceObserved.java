@@ -6,6 +6,5 @@ abstract public interface PieceObserved {
 
 	abstract public void remove(PieceObserver observer);
 	
-	abstract public int[][] getPositions(int[][] positions);
-		
+	abstract public int[][] getVisualPositions();
 }
