@@ -8,7 +8,7 @@ import Utils.PieceObserved;
 import Utils.PieceObserver;
 import Utils.PieceType;
 
-final public class Table extends PieceObserver {
+final public class Table implements PieceObserved {
 	
 	private Position positions[];
 	
