@@ -26,7 +26,7 @@ class TableTest {
 	void mockTable() {
 		for (int i = 0; i<9; i++) {
 			for (int j = 1; j<9; j++) {
-				if (i == 1 && j == 1) {
+				if (i == 8 && j == 1) {
 					Piece r = new Piece(PieceType.ROOK,Color.WHITE);
 					Position p = new Position(i,j,r);
 					this.t.notifyPositions(p);
@@ -47,8 +47,8 @@ class TableTest {
 		this.mockTable();
 		Position[] allPositions = this.t.getAllPositions();
 		
-		Coordinate c = new Coordinate(1,1);
-		Coordinate c2 = new Coordinate(5,1);
+		Coordinate c = new Coordinate(8,1);
+		Coordinate c2 = new Coordinate(5,4);
 		
 		Player w = new Player("W",Color.WHITE);
 		Player b = new Player("B",Color.BLACK);
@@ -93,18 +93,16 @@ class TableTest {
 		System.out.println(poss.length);
 		
 		for (int i = 0;poss[i]!=null;i++) {
-//			if (poss[i].occupiedBy != null) {
-				System.out.println(poss[i].coordinate.x+"  "+poss[i].coordinate.y);				
-//			}
+			System.out.println(poss[i].coordinate.x+"  "+poss[i].coordinate.y);
 		}
 		
 		
 		assertEquals(this.t.getAllPositions().length,64);
 		try {
-//			assertEquals(this.t.lookForCheck(Color.WHITE),true);
-//			assertEquals(this.t.getPositionByCoordinate(c).coordinate.y,1);
-//			assertEquals(this.t.getPositionByCoordinate(c2).coordinate.x,5);
-//			assertEquals(this.t.getPositionByCoordinate(c2).coordinate.y,4);
+			assertEquals(this.t.lookForCheck(Color.WHITE),false);
+			assertEquals(this.t.getPositionByCoordinate(c).coordinate.y,1);
+			assertEquals(this.t.getPositionByCoordinate(c2).coordinate.x,5);
+			assertEquals(this.t.getPositionByCoordinate(c2).coordinate.y,4);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

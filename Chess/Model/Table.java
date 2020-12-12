@@ -333,15 +333,13 @@ final class Table implements PieceObserved {
 			}
 			if (nextXPosition.occupiedBy != null) {
 				Piece nextPiece = nextXPosition.occupiedBy;
-				System.out.println(nextPiece.getPieceType());
 				if (nextPiece.getColor() == pColor) {
 //					 same player
 					if (nextPiece.getPieceType() == PieceType.KING) {
-						if (!nextPiece.getHasMoved() && roqueIsPossible) {
+						if (!nextPiece.getHasMoved() && roqueIsPossible && r.getPieceType() == PieceType.ROOK) {
 							// Both pieces didnt move yet
 							// TODO
 							if (!lookForCheck(pColor)) {
-								System.out.println("Can execute");
 								// Analyse if there is a rook a check doesnt happen
 								Coordinate aux2 = new Coordinate(aux.x--,aux.y);
 								this.movePiece(aux,aux2);
@@ -385,15 +383,13 @@ final class Table implements PieceObserved {
 			
 			if (nextXPosition.occupiedBy != null) {
 				Piece nextPiece = nextXPosition.occupiedBy;
-				System.out.println(nextPiece.getPieceType());
 				if (nextPiece.getColor() == pColor) {
 //					 same player
 					if (nextPiece.getPieceType() == PieceType.KING) {
-						if (!nextPiece.getHasMoved() && roqueIsPossible) {
+						if (!nextPiece.getHasMoved() && roqueIsPossible && r.getPieceType() == PieceType.ROOK) {
 							// Both pieces didnt move yet
 							// TODO
 							if (!lookForCheck(pColor)) {
-								System.out.println("Can execute");
 								// Analyse if there is a rook a check doesnt happen
 								Coordinate aux2 = new Coordinate(aux.x++,aux.y);
 								this.movePiece(aux,aux2);
