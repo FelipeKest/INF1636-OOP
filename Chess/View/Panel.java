@@ -15,16 +15,18 @@ public class Panel extends JPanel implements PieceObserver {
 	
 	public static final int TXT_X=120;
 	public static final int TXT_Y=140;
-	private int[][] visualPiecePosition = new int[64][4];
+	private int[][] visualPositions = new int[64][4];
 	private Images piecesImages;
 	
 	JFrame frame;
 	
 	public Panel(MouseListener l) {
 		// Cadastrando o Panel para que possa receber as notificações 
-		ModelAPI.getAPIInstance().registerObserver(this);
 		this.piecesImages = new Images();
 		this.setupFrame(l);
+//		for (int[] visualPosition: visualPositions) {
+//			System.out.println("Visual Positions: " + visualPosition[0] + visualPosition[1] + visualPosition[2] + visualPosition[3]);
+//		}
 	}
 	
     private void setupFrame(MouseListener l)
@@ -57,21 +59,22 @@ public class Panel extends JPanel implements PieceObserver {
 	@Override
     public void paint(Graphics g)
     {
+		System.out.println("chamei");
 		super.paint(g);
         displayPieces(g);
     }
 	
 	public void notifyPositions(PieceObserved observed) {
-		this.visualPiecePosition = observed.getVisualPositions();
+		this.visualPositions = observed.getVisualPositions();
 		this.repaint();		
-		System.out.print("hello");
 	}
 	
 	public void displayPieces(Graphics g) {
-		for (int[] piece: this.visualPiecePosition) {
-//			System.out.print("hello");
+		int i = 0;
+		for (int[] piece: this.visualPositions) {			
 			Image pieceImage = this.getPieceImage(piece[3], piece[2]);
-			g.drawImage(pieceImage, 100, 100, null);
+			g.drawImage(pieceImage, i, 100, null);
+			i+=10;
 		}
 	}
 	

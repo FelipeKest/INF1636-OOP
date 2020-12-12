@@ -22,11 +22,13 @@ public class GameController {
     	GameController controller = new GameController();
 //    	controller.board.startDraw();
     	controller.board.addMouseListener(controller.getMouse());
+    	controller.model.registerObserver(controller.board);
     }
 	
 	public void movePiece(int x0,int y0, int xF, int yF) {
 		ModelAPI m = ModelAPI.getAPIInstance();
 		m.movePiece(x0, y0, xF, yF);
+		
 	}
 	
     public MouseListener getMouse() {

@@ -1,6 +1,7 @@
 package Model;
 import Utils.*;
 
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,9 @@ final public class Table implements PieceObserved {
 	List<PieceObserver> list = new ArrayList<PieceObserver>();
 	
 	public void add(PieceObserver observer) {
+		System.out.println("add");
 		this.list.add(observer);
+		System.out.println(list.isEmpty());
 	}
 
 	public void remove(PieceObserver observer) {
@@ -33,6 +36,11 @@ final public class Table implements PieceObserved {
 	private Table() {
 		this.positions = fillTable();
 		this.generateVisualPositions();
+		// será que eu preciso dar add aqui?
+//		for (int[] visualPosition: visualPositions) {
+//			System.out.println("Visual Positions: " + visualPosition[0] + visualPosition[1] + visualPosition[2] + visualPosition[3]);
+//		}
+
 	}
 	
 	protected static Table getTableInstance() {
@@ -58,8 +66,11 @@ final public class Table implements PieceObserved {
 	}
 	
     protected void notifyPositions(Position p) {
-    	System.out.println("hello");
         updatePositions(p);
+        alertObservers();
+    }
+    
+    protected void alertObservers() {
         for (PieceObserver observer: list) {
         	observer.notifyPositions(this);
         }
@@ -79,7 +90,7 @@ final public class Table implements PieceObserved {
 	protected void generateVisualPositions() {
 		int i = 0;
 		for (Position p: this.getAllPositions()) {
-			this.visualPositions[i] = p.mapToInt();
+			this.visualPositions[i] = p.mapToInt();	
 			i++;
 		} 
 	}
