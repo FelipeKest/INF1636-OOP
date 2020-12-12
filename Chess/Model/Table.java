@@ -347,10 +347,8 @@ final class Table implements PieceObserved {
 								this.movePiece(aux,aux2);
 								this.movePiece(c, aux);
 								if(!lookForCheck(pColor)) {
-									System.out.println("Roq at x coord "+nextXPosition.coordinate.x);
 									possible[i] = nextXPosition;
 									i++;
-									System.out.println("pos i + "+ i +"= "+possible[i].coordinate.x);
 								}
 								this.movePiece(aux,c);
 								this.movePiece(aux2, aux);
@@ -386,8 +384,29 @@ final class Table implements PieceObserved {
 			}
 			
 			if (nextXPosition.occupiedBy != null) {
-				if (nextXPosition.occupiedBy.getColor() == r.getColor()) {
-					// same player
+				Piece nextPiece = nextXPosition.occupiedBy;
+				System.out.println(nextPiece.getPieceType());
+				if (nextPiece.getColor() == pColor) {
+//					 same player
+					if (nextPiece.getPieceType() == PieceType.KING) {
+						if (!nextPiece.getHasMoved() && roqueIsPossible) {
+							// Both pieces didnt move yet
+							// TODO
+							if (!lookForCheck(pColor)) {
+								System.out.println("Can execute");
+								// Analyse if there is a rook a check doesnt happen
+								Coordinate aux2 = new Coordinate(aux.x++,aux.y);
+								this.movePiece(aux,aux2);
+								this.movePiece(c, aux);
+								if(!lookForCheck(pColor)) {
+									possible[i] = nextXPosition;
+									i++;
+								}
+								this.movePiece(aux,c);
+								this.movePiece(aux2, aux);
+							}
+						}
+					}
 					break;
 				} else {
 					// other player
