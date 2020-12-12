@@ -46,7 +46,7 @@ final class Table implements PieceObserved {
 		return this.positions;
 	}	
 	
-	protected Position getPositionByCoordinate(Coordinate c) {
+	protected Position getPositionByCoordinate(Coordinate c) throws Exception {
 		Position[] positions = getAllPositions();
 		Position p = new Position(c.x,c.y);
 		for (int i = 0; i<positions.length; i++) {
@@ -54,11 +54,10 @@ final class Table implements PieceObserved {
 				return positions[i];
 			}
 		}
-		return null;
+		throw new Exception("Invalid Coordinate");
 	}
 	
     protected void notifyPositions(Position p) {
-    	System.out.println("hello");
         updatePositions(p);
         for (PieceObserver observer: list) {
         	observer.notifyPositions(this);
@@ -78,15 +77,27 @@ final class Table implements PieceObserved {
 	
 	protected void movePiece(Coordinate c0, Coordinate cF) {
 	
-		Position p0 = this.getPositionByCoordinate(c0);
-		Position pF = this.getPositionByCoordinate(cF);
+		Position p0 = null;
+		try {
+			p0 = this.getPositionByCoordinate(c0);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+		Position pF = null;
+		try {
+			pF = this.getPositionByCoordinate(cF);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
 	
 		Piece p = null;
 		if (p0.occupiedBy != null) {
 			p = p0.occupiedBy;
+			p.moved();
 		}
 		
-		p.moved();
 		
 		p0.occupiedBy = null;
 		pF.occupiedBy = p;
@@ -181,7 +192,6 @@ final class Table implements PieceObserved {
 			try {
 				return findKingAvailablePositions(current);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -299,6 +309,8 @@ final class Table implements PieceObserved {
 		
 		
 		boolean roqueIsPossible = !r.getHasMoved();
+		Color pColor = r.getColor();
+		
 		Position[] currentTable = this.getAllPositions();
 		// Vector of possible positions for a rook (8V - Current)+(8H-Current) = 14
 		Position possible[] = new Position[14];
@@ -309,7 +321,6 @@ final class Table implements PieceObserved {
 		
 		// Check for available positions in x coordinate
 		while (aux.x<9) {
-			
 			Position nextXPosition;
 			try {	
 				aux.x++;
@@ -320,16 +331,29 @@ final class Table implements PieceObserved {
 				System.out.println("Position Doesnt exist on table");
 				break;
 			}
-			
-			Piece nextPiece = nextXPosition.occupiedBy;
-			if (nextPiece != null) {
-				if (nextPiece.getColor() == r.getColor()) {
-					// same player
+			if (nextXPosition.occupiedBy != null) {
+				Piece nextPiece = nextXPosition.occupiedBy;
+				System.out.println(nextPiece.getPieceType());
+				if (nextPiece.getColor() == pColor) {
+//					 same player
 					if (nextPiece.getPieceType() == PieceType.KING) {
 						if (!nextPiece.getHasMoved() && roqueIsPossible) {
 							// Both pieces didnt move yet
-							if (!lookForCheck(r.getColor())) {
-//								
+							// TODO
+							if (!lookForCheck(pColor)) {
+								System.out.println("Can execute");
+								// Analyse if there is a rook a check doesnt happen
+								Coordinate aux2 = new Coordinate(aux.x--,aux.y);
+								this.movePiece(aux,aux2);
+								this.movePiece(c, aux);
+								if(!lookForCheck(pColor)) {
+									System.out.println("Roq at x coord "+nextXPosition.coordinate.x);
+									possible[i] = nextXPosition;
+									i++;
+									System.out.println("pos i + "+ i +"= "+possible[i].coordinate.x);
+								}
+								this.movePiece(aux,c);
+								this.movePiece(aux2, aux);
 							}
 						}
 					}
@@ -345,7 +369,7 @@ final class Table implements PieceObserved {
 				i++;
 			}
 		}
-		
+				
 		aux.x = c.x;
 		aux.y = c.y;
 		
@@ -839,6 +863,7 @@ final class Table implements PieceObserved {
 		for (Position pos: this.getAllPositions()) {
 			Piece pc = pos.occupiedBy;
 			if (pc != null && pc.getColor() == enemyColor) {
+				
 				Position posible[] = this.findAvailablePositions(pos);
 				for (Position posibleCheck: posible) {
 					if (posibleCheck.occupiedBy != null && posibleCheck.occupiedBy.getPieceType() == PieceType.KING) {
@@ -847,8 +872,6 @@ final class Table implements PieceObserved {
 				}
 			}
 		}
-		
-		
 		return false;
 	}
 }

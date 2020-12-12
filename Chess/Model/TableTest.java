@@ -27,12 +27,12 @@ class TableTest {
 		for (int i = 0; i<9; i++) {
 			for (int j = 1; j<9; j++) {
 				if (i == 1 && j == 1) {
-					Piece k = new Piece(PieceType.KING,Color.WHITE);
-					Position p = new Position(i,j,k);
+					Piece r = new Piece(PieceType.ROOK,Color.WHITE);
+					Position p = new Position(i,j,r);
 					this.t.notifyPositions(p);
-				} else if (i==1 && j == 5) {
-					Piece r = new Piece(PieceType.ROOK,Color.BLACK);
-					Position p2 = new Position(i,j,r);
+				} else if (i==5 && j == 1) {
+					Piece k = new Piece(PieceType.KING,Color.WHITE);
+					Position p2 = new Position(i,j,k);
 					this.t.notifyPositions(p2);
 				} else {
 					Position empty = new Position(i,j);
@@ -48,7 +48,7 @@ class TableTest {
 		Position[] allPositions = this.t.getAllPositions();
 		
 		Coordinate c = new Coordinate(1,1);
-		Coordinate c2 = new Coordinate(5,4);
+		Coordinate c2 = new Coordinate(5,1);
 		
 		Player w = new Player("W",Color.WHITE);
 		Player b = new Player("B",Color.BLACK);
@@ -72,17 +72,36 @@ class TableTest {
 //		
 //		Position[] ret1 = t.findBishopAvailablePositions(pB);
 //		Position[] ret1 = t.findAvailablePositions(pB);
+		Position p;
+		Position p2;
 		
-//		for (int i = 0; i<allPositions.length;i++) {
-//			if (allPositions[i].occupiedBy != null){
-//				System.out.println(allPositions[i].coordinate.x+"  "+allPositions[i].coordinate.y+"  "+allPositions[i].occupiedBy.getPieceType());				
+		try {
+			p = t.getPositionByCoordinate(c);
+			p2 = t.getPositionByCoordinate(c2);
+		} catch (Exception e) {
+			System.out.println("Invalid");
+			return;
+		}
+		
+		for (int i = 0; i<allPositions.length;i++) {
+			if (allPositions[i].occupiedBy != null){
+				System.out.println(allPositions[i].coordinate.x+"  "+allPositions[i].coordinate.y);				
+			}
+		}
+		
+		Position[] poss = t.findAvailablePositions(p);
+		System.out.println(poss.length);
+		
+		for (int i = 0;poss[i]!=null;i++) {
+//			if (poss[i].occupiedBy != null) {
+				System.out.println(poss[i].coordinate.x+"  "+poss[i].coordinate.y);				
 //			}
-//		}
-//		
+		}
+		
 		
 		assertEquals(this.t.getAllPositions().length,64);
 		try {
-			assertEquals(this.t.lookForCheck(Color.WHITE),true);
+//			assertEquals(this.t.lookForCheck(Color.WHITE),true);
 //			assertEquals(this.t.getPositionByCoordinate(c).coordinate.y,1);
 //			assertEquals(this.t.getPositionByCoordinate(c2).coordinate.x,5);
 //			assertEquals(this.t.getPositionByCoordinate(c2).coordinate.y,4);
