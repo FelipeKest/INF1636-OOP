@@ -5,6 +5,8 @@ import java.awt.*;
 import javax.swing.*;
 
 public class Frame extends JFrame {
+	
+
 	public final int LARG_DEFAULT=400;
 	public final int ALT_DEFAULT=300;
 	
@@ -18,6 +20,7 @@ public class Frame extends JFrame {
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		this.setVisible(true);
 	}
+
 	
 	
 	

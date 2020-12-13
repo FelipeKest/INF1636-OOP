@@ -105,4 +105,8 @@ final class GameManager{
     	manager.gameTable = Table.getTableInstance();
     }
     
+    protected void saveGame(){
+    	
+    }
+    
 }
