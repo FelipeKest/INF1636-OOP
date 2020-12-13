@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.lang.ModuleLayer.Controller;
+
 import Model.ModelAPI;
 import View.*;
 
@@ -12,6 +14,7 @@ public class GameController {
 	
 	protected Panel board;
 	protected ModelAPI model = ModelAPI.getAPIInstance();
+//	protected static GameController controller;
 
 	public GameController() {
 		board = new Panel(this.getMouse());
@@ -20,8 +23,6 @@ public class GameController {
     public static void main(String[] args) throws InterruptedException
     {
     	GameController controller = new GameController();
-//    	controller.board.startDraw();
-//    	controller.board.addMouseListener(controller.getMouse());
     	controller.model.registerObserver(controller.board);
     }
 	
@@ -37,8 +38,8 @@ public class GameController {
 
 			@Override
 			public void mouseClicked(MouseEvent e) { 
-				System.out.println("coord x: " + e.getX());
-				System.out.println("coord y: " + e.getY());
+				System.out.println("coord x: " + translateXPosition(e.getX()));
+				System.out.println("coord y: " + translateYPosition(e.getY()));
 			}
 
 			@Override
@@ -58,5 +59,15 @@ public class GameController {
     	};
     	
 		return mouseListener;
+    }
+    
+    public int translateXPosition(int value) {
+    	int translatedXPosition = (int) (8 * value)/this.board.getWidth();
+    	return translatedXPosition + 1;
+    }
+    
+    public int translateYPosition(int value) {
+    	int translatedYPosition =  8 - (int) ((8 * value)/this.board.getHeight());
+    	return translatedYPosition;
     }
 }
