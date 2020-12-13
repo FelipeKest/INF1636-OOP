@@ -83,5 +83,12 @@ public class MenuView extends JFrame {
         frame1.setVisible(true);
         frame1.setResizable(false);
     }
+    
+    public String[] getNames() {
+    	String[] names = new String[2];
+    	names[0] = nameTF1.getText();
+    	names[1] = nameTF2.getText();
+    	return names;
+    }
 	
 }

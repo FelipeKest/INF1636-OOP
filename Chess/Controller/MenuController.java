@@ -9,6 +9,8 @@ import java.awt.event.ActionListener;
 public class MenuController {
 
 	private MenuView view;
+	private String[] names;
+	private ModelAPI model = ModelAPI.getAPIInstance();
 	
 	public MenuController() {
 		// TODO Auto-generated constructor stub
@@ -23,8 +25,9 @@ public class MenuController {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				System.out.println("Calling start");
+				names = view.getNames();
+				model.startGame(names[0], names[1]);
+				System.out.println(model.getPlayersNames()[0] + " " + model.getPlayersNames()[1]);
 			}
 			
 		};

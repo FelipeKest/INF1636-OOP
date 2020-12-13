@@ -27,6 +27,10 @@ public final class ModelAPI {
 		GM.startGame(name1, name2);
 	}
 	
+	public String[] getPlayersNames() {
+		return GM.getPlayersNames();
+	}
+	
 	public void movePiece(int x0, int y0, int xF, int yF) {
 		Coordinate c0 = new Coordinate(x0,y0);
 		Coordinate cF = new Coordinate(xF,yF);
