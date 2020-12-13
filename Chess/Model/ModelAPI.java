@@ -44,8 +44,8 @@ public final class ModelAPI {
 		GM.getTable().notifyPositions(p0);
 		GM.getTable().notifyPositions(pF);
 		
-		for (int[] felipe: this.getVisualPositions()) {
-			System.out.println("visual: " + felipe[0] + " " + felipe[1] + " " + felipe[2] + " " + felipe[3] + " ");
+		for (int[] position: this.getVisualPositions()) {
+			System.out.println("visual: " + position[0] + " " + position[1] + " " + position[2] + " " + position[3] + " ");
 		}
 	}
 	
