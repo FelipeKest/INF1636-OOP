@@ -28,6 +28,10 @@ class GameManagerTest {
 		assertEquals(GM.getPlayersNames()[1],"Nino");
 		assertNotEquals(GM.getPlayersColors()[0],null);
 		assertNotEquals(GM.getPlayersColors()[1],null);
+		
+		
+		System.out.println(GM.saveGameToFile());
+		
 	}
 
 }

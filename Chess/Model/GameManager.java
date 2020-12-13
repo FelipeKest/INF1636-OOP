@@ -116,12 +116,20 @@ final class GameManager{
     	manager.gameTable = Table.getTableInstance();
     }
     
-    protected void saveGameToFile() {
-    	
+    protected String saveGameToFile() {
+    	String data = "";
+    	data += player1.getName() + " " + player1.getColor() + " \n";
+    	data += player2.getName() + " " + player2.getColor() + " \n";   	
+		for (int[] pos: this.gameTable.getVisualPositions()) {
+			String strPos = pos[0] + "," + pos[1] + "," + pos[2] + "," + pos[3] + " \n";
+			data+=strPos;
+		}
+		return data;
     }
     
     protected void loadGameFromFile(String stream) {
-    	
+		String dataLines[] = stream.split(("\\r?\\n"));
+		
     }
     
 }
