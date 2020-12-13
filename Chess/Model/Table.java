@@ -1,6 +1,7 @@
 package Model;
 import Utils.*;
 
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +60,10 @@ final class Table implements PieceObserved {
 
     protected void notifyPositions(Position p) {
         updatePositions(p);
+        alertObservers();
+    }
+    
+    protected void alertObservers() {
         for (PieceObserver observer: list) {
             observer.notifyPositions(this);
         }
@@ -109,7 +114,7 @@ final class Table implements PieceObserved {
 	protected void generateVisualPositions() {
 		int i = 0;
 		for (Position p: this.getAllPositions()) {
-			this.visualPositions[i] = p.mapToInt();
+			this.visualPositions[i] = p.mapToInt();	
 			i++;
 		} 
 	}
