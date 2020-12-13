@@ -26,8 +26,9 @@ public class MenuController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				names = view.getNames();
+				view.hideView();
 				model.startGame(names[0], names[1]);
-				System.out.println(model.getPlayersNames()[0] + " " + model.getPlayersNames()[1]);
+				new GameController();
 			}
 			
 		};

@@ -13,7 +13,7 @@ public class MenuView extends JFrame {
     private JButton startB, loadB, exitB;
     private JTextField nameTF1, nameTF2;
 
-    static JFrame frame1 = new JFrame("Menu de Jogadores");
+    static JFrame frame = new JFrame("Menu de Jogadores");
 
     public MenuView(ActionListener[] actionListeners) {
     	setupView();
@@ -23,9 +23,9 @@ public class MenuView extends JFrame {
     }
 
     private void setupView() {
-        frame1.setSize(500,450);
+        frame.setSize(500,450);
 
-        Container mainP = frame1.getContentPane();
+        Container mainP = frame.getContentPane();
         mainP.setLayout(null);
 
         titleL = new JLabel("Xadrez");
@@ -80,8 +80,12 @@ public class MenuView extends JFrame {
         mainP.add(exitB);
         exitB.setBounds(200, currentHeight, 100, 20);
 
-        frame1.setVisible(true);
-        frame1.setResizable(false);
+        frame.setVisible(true);
+        frame.setResizable(false);
+    }
+    
+    public void hideView() {
+    	frame.setVisible(false);
     }
     
     public String[] getNames() {
