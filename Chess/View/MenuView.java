@@ -88,6 +88,21 @@ public class MenuView extends JFrame {
     	frame.setVisible(false);
     }
     
+    public void openFileSelector() {
+    	JFileChooser fileChooser = new JFileChooser();
+    	fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+    	fileChooser.setDialogTitle("Open file");
+    	int result = fileChooser.showOpenDialog(null);
+//    	if (result == JFileChooser.APPROVE_OPTION) {
+//    		File gameData = fileChooser.getSelectedFile();
+//    		
+//    	}
+    }
+      
+    public void quitView() {
+    	frame.dispose();
+    }
+    
     public String[] getNames() {
     	String[] names = new String[2];
     	names[0] = nameTF1.getText();

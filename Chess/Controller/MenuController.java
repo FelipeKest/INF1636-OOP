@@ -13,7 +13,6 @@ public class MenuController {
 	private ModelAPI model = ModelAPI.getAPIInstance();
 	
 	public MenuController() {
-		// TODO Auto-generated constructor stub
 		ActionListener listeners[] = {addStartListener(),addLoadListener(),addExitListener()};
 		view = new MenuView(listeners);
 	}
@@ -43,7 +42,7 @@ public class MenuController {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
-					System.out.println("Calling Loads");
+					view.openFileSelector();
 				}
 				
 			};
@@ -58,7 +57,8 @@ public class MenuController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				System.out.println("Calling Exit");
+				view.quitView();
+				
 			}
 			
 		};
