@@ -894,4 +894,25 @@ final class Table implements PieceObserved {
 		}
 		return false;
 	}
+
+	protected String generateStringFromTable() {
+		String data = "";
+		for (int[] pos: this.getVisualPositions()) {
+			String strPos = pos[0] + "," + pos[1] + "," + pos[2] + "," + pos[3] + "\n";
+			data+=strPos;
+		}
+		return data;
+	}
+	
+	protected void loadTableFromString(String data) {
+		String dataLines[] = data.split(("\\r?\\n"));
+		int i = 0;
+		for (String dataLine: dataLines) {
+			String dataChars[] = dataLine.split(",");
+			positions[i] = Position.stringToPos(dataChars[0], dataChars[1], dataChars[2], dataChars[3]);
+			i++;
+		}
+	}
+
+	
 }

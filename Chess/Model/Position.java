@@ -1,8 +1,8 @@
 package Model;
 
 import java.util.Arrays;
-
-//import Utils.PieceObserved;
+import Model.Piece;
+import Utils.PieceType;
 
 final class Position {
 	
@@ -11,11 +11,26 @@ final class Position {
 	
 	protected Position(int x, int y) {
 		this.coordinate = new Coordinate(x,y);
+		this.occupiedBy = null;
 	}
 	
 	protected Position(int x, int y, Piece p) {
 		this.coordinate = new Coordinate(x,y);
 		this.occupiedBy = p;
+	}
+	
+	protected static Position stringToPos(String x, String y, String pieceType, String color) {
+		int xAsInt = Integer.valueOf(x);
+		int yAsInt = Integer.valueOf(y);
+		if (pieceType.equals("-1")) {
+			return new Position(xAsInt,yAsInt);			
+		}
+		int pieceTypeasInt = Integer.valueOf(pieceType);
+		int colorAsInt = Integer.valueOf(color);
+		PieceType pt = PieceType.typeFromInt(pieceTypeasInt);
+		Color c = Color.typeFromInt(colorAsInt);
+		Piece p = new Piece(pt,c);
+		return new Position(xAsInt,yAsInt,p);
 	}
 	
 	protected static boolean checkEqualCoordinate(Position p1, Position p2) {

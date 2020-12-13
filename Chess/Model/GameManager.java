@@ -116,4 +116,12 @@ final class GameManager{
     	manager.gameTable = Table.getTableInstance();
     }
     
+    protected void saveGameToFile() {
+    	
+    }
+    
+    protected void loadGameFromFile(String stream) {
+    	
+    }
+    
 }

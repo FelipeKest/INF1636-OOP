@@ -7,6 +7,13 @@ public enum PieceType {
 	KNIGHT,
 	ROOK,
 	BISHOP;
+	
+	public static PieceType typeFromInt(int i) {
+		if (i==-1) {
+			return null;
+		}
+		return PieceType.values()[i];
+	}
 }
 
 
