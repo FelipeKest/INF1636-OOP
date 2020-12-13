@@ -6,17 +6,20 @@ import java.awt.*;
 
 import java.awt.event.*;
 
-public class MenuView extends JFrame implements ActionListener {
+public class MenuView extends JFrame {
 	
 	
 	private JLabel titleL, nameL1, nameL2;
     private JButton startB, loadB, exitB;
     private JTextField nameTF1, nameTF2;
 
-    static JFrame frame1 = new JFrame();
+    static JFrame frame1 = new JFrame("Menu de Jogadores");
 
-    public MenuView() {
+    public MenuView(ActionListener[] actionListeners) {
     	setupView();
+    	startB.addActionListener(actionListeners[0]);
+    	loadB.addActionListener(actionListeners[1]);
+    	exitB.addActionListener(actionListeners[2]);
     }
 
     private void setupView() {
@@ -77,26 +80,8 @@ public class MenuView extends JFrame implements ActionListener {
         mainP.add(exitB);
         exitB.setBounds(200, currentHeight, 100, 20);
 
-
-        startB.addActionListener(this);
-        loadB.addActionListener(this);
-        exitB.addActionListener(this);
-
         frame1.setVisible(true);
         frame1.setResizable(false);
     }
-
-    public static void main(String[]args)
-    {
-        new MenuView();
-    }
-
-
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
 	
 }
