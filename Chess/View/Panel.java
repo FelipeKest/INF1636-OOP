@@ -24,7 +24,7 @@ public class Panel extends JPanel implements PieceObserver {
 	private Images piecesImages;
 	
 	JFrame frame;
-	JButton saveB;
+	public JButton saveB;
 	
 	public Panel(MouseListener l, ActionListener a) {
 		// Cadastrando o Panel para que possa receber as notificações 

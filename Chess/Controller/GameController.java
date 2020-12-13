@@ -17,12 +17,8 @@ public class GameController {
 		board = new Panel(this.getMouse(),this.saveActionListener());
 	}
 
-    public static void main(String[] args) throws InterruptedException
-    {
+    public static void main(String[] args) throws InterruptedException {
     	GameController controller = new GameController();
-//    	controller.board.startDraw();
-    	controller.board.addMouseListener(controller.getMouse());
-
     	controller.model.registerObserver(controller.board);
     }
 	
@@ -37,6 +33,7 @@ public class GameController {
 		ActionListener actionListener = new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
+				
 				ModelAPI m = ModelAPI.getAPIInstance();
 				String data = m.saveGameData();
 				
