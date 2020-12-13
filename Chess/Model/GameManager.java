@@ -1,6 +1,8 @@
 package Model;
 //import java.sql.Time;
 
+import Utils.PieceType;
+
 final class GameManager{
 	private Player player1;
     private Player player2;
@@ -33,16 +35,25 @@ final class GameManager{
         gameTable.notifyPositions(pos);
     }
     
-    protected void ressurectPieceAt(Position pos, Piece newPiece){
+    protected void ressurectPieceAt(Coordinate c, PieceType newPieceType){
+
+    	Position pos;
+		try {
+			pos = gameTable.getPositionByCoordinate(c);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return;
+		}
+		
     	Piece p = pos.occupiedBy;
 
     	if (p == null) {
     		return;
     	}
     	
-    	newPiece.live();
-    	p.die();
-    	pos.occupiedBy = newPiece;
+    	p.setPieceType(newPieceType);
+    	pos.occupiedBy = p;
         gameTable.notifyPositions(pos);
     }
 

@@ -9,7 +9,7 @@ public class GameController {
 	}
 
 	
-	public void movePiece(int x0,int y0, int xF, int yF) {
+	public void movePiece(int x0, int y0, int xF, int yF) {
 		ModelAPI m = ModelAPI.getAPIInstance();
 		m.movePiece(x0, y0, xF, yF);
 	}

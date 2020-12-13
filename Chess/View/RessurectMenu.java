@@ -9,7 +9,7 @@ import java.awt.event.*;
 
 class RessurectMenu {
 	
-	 public RessurectMenu(){  
+	 public RessurectMenu(int cX, int cY){  
          final JFrame f= new JFrame("Resurect Example");  
          final JPopupMenu popupmenu = new JPopupMenu("Edit");   
          JMenuItem queenItem = new JMenuItem("Rainha");  
@@ -25,7 +25,7 @@ class RessurectMenu {
          
          f.addMouseListener(new MouseAdapter() {  
             public void mouseClicked(MouseEvent e) {              
-                popupmenu.show(f , e.getX(), e.getY());  
+                popupmenu.show(f , cX, cY);  
             }                 
          });
          
