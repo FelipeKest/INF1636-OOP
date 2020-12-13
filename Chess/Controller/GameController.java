@@ -21,7 +21,7 @@ public class GameController {
     {
     	GameController controller = new GameController();
 //    	controller.board.startDraw();
-    	controller.board.addMouseListener(controller.getMouse());
+//    	controller.board.addMouseListener(controller.getMouse());
     	controller.model.registerObserver(controller.board);
     }
 	
@@ -33,13 +33,12 @@ public class GameController {
 	
     public MouseListener getMouse() {
     	
-    	MouseListener mouselistener = new MouseListener() {
+    	MouseListener mouseListener = new MouseListener() {
 
 			@Override
 			public void mouseClicked(MouseEvent e) { 
 				System.out.println("coord x: " + e.getX());
 				System.out.println("coord y: " + e.getY());
-				
 			}
 
 			@Override
@@ -58,6 +57,6 @@ public class GameController {
     		
     	};
     	
-		return mouselistener;
+		return mouseListener;
     }
 }

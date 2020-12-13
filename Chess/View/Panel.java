@@ -21,7 +21,6 @@ public class Panel extends JPanel implements PieceObserver {
 	JFrame frame;
 	
 	public Panel(MouseListener l) {
-		// Cadastrando o Panel para que possa receber as notificações 
 		this.piecesImages = new Images();
 		this.setupFrame(l);
 //		for (int[] visualPosition: visualPositions) {
