@@ -56,4 +56,8 @@ public final class ModelAPI {
 		GM.getTable().add(observer);
 		GM.getTable().alertObservers();
 	}
+	
+	public String saveGameData() { 
+		return GM.getTable().generateStringFromTable();
+	}
 }
