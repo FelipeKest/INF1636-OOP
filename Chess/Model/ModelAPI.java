@@ -48,6 +48,8 @@ public final class ModelAPI {
 	}
 	
 	public void registerObserver(PieceObserver observer) {
+		System.out.println("registerObserver");
 		GM.getTable().add(observer);
+		GM.getTable().alertObservers();
 	}
 }
