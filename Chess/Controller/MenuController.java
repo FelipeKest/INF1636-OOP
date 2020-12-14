@@ -33,8 +33,9 @@ public class MenuController {
 			public void actionPerformed(ActionEvent e) {
 				names = view.getNames();
 				view.hideView();
-				model.startGame(names[0], names[1]);
-				new GameController();
+				model.startGame(names[0], names[1]);				
+		    	GameController controller = new GameController();
+		    	ModelAPI.getAPIInstance().registerObserver(controller.board);
 			}
 			
 		};

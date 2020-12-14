@@ -130,14 +130,26 @@ public class Panel extends JPanel implements PieceObserver {
 		int i = 0;
 		for (int[] piece: this.visualPositions) {			
 			Image pieceImage = this.getPieceImage(piece[3], piece[2]);
-			g.drawImage(pieceImage, i, 100, null);
+			g.drawImage(pieceImage, getXPosition(piece[0]), getYPosition(piece[1]), null);
 			i+=10;
 		}
 	}
 	
+	private int getXPosition(int x) {
+		int xDistance = (getWidth()/8);
+		
+		return (xDistance * x) - 75;
+	}
+	
+	private int getYPosition(int y) {
+        int yDistance = ((getHeight()-100)/8);
+
+		return (yDistance * y) - 63;
+	}
+	
 	private Image getPieceImage(int color, int type) {
 		// Color == Black
-		if (color == 0) {
+		if (color == 1) {
 			switch (type) {
 			// PAWN
 			case 0:
@@ -152,7 +164,7 @@ public class Panel extends JPanel implements PieceObserver {
 				
 			// KNIGHT
 			case 3:
-				return this.piecesImages.blackKing;
+				return this.piecesImages.blackKnight;
 				
 			// ROOK
 			case 4:
@@ -181,7 +193,7 @@ public class Panel extends JPanel implements PieceObserver {
 				
 			// KNIGHT
 			case 3:
-				return this.piecesImages.whiteKing;
+				return this.piecesImages.whiteKnight;
 				
 			// ROOK
 			case 4:

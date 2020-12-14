@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.lang.ModuleLayer.Controller;
+
 import Model.ModelAPI;
 import View.*;
 
@@ -11,21 +13,15 @@ import View.*;
 public class GameController {
 	
 	protected Panel board;
-	protected ModelAPI model = ModelAPI.getAPIInstance();
 
 	public GameController() {
 		board = new Panel(this.getMouse(),this.saveActionListener());
 	}
-
-    public static void main(String[] args) throws InterruptedException {
-    	GameController controller = new GameController();
-    	controller.model.registerObserver(controller.board);
-    }
 	
-	public void movePiece(int x0, int y0, int xF, int yF) {
+	public static void movePiece(int x0,int y0, int xF, int yF) {
 		ModelAPI m = ModelAPI.getAPIInstance();
 		m.movePiece(x0, y0, xF, yF);
-		
+		m.increaseRound();
 	}
 	
 	public ActionListener saveActionListener() {
@@ -49,13 +45,41 @@ public class GameController {
 	
     public MouseListener getMouse() {
     	
-    	MouseListener mouselistener = new MouseListener() {
+    	MouseListener mouseListener = new MouseListener() {
+    		
+    		protected boolean isPieceSelected = false;
+    		protected int oldPosX;
+    		protected int oldPosY;
 
 			@Override
 			public void mouseClicked(MouseEvent e) { 
-				System.out.println("coord x: " + e.getX());
-				System.out.println("coord y: " + e.getY());
+				int newPosX = translateXPosition(e.getX());
+				int newPosY = translateYPosition(e.getY());
+//				System.out.println("coord x: " + newPosX);
+//				System.out.println("coord y: " + newPosY);
+//				System.out.println("is occupiedby: " + ModelAPI.getAPIInstance().isPositionOccupied(newPosX, newPosY));	
 				
+				if (ModelAPI.getAPIInstance().isPositionOccupied(newPosX, newPosY)) {
+					if (ModelAPI.getAPIInstance().getPieceOwner(newPosX, newPosY) == ModelAPI.getAPIInstance().getPlayerRound()) {
+						this.isPieceSelected = true;
+						this.oldPosX = newPosX;
+						this.oldPosY = newPosY;
+					}
+				} 
+				if (this.isPieceSelected == true) {
+					boolean isPositionInPieceAvailableMoves = ModelAPI.getAPIInstance().isPositionInPieceAvailableMoves(
+							oldPosX,
+							oldPosY,
+							newPosX,
+							newPosY
+							);
+					if (isPositionInPieceAvailableMoves == true) {
+						GameController.movePiece(oldPosX, oldPosY, newPosX, newPosY);
+						this.oldPosX = 0;
+						this.oldPosY = 0;
+						isPieceSelected = false;
+					}
+				}
 			}
 
 			@Override
@@ -74,6 +98,16 @@ public class GameController {
     		
     	};
     	
-		return mouselistener;
+		return mouseListener;
+    }
+    
+    public int translateXPosition(int value) {
+    	int translatedXPosition = (int) (8 * value)/this.board.getWidth();
+    	return translatedXPosition + 1;
+    }
+    
+    public int translateYPosition(int value) {
+    	int translatedYPosition = (int) ((8 * value)/(this.board.getHeight()-100));
+    	return translatedYPosition + 1;
     }
 }

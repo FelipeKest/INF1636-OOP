@@ -35,12 +35,58 @@ public final class ModelAPI {
 		Coordinate c0 = new Coordinate(x0,y0);
 		Coordinate cF = new Coordinate(xF,yF);
 		
-		GM.getTable().movePiece(c0,cF);
+		Position p0 = GM.getTable().getPositionByCoordinate(c0);
+		Position pF = GM.getTable().getPositionByCoordinate(cF);
+		
+		Piece p = null;
+		if (p0.occupiedBy != null) {
+			p = p0.occupiedBy;
+		}
+		
+		p0.occupiedBy = null;
+		pF.occupiedBy = p;
+		
+		GM.getTable().notifyPositions(p0);
+		GM.getTable().notifyPositions(pF);
+		
+		for (int[] position: this.getVisualPositions()) {
+			System.out.println("visual: " + position[0] + " " + position[1] + " " + position[2] + " " + position[3] + " ");
+		}
 	}
 	
 	public void ressurectPiece(int x0, int y0, PieceType newType) {
 		Coordinate c0 = new Coordinate(x0,y0);
 		GM.ressurectPieceAt(c0, newType);
+	}
+	
+	public boolean isPositionInPieceAvailableMoves(int oldPosX, int oldPosY, int newPosX, int newPosY) {
+		boolean isPositionInPieceAvailableMoves = false;
+		Coordinate oldCoordinate = new Coordinate(oldPosX, oldPosY);
+		Coordinate newCoordinate = new Coordinate(newPosX, newPosY);
+		
+		Position oldPosition = GM.getTable().getPositionByCoordinate(oldCoordinate);
+		Position newPosition = GM.getTable().getPositionByCoordinate(newCoordinate);
+		
+		Position[] availableMoves = GM.getTable().findAvailablePositions(oldPosition);
+		
+		if (availableMoves == null) {
+			return false;
+		}
+		
+		for (Position availablePosition: availableMoves) {
+			if (availablePosition != null) {
+				System.out.println("availablePosition: " + availablePosition.coordinate.x);
+				if (availablePosition.coordinate.x == newPosition.coordinate.x) {
+					if (availablePosition.coordinate.y == newPosition.coordinate.y) {
+						isPositionInPieceAvailableMoves = true;
+					} 
+				}
+			}
+		}
+		
+		System.out.println("available: " + isPositionInPieceAvailableMoves);
+
+		return isPositionInPieceAvailableMoves;
 	}
 	
 	public int[][] getPossiblePositions(int posX,int posY) {
@@ -51,6 +97,15 @@ public final class ModelAPI {
 		return GM.getTable().getVisualPositions();
 	}
 	
+	public boolean isPositionOccupied(int posX, int posY) {
+		Coordinate pos = new Coordinate(posX,posY);
+		boolean isOccupied = false;
+		if (GM.getTable().getPositionByCoordinate(pos).occupiedBy != null) {
+			isOccupied = true;
+		}
+		return isOccupied;
+	}
+		
 	public void registerObserver(PieceObserver observer) {
 		System.out.println("registerObserver");
 		GM.getTable().add(observer);
@@ -64,4 +119,18 @@ public final class ModelAPI {
 	public void loadGameData(String data) {
 		GM.loadGameFromFile(data);
 	}
- }
+	
+	public int getPieceOwner(int posX, int posY) {
+		Coordinate pos = new Coordinate(posX,posY);
+		return GM.getTable().getPositionByCoordinate(pos).occupiedBy.getColor().ordinal();
+	}
+	
+	public int getPlayerRound() {
+    	return GM.getPlayerRound();
+    }
+    
+	public void increaseRound() {
+    	GM.increaseRound();
+    }
+	
+}

@@ -12,56 +12,57 @@ import Utils.PieceType;
 final public class Table implements PieceObserved {
 
     private Position positions[];
+	
+	private int[][] visualPositions = new int[64][4];
 
-    private int[][] visualPositions = new int[64][4];
+	List<PieceObserver> list = new ArrayList<PieceObserver>();
+	
+	public void add(PieceObserver observer) {
+		System.out.println("add");
+		this.list.add(observer);
+		System.out.println(list.isEmpty());
+	}
 
-    List<PieceObserver> list = new ArrayList<PieceObserver>();
+	public void remove(PieceObserver observer) {
+		this.list.remove(observer);
+	}
 
-    public void add(PieceObserver observer) {
-        this.list.add(observer);
-    }
-
-    public void remove(PieceObserver observer) {
-        this.list.remove(observer);
-    }
-
-    public int[][] getVisualPositions() {
-        return this.visualPositions;
-    }
-
-    protected static Table table;
-
-    private Table() {
-        this.positions = fillTable();
-        this.generateVisualPositions();
-    }
-
+	public int[][] getVisualPositions() {
+		return this.visualPositions;
+	}
+		
+	protected static Table table;
+	
+	private Table() {
+		this.positions = fillTable();
+		this.generateVisualPositions();
+	}
+	
+	protected static Table getTableInstance() {
+		if (table == null) {
+			table = new Table();
+		}
+		return table;
+	}
+	
+	protected Position[] getAllPositions() {
+		return this.positions;
+	}	
+	
+	protected Position getPositionByCoordinate(Coordinate c) {
+		Position[] positions = getAllPositions();
+		Position p = new Position(c.x,c.y);
+		for (int i = 0; i<positions.length; i++) {
+			if (Position.checkEqualCoordinate(positions[i], p)) {
+				return positions[i];
+			}
+		}
+		return null;
+	}
+	
     protected void setPositions(Position[] updatedPositions) {
     	this.positions = updatedPositions;
     }
-    
-    protected static Table getTableInstance() {
-        if (table == null) {
-            table = new Table();
-        }
-        return table;
-    }
-
-    protected Position[] getAllPositions() {
-        return this.positions;
-    }
-
-    protected Position getPositionByCoordinate(Coordinate c) throws Exception {
-        Position[] positions = getAllPositions();
-        Position p = new Position(c.x,c.y);
-        for (int i = 0; i<positions.length; i++) {
-            if (Position.checkEqualCoordinate(positions[i], p)) {
-                return positions[i];
-            }
-        }
-        throw new Exception("Invalid Coordinate");
-    }
-
     protected void notifyPositions(Position p) {
         updatePositions(p);
         alertObservers();
@@ -221,11 +222,20 @@ final public class Table implements PieceObserved {
 		Coordinate aux = new Coordinate(c.x,c.y);
 		
 		if (r.getColor() == Color.WHITE) {
-			Position p1 = new Position(c.x,c.y+1);
+			aux.y += 1;
+			
+			Position p1 = this.getPositionByCoordinate(aux);
+			if (p1.occupiedBy == null) {
+				posible = Position.appendPositionToArray(posible, p1);
+			}
+			
 			posible = Position.appendPositionToArray(posible, p1);
 			if (c.y == 2) {
-				Position p2 = new Position(c.x,c.y+2);
-				posible = Position.appendPositionToArray(posible, p2);
+				aux.y += 1;
+				Position p2 = this.getPositionByCoordinate(aux);
+				if (p2.occupiedBy == null) {
+					posible = Position.appendPositionToArray(posible, p2);
+				}
 			}
 			
 			// check diagonals
@@ -234,40 +244,47 @@ final public class Table implements PieceObserved {
 			aux.y++;
 			
 			Position contested = null;
-			try {
-				contested = getPositionByCoordinate(aux);
-			} catch (Exception e) {
-				
-			}
 			
-			if (contested.occupiedBy != null) {
-				if (contested.occupiedBy.getColor() != r.getColor()) {
-				// Other player, can eat the piece
-					posible = Position.appendPositionToArray(posible, contested);
+			contested = getPositionByCoordinate(aux);
+			
+			if (contested != null) {
+				if (contested.occupiedBy != null) {
+					if (contested.occupiedBy.getColor() != r.getColor()) {
+					// Other player, can eat the piece
+						posible = Position.appendPositionToArray(posible, contested);
+					}
 				}
 			}
 			
 			// Upper Right
 			aux.x+=2;
 			
-			try {
-				contested = getPositionByCoordinate(aux);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			contested = getPositionByCoordinate(aux);
 			
-			if (contested.occupiedBy != null) {
-				if (contested.occupiedBy.getColor() != r.getColor()) {
-				// Other player, can eat the piece
-					posible = Position.appendPositionToArray(posible, contested);
+			if (contested != null) {
+				if (contested.occupiedBy != null) {
+					if (contested.occupiedBy.getColor() != r.getColor()) {
+					// Other player, can eat the piece
+						posible = Position.appendPositionToArray(posible, contested);
+					}
 				}
 			}
+			
 		} else {
-			Position p1 = new Position(c.x,c.y-1);
+			aux.y--;
+			Position p1 = this.getPositionByCoordinate(aux);
+			
+			if (p1.occupiedBy == null) {
+				posible = Position.appendPositionToArray(posible, p1);
+			}
+			
 			posible = Position.appendPositionToArray(posible, p1);
 			if (c.y == 7) {
-				Position p2 = new Position(c.x,c.y-2);
-				posible = Position.appendPositionToArray(posible, p2);
+				aux.y--;
+				Position p2 = this.getPositionByCoordinate(aux);
+				if (p2.occupiedBy == null) {
+					posible = Position.appendPositionToArray(posible, p2);
+				}
 			}
 			
 			// check diagonals
@@ -276,33 +293,30 @@ final public class Table implements PieceObserved {
 			aux.y--;
 			
 			Position contested = null;
-			try {
-				contested = getPositionByCoordinate(aux);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
 			
-			if (contested.occupiedBy != null) {
-				if (contested.occupiedBy.getColor() != r.getColor()) {
-				// Other player, can eat the piece
-					posible = Position.appendPositionToArray(posible, contested);
-				}
+			contested = getPositionByCoordinate(aux);
+
+			if (contested != null) {
+				if (contested.occupiedBy != null) {
+					if (contested.occupiedBy.getColor() != r.getColor()) {
+					// Other player, can eat the piece
+						posible = Position.appendPositionToArray(posible, contested);
+					}
+				}	
 			}
 			
 			// Down Right
 			aux.x+=2;
 			
-			try {
-				contested = getPositionByCoordinate(aux);
-			} catch (Exception e) {
-				e.printStackTrace(); 
-			}
-			
-			if (contested.occupiedBy != null) {
-				if (contested.occupiedBy.getColor() != r.getColor()) {
-				// Other player, can eat the piece
-					posible = Position.appendPositionToArray(posible, contested);
-				}
+			contested = getPositionByCoordinate(aux);
+
+			if (contested != null) {
+				if (contested.occupiedBy != null) {
+					if (contested.occupiedBy.getColor() != r.getColor()) {
+					// Other player, can eat the piece
+						posible = Position.appendPositionToArray(posible, contested);
+					}
+				}	
 			}
 		}
 		
@@ -331,48 +345,27 @@ final public class Table implements PieceObserved {
 		// Check for available positions in x coordinate
 		while (aux.x<9) {
 			Position nextXPosition;
-			try {	
+			
 				aux.x++;
 				// Verify if position is on table, and gets its position if exists
 				nextXPosition = this.getPositionByCoordinate(aux);
-			} catch (Exception e) {
-				// Position doesn't exist on table
-				System.out.println("Position Doesnt exist on table");
-				break;
-			}
-			if (nextXPosition.occupiedBy != null) {
-				Piece nextPiece = nextXPosition.occupiedBy;
-				if (nextPiece.getColor() == pColor) {
-//					 same player
-					if (nextPiece.getPieceType() == PieceType.KING) {
-						if (!nextPiece.getHasMoved() && roqueIsPossible && r.getPieceType() == PieceType.ROOK) {
-							// Both pieces didnt move yet
-							// TODO
-							if (!lookForCheck(pColor)) {
-								// Analyse if there is a rook a check doesnt happen
-								Coordinate aux2 = new Coordinate(aux.x--,aux.y);
-								this.movePiece(aux,aux2);
-								this.movePiece(c, aux);
-								if(!lookForCheck(pColor)) {
-									possible[i] = nextXPosition;
-									i++;
-								}
-								this.movePiece(aux,c);
-								this.movePiece(aux2, aux);
-							}
+				
+				if (nextXPosition != null) {
+					if (nextXPosition.occupiedBy != null) {
+						if (nextXPosition.occupiedBy.getColor() == r.getColor()) {
+							// same player
+							break;
+						} else {
+							// other player
+							possible[i] = nextXPosition;
+							i++;
+							break;
 						}
+					} else {
+						possible[i] = nextXPosition;
+						i++;
 					}
-					break;
-				} else {
-					// other player
-					possible[i] = nextXPosition;
-					i++;
-					break;
 				}
-			} else {
-				possible[i] = nextXPosition;
-				i++;
-			}
 		}
 				
 		aux.x = c.x;
@@ -381,15 +374,10 @@ final public class Table implements PieceObserved {
 		while (aux.x>0) {
 			
 			Position nextXPosition;
-			try {
 				aux.x--;
 				nextXPosition = this.getPositionByCoordinate(aux);
-			} catch (Exception e) {
-				// Position doesn't exist on table
-				System.out.println("Position Doesnt exist on table");
-				break;
-			}
-			
+
+				if (nextXPosition != null) {
 			if (nextXPosition.occupiedBy != null) {
 				Piece nextPiece = nextXPosition.occupiedBy;
 				if (nextPiece.getColor() == pColor) {
@@ -423,6 +411,7 @@ final public class Table implements PieceObserved {
 				possible[i] = nextXPosition;
 				i++;
 			}
+				}
 		}
 			
 		aux.x = c.x;
@@ -432,12 +421,10 @@ final public class Table implements PieceObserved {
 			
 			Position nextYPosition;
 			
-			try {
 				aux.y++;
 				nextYPosition = this.getPositionByCoordinate(aux);
-			} catch (Exception e) {
-				break;
-			}
+
+				if (nextYPosition != null) {
 			
 			if (nextYPosition.occupiedBy != null) {
 				if (nextYPosition.occupiedBy.getColor() == r.getColor()) {
@@ -453,6 +440,7 @@ final public class Table implements PieceObserved {
 				possible[i] = nextYPosition;
 				i++;
 			}
+				}
 		}
 		
 		aux.x = c.x;
@@ -462,12 +450,10 @@ final public class Table implements PieceObserved {
 			
 			Position nextYPosition;
 			
-			try {
 				aux.y--;
 				nextYPosition = this.getPositionByCoordinate(aux);
-			} catch (Exception e) {
-				break;
-			}
+
+				if (nextYPosition != null) {
 			
 			if (nextYPosition.occupiedBy != null) {
 				if (nextYPosition.occupiedBy.getColor() == r.getColor()) {
@@ -483,6 +469,7 @@ final public class Table implements PieceObserved {
 				possible[i] = nextYPosition;
 				i++;
 			}
+				}
 		}	
 		return possible;
 	}
@@ -505,16 +492,12 @@ final public class Table implements PieceObserved {
 			while (aux.x<9 && aux.y<9) {
 				
 				Position nextXPosition;
-				try {	
 					aux.x++;
 					aux.y++;
 					// Verify if position is on table, and gets its position if exists
 					nextXPosition = this.getPositionByCoordinate(aux);
-				} catch (Exception e) {
-					// Position doesn't exist on table
-					System.out.println("Position Doesnt exist on table");
-					break;
-				}
+
+					if (nextXPosition != null) {
 				
 				if (nextXPosition.occupiedBy != null) {
 					if (nextXPosition.occupiedBy.getColor() == r.getColor()) {
@@ -530,6 +513,7 @@ final public class Table implements PieceObserved {
 					possible[i] = nextXPosition;
 					i++;
 				}
+					}
 			}
 			
 			aux.x = c.x;
@@ -539,15 +523,11 @@ final public class Table implements PieceObserved {
 			while (aux.x<9 && aux.y>0) {
 				
 				Position nextXPosition;
-				try {
 					aux.x++;
 					aux.y--;
 					nextXPosition = this.getPositionByCoordinate(aux);
-				} catch (Exception e) {
-					// Position doesn't exist on table
-					System.out.println("Position Doesnt exist on table");
-					break;
-				}
+
+					if (nextXPosition != null) {
 				
 				if (nextXPosition.occupiedBy != null) {
 					if (nextXPosition.occupiedBy.getColor() == r.getColor()) {
@@ -563,6 +543,7 @@ final public class Table implements PieceObserved {
 					possible[i] = nextXPosition;
 					i++;
 				}
+					}
 			}
 				
 			aux.x = c.x;
@@ -572,14 +553,11 @@ final public class Table implements PieceObserved {
 				
 				Position nextYPosition;
 				
-				try {
 					aux.x--;
 					aux.y++;
 					nextYPosition = this.getPositionByCoordinate(aux);
-				} catch (Exception e) {
-					break;
-				}
-				
+
+					if (nextYPosition != null) {
 				if (nextYPosition.occupiedBy != null) {
 					if (nextYPosition.occupiedBy.getColor() == r.getColor()) {
 						// same player
@@ -594,6 +572,7 @@ final public class Table implements PieceObserved {
 					possible[i] = nextYPosition;
 					i++;
 				}
+					}
 			}
 			
 			aux.x = c.x;
@@ -603,13 +582,11 @@ final public class Table implements PieceObserved {
 				
 				Position nextYPosition;
 				
-				try {
 					aux.x--;
 					aux.y--;
 					nextYPosition = this.getPositionByCoordinate(aux);
-				} catch (Exception e) {
-					break;
-				}
+
+					if (nextYPosition != null) {
 				
 				if (nextYPosition.occupiedBy != null) {
 					if (nextYPosition.occupiedBy.getColor() == r.getColor()) {
@@ -625,6 +602,7 @@ final public class Table implements PieceObserved {
 					possible[i] = nextYPosition;
 					i++;
 				}
+					}
 			}	
 			return possible;
 		}
@@ -645,190 +623,167 @@ final public class Table implements PieceObserved {
 		//TODO: Refactor this logic
 		// Verify upper right corner
 		Position nextXPosition;
-		try {	
 			aux.x++;
 			aux.y+=2;
 			// Verify if position is on table, and gets its position if exists
 			nextXPosition = this.getPositionByCoordinate(aux);
-			if (nextXPosition.occupiedBy != null) {
-				if (nextXPosition.occupiedBy.getColor() != r.getColor()) {
-					// other player
+			if (nextXPosition != null) {
+				if (nextXPosition.occupiedBy != null) {
+					if (nextXPosition.occupiedBy.getColor() != r.getColor()) {
+						// other player
+						possible[i] = nextXPosition;
+						i++;
+					}
+				} else {
 					possible[i] = nextXPosition;
 					i++;
 				}
-			} else {
-				possible[i] = nextXPosition;
-				i++;
 			}
-		} catch (Exception e) {
-			// Position doesn't exist on table
-			System.out.println("Position Doesnt exist on table");
-		}
 		
 		aux.x = c.x;
 		aux.y = c.y;
 
-		try {	
 			aux.x+=2;
 			aux.y++;
 			// Verify if position is on table, and gets its position if exists
 			nextXPosition = this.getPositionByCoordinate(aux);
-			if (nextXPosition.occupiedBy != null) {
-				if (nextXPosition.occupiedBy.getColor() != r.getColor()) {
-					// other player
+			if (nextXPosition != null) {
+				if (nextXPosition.occupiedBy != null) {
+					if (nextXPosition.occupiedBy.getColor() != r.getColor()) {
+						// other player
+						possible[i] = nextXPosition;
+						i++;
+					}
+				} else {
 					possible[i] = nextXPosition;
 					i++;
 				}
-			} else {
-				possible[i] = nextXPosition;
-				i++;
 			}
-		} catch (Exception e) {
-			// Position doesn't exist on table
-			System.out.println("Position Doesnt exist on table");
-		}
 		
 		aux.x = c.x;
 		aux.y = c.y;
 		
 		// Verify upper left corner
-		try {	
 			aux.x--;
 			aux.y+=2;
 			// Verify if position is on table, and gets its position if exists
 			nextXPosition = this.getPositionByCoordinate(aux);
-			if (nextXPosition.occupiedBy != null) {
-				if (nextXPosition.occupiedBy.getColor() != r.getColor()) {
-					// other player
+			if (nextXPosition != null) {
+				if (nextXPosition.occupiedBy != null) {
+					if (nextXPosition.occupiedBy.getColor() != r.getColor()) {
+						// other player
+						possible[i] = nextXPosition;
+						i++;
+					}
+				} else {
 					possible[i] = nextXPosition;
 					i++;
 				}
-			} else {
-				possible[i] = nextXPosition;
-				i++;
 			}
-		} catch (Exception e) {
-			// Position doesn't exist on table
-			System.out.println("Position Doesnt exist on table");
-		}
 		
 		aux.x = c.x;
 		aux.y = c.y;
 		
-		try {	
 			aux.x-=2;
 			aux.y++;
 			// Verify if position is on table, and gets its position if exists
 			nextXPosition = this.getPositionByCoordinate(aux);
-			if (nextXPosition.occupiedBy != null) {
-				if (nextXPosition.occupiedBy.getColor() != r.getColor()) {
-					// other player
+			if (nextXPosition != null) {
+				if (nextXPosition.occupiedBy != null) {
+					if (nextXPosition.occupiedBy.getColor() != r.getColor()) {
+						// other player
+						possible[i] = nextXPosition;
+						i++;
+					}
+				} else {
 					possible[i] = nextXPosition;
 					i++;
 				}
-			} else {
-				possible[i] = nextXPosition;
-				i++;
 			}
-		} catch (Exception e) {
-			// Position doesn't exist on table
-			System.out.println("Position Doesnt exist on table");
-		}
+
 		
 		
 		aux.x = c.x;
 		aux.y = c.y;
 		
 		// Verify lower right corner
-		try {	
 			aux.x++;
 			aux.y-=2;
 			// Verify if position is on table, and gets its position if exists
 			nextXPosition = this.getPositionByCoordinate(aux);
-			if (nextXPosition.occupiedBy != null) {
-				if (nextXPosition.occupiedBy.getColor() != r.getColor()) {
-					// other player
+			if (nextXPosition != null) {
+				if (nextXPosition.occupiedBy != null) {
+					if (nextXPosition.occupiedBy.getColor() != r.getColor()) {
+						// other player
+						possible[i] = nextXPosition;
+						i++;
+					}
+				} else {
 					possible[i] = nextXPosition;
 					i++;
 				}
-			} else {
-				possible[i] = nextXPosition;
-				i++;
 			}
-		} catch (Exception e) {
-			// Position doesn't exist on table
-			System.out.println("Position Doesnt exist on table");
-		}
 		
 		aux.x = c.x;
 		aux.y = c.y;
 		
-		try {	
 			aux.x+=2;
 			aux.y--;
 			// Verify if position is on table, and gets its position if exists
 			nextXPosition = this.getPositionByCoordinate(aux);
-			if (nextXPosition.occupiedBy != null) {
-				if (nextXPosition.occupiedBy.getColor() != r.getColor()) {
-					// other player
+			if (nextXPosition != null) {
+				if (nextXPosition.occupiedBy != null) {
+					if (nextXPosition.occupiedBy.getColor() != r.getColor()) {
+						// other player
+						possible[i] = nextXPosition;
+						i++;
+					}
+				} else {
 					possible[i] = nextXPosition;
 					i++;
 				}
-			} else {
-				possible[i] = nextXPosition;
-				i++;
 			}
-		} catch (Exception e) {
-			// Position doesn't exist on table
-			System.out.println("Position Doesnt exist on table");
-		}
 		
 		aux.x = c.x;
 		aux.y = c.y;
 		
 		// Verify lower left corner
-		try {	
 			aux.x--;
 			aux.y-=2;
 			// Verify if position is on table, and gets its position if exists
 			nextXPosition = this.getPositionByCoordinate(aux);
-			if (nextXPosition.occupiedBy != null) {
-				if (nextXPosition.occupiedBy.getColor() != r.getColor()) {
-					// other player
+			if (nextXPosition != null) {
+				if (nextXPosition.occupiedBy != null) {
+					if (nextXPosition.occupiedBy.getColor() != r.getColor()) {
+						// other player
+						possible[i] = nextXPosition;
+						i++;
+					}
+				} else {
 					possible[i] = nextXPosition;
 					i++;
 				}
-			} else {
-				possible[i] = nextXPosition;
-				i++;
 			}
-		} catch (Exception e) {
-			// Position doesn't exist on table
-			System.out.println("Position Doesnt exist on table");
-		}
 		
 		aux.x = c.x;
 		aux.y = c.y;
 		
-		try {	
 			aux.x-=2;
 			aux.y--;
 			// Verify if position is on table, and gets its position if exists
 			nextXPosition = this.getPositionByCoordinate(aux);
-			if (nextXPosition.occupiedBy != null) {
-				if (nextXPosition.occupiedBy.getColor() != r.getColor()) {
-					// other player
+			if (nextXPosition != null) {
+				if (nextXPosition.occupiedBy != null) {
+					if (nextXPosition.occupiedBy.getColor() != r.getColor()) {
+						// other player
+						possible[i] = nextXPosition;
+						i++;
+					}
+				} else {
 					possible[i] = nextXPosition;
 					i++;
 				}
-			} else {
-				possible[i] = nextXPosition;
-				i++;
 			}
-		} catch (Exception e) {
-			// Position doesn't exist on table
-			System.out.println("Position Doesnt exist on table");
-		}
 		
 		return possible;
 		
@@ -859,7 +814,7 @@ final public class Table implements PieceObserved {
 		return posible;
 	}
 	
-	private Position[] findKingAvailablePositions(Position current) throws Exception {
+	private Position[] findKingAvailablePositions(Position current) {
 		Piece r = current.occupiedBy;
 		if (r == null) {
 			return null;
@@ -868,16 +823,176 @@ final public class Table implements PieceObserved {
 		Color team = r.getColor();
 		Color oponent = r.getColor() == Color.BLACK ? Color.WHITE: Color.BLACK;
 		
-		Position[] initialPosible = {};
+		Position[] possible = new Position[8];
 		
+
+		Coordinate curr = current.coordinate;
+		Coordinate aux = new Coordinate(curr.x, curr.y);
+		int i = 0;
+		aux.x++;
 		
-		
-		if (initialPosible.length == 0) {
-			// Verify if other pieces can block
-			throw new Checkmate();
+		Position nextXPosition = this.getPositionByCoordinate(aux);
+		if (nextXPosition != null) {
+			if (nextXPosition.occupiedBy != null) {
+				System.out.println("existe direita");
+
+
+					if (nextXPosition.occupiedBy.getColor() != r.getColor()) {
+						// other player
+						possible[i] = nextXPosition;
+						i++;
+					}
+				} else {
+					possible[i] = nextXPosition;
+					i++;
+				}
 		}
 		
-		return initialPosible;
+		aux.x = curr.x;
+		aux.y = curr.y;
+		aux.x--;
+		
+		nextXPosition = this.getPositionByCoordinate(aux);
+		if (nextXPosition != null) {
+			if (nextXPosition.occupiedBy != null) {
+				System.out.println("existe esquerda");
+
+					if (nextXPosition.occupiedBy.getColor() != r.getColor()) {
+						// other player
+						possible[i] = nextXPosition;
+						i++;
+					}
+				} else {
+					possible[i] = nextXPosition;
+					i++;
+				}
+		}
+		
+		aux.x = curr.x;
+		aux.y = curr.y;
+		aux.y++;
+		
+		Position nextYPosition = this.getPositionByCoordinate(aux);
+		if (nextYPosition != null) {
+			if (nextYPosition.occupiedBy != null) {
+				System.out.println("existe cima");
+
+					if (nextYPosition.occupiedBy.getColor() != r.getColor()) {
+						// other player
+						possible[i] = nextXPosition;
+						i++;
+					}
+				} else {
+					possible[i] = nextXPosition;
+					i++;
+				}
+		}
+		
+		aux.x = curr.x;
+		aux.y = curr.y;
+		aux.y--;
+		
+		nextYPosition = this.getPositionByCoordinate(aux);
+		if (nextYPosition != null) {
+			if (nextYPosition.occupiedBy != null) {
+				System.out.println("existe baixo");
+
+					if (nextYPosition.occupiedBy.getColor() != r.getColor()) {
+						// other player
+						possible[i] = nextXPosition;
+						i++;
+					}
+				} else {
+					possible[i] = nextXPosition;
+					i++;
+				}
+		}
+		
+		aux.x = curr.x;
+		aux.y = curr.y;
+		aux.x++;
+		aux.y--;
+		
+		nextYPosition = this.getPositionByCoordinate(aux);
+		if (nextYPosition != null) {
+			if (nextYPosition.occupiedBy != null) {
+				System.out.println("existe inf - direita");
+
+					if (nextYPosition.occupiedBy.getColor() != r.getColor()) {
+						// other player
+						possible[i] = nextXPosition;
+						i++;
+					}
+				} else {
+					possible[i] = nextXPosition;
+					i++;
+				}
+		}
+		
+		aux.x = curr.x;
+		aux.y = curr.y;
+		aux.x++;
+		aux.y++;
+		
+		nextYPosition = this.getPositionByCoordinate(aux);
+		if (nextYPosition != null) {
+			if (nextYPosition.occupiedBy != null) {
+				System.out.println("existe sup-direita");
+
+					if (nextYPosition.occupiedBy.getColor() != r.getColor()) {
+						// other player
+						possible[i] = nextXPosition;
+						i++;
+					}
+				} else {
+					possible[i] = nextXPosition;
+					i++;
+				}
+		}
+		
+		aux.x = curr.x;
+		aux.y = curr.y;
+		aux.x--;
+		aux.y++;
+		
+		nextYPosition = this.getPositionByCoordinate(aux);
+		if (nextYPosition != null) {
+			if (nextYPosition.occupiedBy != null) {
+				System.out.println("existe sup-esquerda");
+
+					if (nextYPosition.occupiedBy.getColor() != r.getColor()) {
+						// other player
+						possible[i] = nextXPosition;
+						i++;
+					}
+				} else {
+					possible[i] = nextXPosition;
+					i++;
+				}
+		}
+		
+		aux.x = curr.x;
+		aux.y = curr.y;
+		aux.x--;
+		aux.y--;
+				
+		nextYPosition = this.getPositionByCoordinate(aux);
+		if (nextYPosition != null) {
+			if (nextYPosition.occupiedBy != null) {
+				System.out.println("existe inf-esquerda");
+
+					if (nextYPosition.occupiedBy.getColor() != r.getColor()) {
+						// other player
+						possible[i] = nextXPosition;
+						i++;
+					}
+				} else {
+					possible[i] = nextXPosition;
+					i++;
+				}
+		}
+		
+		return possible;
 	}
 
 	protected boolean lookForCheck(Color c) {
