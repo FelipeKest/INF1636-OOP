@@ -15,20 +15,33 @@ public class GameController {
 	protected Panel board;
 
 	public GameController() {
-		board = new Panel(this.getMouse());
+		board = new Panel(this.getMouse(),this.saveActionListener());
 	}
-
-    public static void main(String[] args) throws InterruptedException
-    {
-    	GameController controller = new GameController();
-    	ModelAPI.getAPIInstance().registerObserver(controller.board);
-    }
 	
 	public static void movePiece(int x0,int y0, int xF, int yF) {
 		ModelAPI m = ModelAPI.getAPIInstance();
 		m.movePiece(x0, y0, xF, yF);
 		m.increaseRound();
 	}
+	
+	public ActionListener saveActionListener() {
+		
+		ActionListener actionListener = new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				
+				ModelAPI m = ModelAPI.getAPIInstance();
+				String data = m.saveGameData();
+				
+				board.saveGame(data);
+			}
+			
+		};
+		
+		return actionListener;
+		
+	}
+	
 	
     public MouseListener getMouse() {
     	
@@ -94,7 +107,7 @@ public class GameController {
     }
     
     public int translateYPosition(int value) {
-    	int translatedYPosition = (int) ((8 * value)/this.board.getHeight());
+    	int translatedYPosition = (int) ((8 * value)/(this.board.getHeight()-100));
     	return translatedYPosition + 1;
     }
 }

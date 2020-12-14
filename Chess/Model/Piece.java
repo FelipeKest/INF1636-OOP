@@ -3,14 +3,16 @@ package Model;
 import Utils.PieceType;
 
 class Piece {
-	boolean isAlive;
+	private boolean isAlive;
 	private PieceType type;
 	private Color color;
+	private boolean hasMoved;
 	
 	protected Piece(PieceType type, Color color) {
 		this.isAlive = true;
 		this.type = type;
 		this.color = color;
+		this.hasMoved = false;
 		
 	}
 	
@@ -26,8 +28,11 @@ class Piece {
 	
 	protected Color getColor() {
 		return this.color;
-		
 	}	
+	
+	protected boolean getHasMoved() {
+		return this.hasMoved;
+	}
 
 	protected void die() {
 		this.isAlive = false;
@@ -35,6 +40,10 @@ class Piece {
 	
 	protected void live() {
 		this.isAlive = true;
+	}
+	
+	protected void moved() {
+		this.hasMoved = true;
 	}
 	
 }

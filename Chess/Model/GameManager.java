@@ -1,6 +1,8 @@
 package Model;
 //import java.sql.Time;
 
+import Utils.PieceType;
+
 final class GameManager{
 	private Player player1;
     private Player player2;
@@ -40,21 +42,30 @@ final class GameManager{
     	if (p == null || killer == null) {
     		return;
     	}
-        p.isAlive = false;
+        p.die();
         pos.occupiedBy = killer;
         gameTable.notifyPositions(pos);
     }
     
-    protected void ressurectPieceAt(Position pos, Piece newPiece){
+    protected void ressurectPieceAt(Coordinate c, PieceType newPieceType){
+
+    	Position pos;
+		try {
+			pos = gameTable.getPositionByCoordinate(c);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return;
+		}
+		
     	Piece p = pos.occupiedBy;
 
     	if (p == null) {
     		return;
     	}
     	
-    	newPiece.isAlive = true;
-    	p.isAlive = false;
-    	pos.occupiedBy = newPiece;
+    	p.setPieceType(newPieceType);
+    	pos.occupiedBy = p;
         gameTable.notifyPositions(pos);
     }
 
@@ -115,6 +126,44 @@ final class GameManager{
     protected void startGame(String playerName1, String playerName2) {
     	manager.createPlayers(playerName1,playerName2);
     	manager.gameTable = Table.getTableInstance();
+    }
+    
+    protected String saveGameToFile() {
+    	String data = "";
+    	data += player1.getName() + " " + player1.getColor() + " \n";
+    	data += player2.getName() + " " + player2.getColor() + " \n";   	
+		for (int[] pos: this.gameTable.getVisualPositions()) {
+			String strPos = pos[0] + "," + pos[1] + "," + pos[2] + "," + pos[3] + " \n";
+			data+=strPos;
+		}
+		return data;
+    }
+    
+    protected void loadGameFromFile(String stream) {
+		String dataLines[] = stream.split(("\\r?\\n"));
+		int i  = 0;
+		Position[] updatedPositions = new Position[64];
+		for (String dataLine: dataLines) {
+			String dataChars[] = dataLine.split(" ");
+			if (i == 0 || i == 1) {
+				String name = dataChars[0];
+				String color = dataChars[1];
+				int colorAsInt = Integer.parseInt(color);
+				if (i==0) {
+					Player player1 = new Player(name,Color.typeFromInt(colorAsInt));
+					this.player1 = player1;
+				} else if (i == 1) {
+					Player player2 = new Player(name,Color.typeFromInt(colorAsInt));
+					this.player2 = player2;										
+				}
+			} else {
+				updatedPositions[i-2] = Position.stringToPos(dataChars[0], dataChars[1], dataChars[2], dataChars[3]);		
+			}
+			i++;
+		}
+		Table t = Table.getTableInstance();
+		t.setPositions(updatedPositions);
+		this.gameTable = t;
     }
     
 }

@@ -22,11 +22,23 @@ class ModelAPITest {
 
 	@Test
 	void test() {
+		assertNotEquals(this.model,null);
 		this.model.movePiece(1, 2, 1, 4);
 		Coordinate c = new Coordinate(1,4);
 		Coordinate c2 = new Coordinate(1,2);
-		assertNotEquals(this.model.GM.getTable().getPositionByCoordinate(c).occupiedBy,null);
-		assertEquals(this.model.GM.getTable().getPositionByCoordinate(c2).occupiedBy,null);
+		
+		Object occ = null;
+		Object occ2 = null;
+	
+		try {
+			occ = this.model.GM.getTable().getPositionByCoordinate(c).occupiedBy;
+			occ2 = this.model.GM.getTable().getPositionByCoordinate(c2).occupiedBy;
+		} catch (Exception e) {
+			return;
+		}
+		
+		assertNotEquals(occ,null);
+		assertEquals(occ2,null);
 	}
 
 }

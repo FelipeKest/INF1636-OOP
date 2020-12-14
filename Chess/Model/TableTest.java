@@ -26,13 +26,13 @@ class TableTest {
 	void mockTable() {
 		for (int i = 0; i<9; i++) {
 			for (int j = 1; j<9; j++) {
-				if (i == 1 && j == 1) {
-					Piece k = new Piece(PieceType.KING,Color.WHITE);
-					Position p = new Position(i,j,k);
+				if (i == 8 && j == 1) {
+					Piece r = new Piece(PieceType.ROOK,Color.WHITE);
+					Position p = new Position(i,j,r);
 					this.t.notifyPositions(p);
-				} else if (i==1 && j == 5) {
-					Piece r = new Piece(PieceType.ROOK,Color.BLACK);
-					Position p2 = new Position(i,j,r);
+				} else if (i==5 && j == 1) {
+					Piece k = new Piece(PieceType.KING,Color.WHITE);
+					Position p2 = new Position(i,j,k);
 					this.t.notifyPositions(p2);
 				} else {
 					Position empty = new Position(i,j);
@@ -47,7 +47,7 @@ class TableTest {
 		this.mockTable();
 		Position[] allPositions = this.t.getAllPositions();
 		
-		Coordinate c = new Coordinate(1,1);
+		Coordinate c = new Coordinate(8,1);
 		Coordinate c2 = new Coordinate(5,4);
 		
 		Player w = new Player("W",Color.WHITE);
@@ -72,24 +72,58 @@ class TableTest {
 //		
 //		Position[] ret1 = t.findBishopAvailablePositions(pB);
 //		Position[] ret1 = t.findAvailablePositions(pB);
+		Position p;
+		Position p2;
+		
+		try {
+			p = t.getPositionByCoordinate(c);
+			p2 = t.getPositionByCoordinate(c2);
+		} catch (Exception e) {
+			System.out.println("Invalid");
+			return;
+		}
 		
 //		for (int i = 0; i<allPositions.length;i++) {
 //			if (allPositions[i].occupiedBy != null){
-//				System.out.println(allPositions[i].coordinate.x+"  "+allPositions[i].coordinate.y+"  "+allPositions[i].occupiedBy.getPieceType());				
+//				System.out.println(allPositions[i].coordinate.x+"  "+allPositions[i].coordinate.y);				
 //			}
 //		}
-//		
+		
+		Position[] poss = t.findAvailablePositions(p);
+		
+//		for (int i = 0;poss[i]!=null;i++) {
+//			System.out.println(poss[i].coordinate.x+"  "+poss[i].coordinate.y);
+//		}
+		
 		
 		assertEquals(this.t.getAllPositions().length,64);
 		try {
-			assertEquals(this.t.lookForCheck(w),true);
-//			assertEquals(this.t.getPositionByCoordinate(c).coordinate.y,1);
-//			assertEquals(this.t.getPositionByCoordinate(c2).coordinate.x,5);
-//			assertEquals(this.t.getPositionByCoordinate(c2).coordinate.y,4);
+			assertEquals(this.t.lookForCheck(Color.WHITE),false);
+			assertEquals(this.t.getPositionByCoordinate(c).coordinate.y,1);
+			assertEquals(this.t.getPositionByCoordinate(c2).coordinate.x,5);
+			assertEquals(this.t.getPositionByCoordinate(c2).coordinate.y,4);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	
+	@Test
+	void testDataLoader() {
+		this.mockTable();
+		assertNotEquals(t.generateStringFromTable(),"");
+		String dataString = t.generateStringFromTable();
+		Table t2 = t;
+		t.loadTableFromString(dataString);
+		for (int i = 0;i<t2.getAllPositions().length;i++) {
+			int[] intP1 = t.getAllPositions()[i].mapToInt();
+			int[] intP2 = t2.getAllPositions()[i].mapToInt();
+			for (int j = 0; j<intP2.length;j++) {
+				assertEquals(intP1[j],intP2[j]);
+			}
+		}
+		
 	}
 
 }

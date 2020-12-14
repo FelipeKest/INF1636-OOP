@@ -10,8 +10,8 @@ import Utils.PieceObserver;
 import Utils.PieceType;
 
 final public class Table implements PieceObserved {
-	
-	private Position positions[];
+
+    private Position positions[];
 	
 	private int[][] visualPositions = new int[64][4];
 
@@ -60,6 +60,9 @@ final public class Table implements PieceObserved {
 		return null;
 	}
 	
+    protected void setPositions(Position[] updatedPositions) {
+    	this.positions = updatedPositions;
+    }
     protected void notifyPositions(Position p) {
         updatePositions(p);
         alertObservers();
@@ -67,19 +70,50 @@ final public class Table implements PieceObserved {
     
     protected void alertObservers() {
         for (PieceObserver observer: list) {
-        	observer.notifyPositions(this);
+            observer.notifyPositions(this);
+        }
+    }
+
+    private void updatePositions(Position p) {
+        for (int i = 0; i < positions.length; i++) {
+            Position indexed = this.positions[i];
+            if (Position.checkEqualCoordinate(indexed, p)) {
+                this.positions[i] = p;
+                this.generateVisualPositions();
+                return;
+            }
         }
     }
 	
-	private void updatePositions(Position p) {
-		for (int i = 0; i < positions.length; i++) {
-			Position indexed = this.positions[i];
-			if (Position.checkEqualCoordinate(indexed, p)) {
-				this.positions[i] = p;
-				this.generateVisualPositions();
-				return;
-			}
+	protected void movePiece(Coordinate c0, Coordinate cF) {
+	
+		Position p0 = null;
+		try {
+			p0 = this.getPositionByCoordinate(c0);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
 		}
+		Position pF = null;
+		try {
+			pF = this.getPositionByCoordinate(cF);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	
+		Piece p = null;
+		if (p0.occupiedBy != null) {
+			p = p0.occupiedBy;
+			p.moved();
+		}
+		
+		
+		p0.occupiedBy = null;
+		pF.occupiedBy = p;
+		
+		this.notifyPositions(p0);
+		this.notifyPositions(pF);
 	}
 	
 	protected void generateVisualPositions() {
@@ -296,6 +330,11 @@ final public class Table implements PieceObserved {
 			return null;
 		}
 		
+		
+		boolean roqueIsPossible = !r.getHasMoved();
+		Color pColor = r.getColor();
+		
+		Position[] currentTable = this.getAllPositions();
 		// Vector of possible positions for a rook (8V - Current)+(8H-Current) = 14
 		Position possible[] = new Position[14];
 		int i=0;
@@ -305,7 +344,6 @@ final public class Table implements PieceObserved {
 		
 		// Check for available positions in x coordinate
 		while (aux.x<9) {
-			
 			Position nextXPosition;
 			
 				aux.x++;
@@ -329,7 +367,7 @@ final public class Table implements PieceObserved {
 					}
 				}
 		}
-		
+				
 		aux.x = c.x;
 		aux.y = c.y;
 		
@@ -341,8 +379,27 @@ final public class Table implements PieceObserved {
 
 				if (nextXPosition != null) {
 			if (nextXPosition.occupiedBy != null) {
-				if (nextXPosition.occupiedBy.getColor() == r.getColor()) {
-					// same player
+				Piece nextPiece = nextXPosition.occupiedBy;
+				if (nextPiece.getColor() == pColor) {
+//					 same player
+					if (nextPiece.getPieceType() == PieceType.KING) {
+						if (!nextPiece.getHasMoved() && roqueIsPossible && r.getPieceType() == PieceType.ROOK) {
+							// Both pieces didnt move yet
+							// TODO
+							if (!lookForCheck(pColor)) {
+								// Analyse if there is a rook a check doesnt happen
+								Coordinate aux2 = new Coordinate(aux.x++,aux.y);
+								this.movePiece(aux,aux2);
+								this.movePiece(c, aux);
+								if(!lookForCheck(pColor)) {
+									possible[i] = nextXPosition;
+									i++;
+								}
+								this.movePiece(aux,c);
+								this.movePiece(aux2, aux);
+							}
+						}
+					}
 					break;
 				} else {
 					// other player
@@ -732,8 +789,7 @@ final public class Table implements PieceObserved {
 		
 	}
 
-	private Position[] findQueenAvailablePositions(Position current) {
-		
+	private Position[] findQueenAvailablePositions(Position current) {	
 		
 		Position posible[] = {};
 				
@@ -939,29 +995,43 @@ final public class Table implements PieceObserved {
 		return possible;
 	}
 
-	protected boolean lookForCheck(Player p) {
+	protected boolean lookForCheck(Color c) {
 		
-		Color c = p.getColor();
 		Color enemyColor = c == Color.WHITE ? Color.BLACK : Color.WHITE;
 		
-		System.out.println(c+" "+enemyColor);
-		
 		for (Position pos: this.getAllPositions()) {
-			
 			Piece pc = pos.occupiedBy;
 			if (pc != null && pc.getColor() == enemyColor) {
-				System.out.println("Piece Type "+pc.getPieceType());
+				
 				Position posible[] = this.findAvailablePositions(pos);
 				for (Position posibleCheck: posible) {
-					
 					if (posibleCheck.occupiedBy != null && posibleCheck.occupiedBy.getPieceType() == PieceType.KING) {
 						return true;
 					}
 				}
 			}
 		}
-		
-		
 		return false;
 	}
+
+	protected String generateStringFromTable() {
+		String data = "";
+		for (int[] pos: this.getVisualPositions()) {
+			String strPos = pos[0] + "," + pos[1] + "," + pos[2] + "," + pos[3] + "\n";
+			data+=strPos;
+		}
+		return data;
+	}
+	
+	protected void loadTableFromString(String data) {
+		String dataLines[] = data.split(("\\r?\\n"));
+		int i = 0;
+		for (String dataLine: dataLines) {
+			String dataChars[] = dataLine.split(",");
+			positions[i] = Position.stringToPos(dataChars[0], dataChars[1], dataChars[2], dataChars[3]);
+			i++;
+		}
+	}
+
+	
 }
