@@ -15,6 +15,10 @@ final class GameManager{
     	}
     	return this.gameTable;
     }
+    
+    GameManager() {
+    	currentRound = new Round();
+    }
 
     protected static GameManager getGameManagerInstance() {
         if (manager == null) {
@@ -22,6 +26,14 @@ final class GameManager{
         }
         return manager;
     }    
+    
+    protected int getPlayerRound() {
+    	return currentRound.getPlayerRoundNumber();
+    }
+    
+    protected void increaseRound() {
+    	currentRound.increaseRoundNumber();
+    }
 	
     protected void killPieceAt(Position pos, Piece killer){
     	Piece p = pos.occupiedBy;

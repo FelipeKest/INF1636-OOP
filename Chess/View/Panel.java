@@ -106,7 +106,7 @@ public class Panel extends JPanel implements PieceObserver {
 				
 			// KNIGHT
 			case 3:
-				return this.piecesImages.blackKing;
+				return this.piecesImages.blackKnight;
 				
 			// ROOK
 			case 4:
@@ -135,7 +135,7 @@ public class Panel extends JPanel implements PieceObserver {
 				
 			// KNIGHT
 			case 3:
-				return this.piecesImages.whiteKing;
+				return this.piecesImages.whiteKnight;
 				
 			// ROOK
 			case 4:

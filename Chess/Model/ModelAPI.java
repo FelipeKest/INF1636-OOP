@@ -1,6 +1,7 @@
 package Model;
 
 import Utils.PieceObserver;
+import Utils.PieceType;
 
 public final class ModelAPI {
 
@@ -49,6 +50,36 @@ public final class ModelAPI {
 		}
 	}
 	
+	public boolean isPositionInPieceAvailableMoves(int oldPosX, int oldPosY, int newPosX, int newPosY) {
+		boolean isPositionInPieceAvailableMoves = false;
+		Coordinate oldCoordinate = new Coordinate(oldPosX, oldPosY);
+		Coordinate newCoordinate = new Coordinate(newPosX, newPosY);
+		
+		Position oldPosition = GM.getTable().getPositionByCoordinate(oldCoordinate);
+		Position newPosition = GM.getTable().getPositionByCoordinate(newCoordinate);
+		
+		Position[] availableMoves = GM.getTable().findAvailablePositions(oldPosition);
+		
+		if (availableMoves == null) {
+			return false;
+		}
+		
+		for (Position availablePosition: availableMoves) {
+			if (availablePosition != null) {
+				System.out.println("availablePosition: " + availablePosition.coordinate.x);
+				if (availablePosition.coordinate.x == newPosition.coordinate.x) {
+					if (availablePosition.coordinate.y == newPosition.coordinate.y) {
+						isPositionInPieceAvailableMoves = true;
+					} 
+				}
+			}
+		}
+		
+		System.out.println("available: " + isPositionInPieceAvailableMoves);
+
+		return isPositionInPieceAvailableMoves;
+	}
+	
 	public int[][] getPossiblePositions(int posX,int posY) {
 		return GM.getAvailablePositions(posX, posY);
 	}
@@ -57,9 +88,32 @@ public final class ModelAPI {
 		return GM.getTable().getVisualPositions();
 	}
 	
+	public boolean isPositionOccupied(int posX, int posY) {
+		Coordinate pos = new Coordinate(posX,posY);
+		boolean isOccupied = false;
+		if (GM.getTable().getPositionByCoordinate(pos).occupiedBy != null) {
+			isOccupied = true;
+		}
+		return isOccupied;
+	}
+		
 	public void registerObserver(PieceObserver observer) {
 		System.out.println("registerObserver");
 		GM.getTable().add(observer);
 		GM.getTable().alertObservers();
 	}
+	
+	public int getPieceOwner(int posX, int posY) {
+		Coordinate pos = new Coordinate(posX,posY);
+		return GM.getTable().getPositionByCoordinate(pos).occupiedBy.getColor().ordinal();
+	}
+	
+	public int getPlayerRound() {
+    	return GM.getPlayerRound();
+    }
+    
+	public void increaseRound() {
+    	GM.increaseRound();
+    }
+	
 }

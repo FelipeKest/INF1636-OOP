@@ -13,8 +13,6 @@ import View.*;
 public class GameController {
 	
 	protected Panel board;
-	protected ModelAPI model = ModelAPI.getAPIInstance();
-//	protected static GameController controller;
 
 	public GameController() {
 		board = new Panel(this.getMouse());
@@ -23,23 +21,52 @@ public class GameController {
     public static void main(String[] args) throws InterruptedException
     {
     	GameController controller = new GameController();
-    	controller.model.registerObserver(controller.board);
+    	ModelAPI.getAPIInstance().registerObserver(controller.board);
     }
 	
-	public void movePiece(int x0,int y0, int xF, int yF) {
+	public static void movePiece(int x0,int y0, int xF, int yF) {
 		ModelAPI m = ModelAPI.getAPIInstance();
 		m.movePiece(x0, y0, xF, yF);
-		
+		m.increaseRound();
 	}
 	
     public MouseListener getMouse() {
     	
     	MouseListener mouseListener = new MouseListener() {
+    		
+    		protected boolean isPieceSelected = false;
+    		protected int oldPosX;
+    		protected int oldPosY;
 
 			@Override
 			public void mouseClicked(MouseEvent e) { 
-				System.out.println("coord x: " + translateXPosition(e.getX()));
-				System.out.println("coord y: " + translateYPosition(e.getY()));
+				int newPosX = translateXPosition(e.getX());
+				int newPosY = translateYPosition(e.getY());
+//				System.out.println("coord x: " + newPosX);
+//				System.out.println("coord y: " + newPosY);
+//				System.out.println("is occupiedby: " + ModelAPI.getAPIInstance().isPositionOccupied(newPosX, newPosY));	
+				
+				if (ModelAPI.getAPIInstance().isPositionOccupied(newPosX, newPosY)) {
+					if (ModelAPI.getAPIInstance().getPieceOwner(newPosX, newPosY) == ModelAPI.getAPIInstance().getPlayerRound()) {
+						this.isPieceSelected = true;
+						this.oldPosX = newPosX;
+						this.oldPosY = newPosY;
+					}
+				} 
+				if (this.isPieceSelected == true) {
+					boolean isPositionInPieceAvailableMoves = ModelAPI.getAPIInstance().isPositionInPieceAvailableMoves(
+							oldPosX,
+							oldPosY,
+							newPosX,
+							newPosY
+							);
+					if (isPositionInPieceAvailableMoves == true) {
+						GameController.movePiece(oldPosX, oldPosY, newPosX, newPosY);
+						this.oldPosX = 0;
+						this.oldPosY = 0;
+						isPieceSelected = false;
+					}
+				}
 			}
 
 			@Override
@@ -67,7 +94,7 @@ public class GameController {
     }
     
     public int translateYPosition(int value) {
-    	int translatedYPosition =  8 - (int) ((8 * value)/this.board.getHeight());
-    	return translatedYPosition;
+    	int translatedYPosition = (int) ((8 * value)/this.board.getHeight());
+    	return translatedYPosition + 1;
     }
 }
