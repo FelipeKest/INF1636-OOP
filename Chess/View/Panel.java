@@ -1,10 +1,15 @@
 package View;
 
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 import Model.*;
 import Utils.*;
@@ -19,29 +24,81 @@ public class Panel extends JPanel implements PieceObserver {
 	private Images piecesImages;
 	
 	JFrame frame;
+	public JButton saveB;
 	
-	public Panel(MouseListener l) {
+	public Panel(MouseListener l, ActionListener a) {
 		// Cadastrando o Panel para que possa receber as notificações 
 		this.piecesImages = new Images();
-		this.setupFrame(l);
+		this.setupFrame(l,a);
 //		for (int[] visualPosition: visualPositions) {
 //			System.out.println("Visual Positions: " + visualPosition[0] + visualPosition[1] + visualPosition[2] + visualPosition[3]);
 //		}
 	}
 	
-    private void setupFrame(MouseListener l)
+    private void setupFrame(MouseListener l,ActionListener a)
     {
     	frame = new JFrame("Chess");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(this);
-        frame.setSize(600,620);
+        frame.setSize(610,700);
         frame.addMouseListener(l);
         frame.setVisible(true);
+        
+        Container mainP = frame.getContentPane();
+        mainP.setLayout(null);
+//       
+        saveB = new JButton("Salvar Jogo");
+        mainP.add(saveB);
+        saveB.addActionListener(a);
+        saveB.setBounds(200, 600, 200, 100);
+        
     }
 	
+    public void saveGame(String data) {
+        JFileChooser file;
+        file = openFileSelector();
+        FileWriter arq = null;
+        try {
+            arq = new FileWriter( new File(file.getSelectedFile().getPath()+".txt"));
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        PrintWriter gravarArq = new PrintWriter(arq);
+        
+        String dataLines[] = data.split(("\\r?\\n"));
+		int i = 0;
+		
+		for (String dataLine: dataLines) {
+			String dataChars[] = dataLine.split(",");
+			if (i == 0 || i==1) {
+				gravarArq.printf("%s,%s\n",dataChars[0], dataChars[1]);
+			}  else {
+				gravarArq.printf("%s,%s,%s,%s\n",dataChars[0], dataChars[1],dataChars[2], dataChars[3]);
+			}
+			i++;
+		}
+       
+        try {
+            arq.close();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+
+    }
+    
+    private JFileChooser openFileSelector() {
+        JFileChooser file = new JFileChooser();
+        file.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        file.setDialogTitle("Save file");
+        file.showOpenDialog(null);
+        return file;
+    }
+    
 	@Override
 	public void paintComponent(Graphics g) {
 	super.paintComponent(g);
+	// Colocar botao aqui
+	
 		g.fillRect(0,0,600,600);
 		for (int x = 0;x<600;x+=150) {
 			for (int y = 0;y<600;y+=150) {

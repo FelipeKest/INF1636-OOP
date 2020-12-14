@@ -28,19 +28,11 @@ final class Player {
 		return this.color;
 	}
 	
-	protected Piece[] addLivePiece(Piece p) {
-		// TODO: Check if the piece isn't already live
-		p.live();
-		Piece ps[] = Arrays.copyOf(this.livePieces, this.livePieces.length + 1);
-		ps[ps.length-1] = p;
-		return ps;
+	protected void setName(String name) {
+		this.name = name;
 	}
 	
-	protected Piece[] addDeadPiece(Piece p) {
-		// TODO: Check if the piece isn't already dead
-		p.die();
-		Piece ps[] = Arrays.copyOf(this.deadPieces, this.deadPieces.length + 1);
-		ps[ps.length-1] = p;
-		return ps;
+	protected void setColor(Color c) {
+		this.color = c;
 	}
 }

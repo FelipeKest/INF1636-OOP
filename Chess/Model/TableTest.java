@@ -83,18 +83,17 @@ class TableTest {
 			return;
 		}
 		
-		for (int i = 0; i<allPositions.length;i++) {
-			if (allPositions[i].occupiedBy != null){
-				System.out.println(allPositions[i].coordinate.x+"  "+allPositions[i].coordinate.y);				
-			}
-		}
+//		for (int i = 0; i<allPositions.length;i++) {
+//			if (allPositions[i].occupiedBy != null){
+//				System.out.println(allPositions[i].coordinate.x+"  "+allPositions[i].coordinate.y);				
+//			}
+//		}
 		
 		Position[] poss = t.findAvailablePositions(p);
-		System.out.println(poss.length);
 		
-		for (int i = 0;poss[i]!=null;i++) {
-			System.out.println(poss[i].coordinate.x+"  "+poss[i].coordinate.y);
-		}
+//		for (int i = 0;poss[i]!=null;i++) {
+//			System.out.println(poss[i].coordinate.x+"  "+poss[i].coordinate.y);
+//		}
 		
 		
 		assertEquals(this.t.getAllPositions().length,64);
@@ -107,6 +106,24 @@ class TableTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	
+	@Test
+	void testDataLoader() {
+		this.mockTable();
+		assertNotEquals(t.generateStringFromTable(),"");
+		String dataString = t.generateStringFromTable();
+		Table t2 = t;
+		t.loadTableFromString(dataString);
+		for (int i = 0;i<t2.getAllPositions().length;i++) {
+			int[] intP1 = t.getAllPositions()[i].mapToInt();
+			int[] intP2 = t2.getAllPositions()[i].mapToInt();
+			for (int j = 0; j<intP2.length;j++) {
+				assertEquals(intP1[j],intP2[j]);
+			}
+		}
+		
 	}
 
 }
