@@ -9,7 +9,11 @@ import Utils.PieceObserved;
 import Utils.PieceObserver;
 import Utils.PieceType;
 
-final class Table implements PieceObserved {
+final public class Table implements PieceObserved {
+	
+	private Position positions[];
+	
+	private int[][] visualPositions;
 
     private Position positions[];
 
