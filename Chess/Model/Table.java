@@ -10,10 +10,6 @@ import Utils.PieceObserver;
 import Utils.PieceType;
 
 final public class Table implements PieceObserved {
-	
-	private Position positions[];
-	
-	private int[][] visualPositions;
 
     private Position positions[];
 
