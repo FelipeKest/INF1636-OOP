@@ -129,7 +129,29 @@ final class GameManager{
     
     protected void loadGameFromFile(String stream) {
 		String dataLines[] = stream.split(("\\r?\\n"));
-		
+		int i  = 0;
+		Position[] updatedPositions = new Position[64];
+		for (String dataLine: dataLines) {
+			String dataChars[] = dataLine.split(" ");
+			if (i == 0 || i == 1) {
+				String name = dataChars[0];
+				String color = dataChars[1];
+				int colorAsInt = Integer.parseInt(color);
+				if (i==0) {
+					Player player1 = new Player(name,Color.typeFromInt(colorAsInt));
+					this.player1 = player1;
+				} else if (i == 1) {
+					Player player2 = new Player(name,Color.typeFromInt(colorAsInt));
+					this.player2 = player2;										
+				}
+			} else {
+				updatedPositions[i-2] = Position.stringToPos(dataChars[0], dataChars[1], dataChars[2], dataChars[3]);		
+			}
+			i++;
+		}
+		Table t = Table.getTableInstance();
+		t.setPositions(updatedPositions);
+		this.gameTable = t;
     }
     
 }

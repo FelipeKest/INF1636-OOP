@@ -36,6 +36,10 @@ final class Table implements PieceObserved {
         this.generateVisualPositions();
     }
 
+    protected void setPositions(Position[] updatedPositions) {
+    	this.positions = updatedPositions;
+    }
+    
     protected static Table getTableInstance() {
         if (table == null) {
             table = new Table();
@@ -233,7 +237,7 @@ final class Table implements PieceObserved {
 			try {
 				contested = getPositionByCoordinate(aux);
 			} catch (Exception e) {
-				e.printStackTrace();
+				
 			}
 			
 			if (contested.occupiedBy != null) {

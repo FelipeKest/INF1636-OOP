@@ -58,6 +58,10 @@ public final class ModelAPI {
 	}
 	
 	public String saveGameData() { 
-		return GM.getTable().generateStringFromTable();
+		return GM.saveGameToFile();
 	}
-}
+	
+	public void loadGameData(String data) {
+		GM.loadGameFromFile(data);
+	}
+ }
