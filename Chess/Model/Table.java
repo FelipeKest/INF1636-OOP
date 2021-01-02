@@ -322,7 +322,6 @@ final public class Table implements PieceObserved {
 		
 		return posible;	
 	}
-	
 	private Position[] findRookAvailablePositions(Position current) {
 		
 		Piece r = current.occupiedBy;

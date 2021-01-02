@@ -46,7 +46,7 @@ public class Panel extends JPanel implements PieceObserver {
         
         Container mainP = frame.getContentPane();
         mainP.setLayout(null);
-//       
+       
         saveB = new JButton("Salvar Jogo");
         mainP.add(saveB);
         saveB.addActionListener(a);
@@ -136,16 +136,18 @@ public class Panel extends JPanel implements PieceObserver {
 	}
 	
 	private int getXPosition(int x) {
-		int xDistance = (getWidth()/8);
-		
-		return (xDistance * x) - 75;
-	}
-	
-	private int getYPosition(int y) {
-        int yDistance = ((getHeight()-100)/8);
+//      int xDistance = (getWidth()/8);
 
-		return (yDistance * y) - 63;
-	}
+      int xDistance = (600/8);
+      return (xDistance * x) - 75;
+  }
+
+  private int getYPosition(int y) {
+//      int yDistance = ((getHeight()-100)/8);
+      int yDistance = (600/8);
+
+      return (yDistance * y) - 75;
+  }
 	
 	private Image getPieceImage(int color, int type) {
 		// Color == Black

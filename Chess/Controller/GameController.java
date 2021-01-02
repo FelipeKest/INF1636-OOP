@@ -107,7 +107,8 @@ public class GameController {
     }
     
     public int translateYPosition(int value) {
-    	int translatedYPosition = (int) ((8 * value)/(this.board.getHeight()-100));
-    	return translatedYPosition + 1;
+        int translatedYPosition = (int) ((8 * value)/(this.board.getHeight()-100));
+//        return translatedYPosition + 1;
+        return translatedYPosition;
     }
 }
