@@ -46,11 +46,11 @@ public class Panel extends JPanel implements PieceObserver {
         
         Container mainP = frame.getContentPane();
         mainP.setLayout(null);
-       
+//       
         saveB = new JButton("Salvar Jogo");
         mainP.add(saveB);
         saveB.addActionListener(a);
-        saveB.setBounds(200, 600, 200, 100);
+        saveB.setBounds(0, 0, 150, 45);
         
     }
 	
@@ -99,15 +99,15 @@ public class Panel extends JPanel implements PieceObserver {
 	super.paintComponent(g);
 	// Colocar botao aqui
 	
-		g.fillRect(0,0,600,600);
+		g.fillRect(0,45,600,600);
 		for (int x = 0;x<600;x+=150) {
-			for (int y = 0;y<600;y+=150) {
+			for (int y = 45;y<600;y+=150) {
 				g.clearRect(x, y, 75, 75);
 			}
 		}
 		
 		for (int x = 75;x<600;x+=150) {
-			for (int y = 75;y<600;y+=150) {
+			for (int y = 120;y<600;y+=150) {
 				g.clearRect(x, y, 75, 75);
 			}
 		}
@@ -116,7 +116,7 @@ public class Panel extends JPanel implements PieceObserver {
 	@Override
     public void paint(Graphics g)
     {
-		System.out.println("chamei");
+//		System.out.println("chamei");
 		super.paint(g);
         displayPieces(g);
     }
@@ -135,19 +135,15 @@ public class Panel extends JPanel implements PieceObserver {
 		}
 	}
 	
-	private int getXPosition(int x) {
-//      int xDistance = (getWidth()/8);
-
-      int xDistance = (600/8);
-      return (xDistance * x) - 75;
-  }
-
-  private int getYPosition(int y) {
-//      int yDistance = ((getHeight()-100)/8);
-      int yDistance = (600/8);
-
-      return (yDistance * y) - 75;
-  }
+	private int getXPosition(int x) {		
+		int xDistance = (600/8);
+		return (xDistance * x) - 75;
+	}
+	
+	private int getYPosition(int y) {
+        int yDistance = (600/8);
+		return (yDistance * y) - 30;
+	}
 	
 	private Image getPieceImage(int color, int type) {
 		// Color == Black

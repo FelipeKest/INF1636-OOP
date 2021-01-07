@@ -56,6 +56,35 @@ class TableTest {
 		System.out.println("\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\");
 	}
 	
+	void mockPawnTable() {
+		for (int i = 1; i<9; i++) {
+			for (int j = 1; j<9; j++) {
+				if (i == 1 && j == 1) {
+					Piece pwn1 = new Piece(PieceType.PAWN,Color.WHITE);
+					Position p = new Position(i,j,pwn1);
+					this.t.notifyPositions(p);
+				} else if (i == 1 && j == 2) {
+					Piece pwn2 = new Piece(PieceType.PAWN,Color.BLACK);
+					Position p = new Position(i,j,pwn2);
+					this.t.notifyPositions(p);
+				} else {
+					Position empty = new Position(i,j);
+					this.t.notifyPositions(empty);
+				}
+			}
+		}
+		for (int i = 1; i<9; i++) {
+			for (int j = 1; j<9; j++) {
+				Coordinate c = new Coordinate(i,j);
+				Position p = this.t.getPositionByCoordinate(c);
+				if (p.occupiedBy != null) {
+					System.out.println(p.coordinate.x + " " + p.coordinate.y);
+				}
+			}
+		}
+		System.out.println("\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\");
+	}
+	
 	@Test
 	void test() {
 		this.mockTable();
@@ -102,10 +131,10 @@ class TableTest {
 		
 		assertEquals(this.t.getAllPositions().length,64);
 		try {
-			assertEquals(this.t.lookForCheck(Color.WHITE),false);
-			assertEquals(this.t.getPositionByCoordinate(c).coordinate.y,7);
-			assertEquals(this.t.getPositionByCoordinate(c2).coordinate.x,6);
-			assertEquals(this.t.getPositionByCoordinate(c2).coordinate.y,6);
+//			assertEquals(this.t.lookForCheck(Color.WHITE),false);
+//			assertEquals(this.t.getPositionByCoordinate(c).coordinate.y,7);
+//			assertEquals(this.t.getPositionByCoordinate(c2).coordinate.x,6);
+//			assertEquals(this.t.getPositionByCoordinate(c2).coordinate.y,6);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.lang.ModuleLayer.Controller;
 
 import Model.ModelAPI;
 import View.*;
@@ -55,8 +54,9 @@ public class GameController {
 			public void mouseClicked(MouseEvent e) { 
 				int newPosX = translateXPosition(e.getX());
 				int newPosY = translateYPosition(e.getY());
-//				System.out.println("coord x: " + newPosX);
-//				System.out.println("coord y: " + newPosY);
+				System.out.println("CLICOU        ");
+				System.out.println("coord x: " + e.getX());
+				System.out.println(" coord y: " + e.getY());
 //				System.out.println("is occupiedby: " + ModelAPI.getAPIInstance().isPositionOccupied(newPosX, newPosY));	
 				
 				if (ModelAPI.getAPIInstance().isPositionOccupied(newPosX, newPosY)) {
@@ -81,7 +81,7 @@ public class GameController {
 					}
 				}
 			}
-
+//
 			@Override
 			public void mousePressed(MouseEvent e) { }
 
@@ -102,13 +102,12 @@ public class GameController {
     }
     
     public int translateXPosition(int value) {
-    	int translatedXPosition = (int) (8 * value)/this.board.getWidth();
+    	int translatedXPosition = (int) (8 * value)/(600);
     	return translatedXPosition + 1;
     }
     
     public int translateYPosition(int value) {
-        int translatedYPosition = (int) ((8 * value)/(this.board.getHeight()-100));
-//        return translatedYPosition + 1;
-        return translatedYPosition;
+    	int translatedYPosition = (int) ((8 * value)/(600));
+    	return translatedYPosition;
     }
 }

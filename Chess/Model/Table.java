@@ -227,28 +227,30 @@ final public class Table implements PieceObserved {
 			Position p1 = this.getPositionByCoordinate(aux);
 			if (p1.occupiedBy == null) {
 				posible = Position.appendPositionToArray(posible, p1);
-			}
-			
-			posible = Position.appendPositionToArray(posible, p1);
-			if (c.y == 2) {
-				aux.y += 1;
-				Position p2 = this.getPositionByCoordinate(aux);
-				if (p2.occupiedBy == null) {
-					posible = Position.appendPositionToArray(posible, p2);
+				if (c.y == 2) {
+					aux.y += 1;
+					Position p2 = this.getPositionByCoordinate(aux);
+					if (p2.occupiedBy == null) {
+						posible = Position.appendPositionToArray(posible, p2);
+					}
 				}
 			}
 			
+			
 			// check diagonals
 			// Upper Left
-			aux.x--;
-			aux.y++;
+			aux.x = c.x;
+			aux.y = c.y;
+			
+			aux.x -= 1;
+			aux.y += 1;
 			
 			Position contested = null;
 			
 			contested = getPositionByCoordinate(aux);
-			
 			if (contested != null) {
 				if (contested.occupiedBy != null) {
+					System.out.println("Color own "+r.getColor() + " Color other "+contested.occupiedBy.getColor());
 					if (contested.occupiedBy.getColor() != r.getColor()) {
 					// Other player, can eat the piece
 						posible = Position.appendPositionToArray(posible, contested);
@@ -276,27 +278,29 @@ final public class Table implements PieceObserved {
 			
 			if (p1.occupiedBy == null) {
 				posible = Position.appendPositionToArray(posible, p1);
-			}
-			
-			posible = Position.appendPositionToArray(posible, p1);
-			if (c.y == 7) {
-				aux.y--;
-				Position p2 = this.getPositionByCoordinate(aux);
-				if (p2.occupiedBy == null) {
-					posible = Position.appendPositionToArray(posible, p2);
-				}
+				if (c.y == 7) {
+					aux.y--;
+					Position p2 = this.getPositionByCoordinate(aux);
+					if (p2.occupiedBy == null) {
+						posible = Position.appendPositionToArray(posible, p2);
+					}
+				}				
 			}
 			
 			// check diagonals
 			// Down Left
-			aux.x--;
-			aux.y--;
+			aux.x = c.x;
+			aux.y = c.y;
+			
+			aux.x -= 1;
+			aux.y -= 1;
 			
 			Position contested = null;
 			
 			contested = getPositionByCoordinate(aux);
 
 			if (contested != null) {
+				System.out.println("NOT NULL");
 				if (contested.occupiedBy != null) {
 					if (contested.occupiedBy.getColor() != r.getColor()) {
 					// Other player, can eat the piece
@@ -318,10 +322,12 @@ final public class Table implements PieceObserved {
 					}
 				}	
 			}
+			
 		}
 		
 		return posible;	
 	}
+
 	private Position[] findRookAvailablePositions(Position current) {
 		
 		Piece r = current.occupiedBy;
@@ -833,18 +839,18 @@ final public class Table implements PieceObserved {
 		Position nextXPosition = this.getPositionByCoordinate(aux);
 		if (nextXPosition != null) {
 			if (nextXPosition.occupiedBy != null) {
-				System.out.println("existe direita");
 
-
-					if (nextXPosition.occupiedBy.getColor() != r.getColor()) {
-						// other player
+				if (nextXPosition.occupiedBy.getColor() == oponent) {
+					if (nextXPosition.occupiedBy.getPieceType() != PieceType.KING) {
+					// other player
 						possible[i] = nextXPosition;
 						i++;
 					}
-				} else {
-					possible[i] = nextXPosition;
-					i++;
 				}
+			} else {
+				possible[i] = nextXPosition;
+				i++;
+			}
 		}
 		
 		aux.x = curr.x;
@@ -854,17 +860,18 @@ final public class Table implements PieceObserved {
 		nextXPosition = this.getPositionByCoordinate(aux);
 		if (nextXPosition != null) {
 			if (nextXPosition.occupiedBy != null) {
-				System.out.println("existe esquerda");
 
-					if (nextXPosition.occupiedBy.getColor() != r.getColor()) {
-						// other player
+				if (nextXPosition.occupiedBy.getColor() == oponent) {
+					if (nextXPosition.occupiedBy.getPieceType() != PieceType.KING) {
+					// other player
 						possible[i] = nextXPosition;
 						i++;
 					}
-				} else {
-					possible[i] = nextXPosition;
-					i++;
 				}
+			} else {
+				possible[i] = nextXPosition;
+				i++;
+			}
 		}
 		
 		aux.x = curr.x;
@@ -874,17 +881,18 @@ final public class Table implements PieceObserved {
 		Position nextYPosition = this.getPositionByCoordinate(aux);
 		if (nextYPosition != null) {
 			if (nextYPosition.occupiedBy != null) {
-				System.out.println("existe cima");
 
-					if (nextYPosition.occupiedBy.getColor() != r.getColor()) {
-						// other player
-						possible[i] = nextXPosition;
+				if (nextYPosition.occupiedBy.getColor() == oponent) {
+					if (nextYPosition.occupiedBy.getPieceType() != PieceType.KING) {
+					// other player
+						possible[i] = nextYPosition;
 						i++;
 					}
-				} else {
-					possible[i] = nextXPosition;
-					i++;
 				}
+			} else {
+				possible[i] = nextYPosition;
+				i++;
+			}
 		}
 		
 		aux.x = curr.x;
@@ -894,17 +902,18 @@ final public class Table implements PieceObserved {
 		nextYPosition = this.getPositionByCoordinate(aux);
 		if (nextYPosition != null) {
 			if (nextYPosition.occupiedBy != null) {
-				System.out.println("existe baixo");
 
-					if (nextYPosition.occupiedBy.getColor() != r.getColor()) {
-						// other player
-						possible[i] = nextXPosition;
+				if (nextYPosition.occupiedBy.getColor() == oponent) {
+					if (nextYPosition.occupiedBy.getPieceType() != PieceType.KING) {
+					// other player
+						possible[i] = nextYPosition;
 						i++;
 					}
-				} else {
-					possible[i] = nextXPosition;
-					i++;
 				}
+			} else {
+				possible[i] = nextYPosition;
+				i++;
+			}
 		}
 		
 		aux.x = curr.x;
@@ -915,17 +924,18 @@ final public class Table implements PieceObserved {
 		nextYPosition = this.getPositionByCoordinate(aux);
 		if (nextYPosition != null) {
 			if (nextYPosition.occupiedBy != null) {
-				System.out.println("existe inf - direita");
 
-					if (nextYPosition.occupiedBy.getColor() != r.getColor()) {
-						// other player
-						possible[i] = nextXPosition;
+				if (nextYPosition.occupiedBy.getColor() == oponent) {
+					if (nextYPosition.occupiedBy.getPieceType() != PieceType.KING) {
+					// other player
+						possible[i] = nextYPosition;
 						i++;
 					}
-				} else {
-					possible[i] = nextXPosition;
-					i++;
 				}
+			} else {
+				possible[i] = nextYPosition;
+				i++;
+			}
 		}
 		
 		aux.x = curr.x;
@@ -936,19 +946,19 @@ final public class Table implements PieceObserved {
 		nextYPosition = this.getPositionByCoordinate(aux);
 		if (nextYPosition != null) {
 			if (nextYPosition.occupiedBy != null) {
-				System.out.println("existe sup-direita");
 
-					if (nextYPosition.occupiedBy.getColor() != r.getColor()) {
-						// other player
-						possible[i] = nextXPosition;
+				if (nextYPosition.occupiedBy.getColor() == oponent) {
+					if (nextYPosition.occupiedBy.getPieceType() != PieceType.KING) {
+					// other player
+						possible[i] = nextYPosition;
 						i++;
 					}
-				} else {
-					possible[i] = nextXPosition;
-					i++;
 				}
+			} else {
+				possible[i] = nextYPosition;
+				i++;
+			}
 		}
-		
 		aux.x = curr.x;
 		aux.y = curr.y;
 		aux.x--;
@@ -957,17 +967,18 @@ final public class Table implements PieceObserved {
 		nextYPosition = this.getPositionByCoordinate(aux);
 		if (nextYPosition != null) {
 			if (nextYPosition.occupiedBy != null) {
-				System.out.println("existe sup-esquerda");
 
-					if (nextYPosition.occupiedBy.getColor() != r.getColor()) {
-						// other player
-						possible[i] = nextXPosition;
+				if (nextYPosition.occupiedBy.getColor() == oponent) {
+					if (nextYPosition.occupiedBy.getPieceType() != PieceType.KING) {
+					// other player
+						possible[i] = nextYPosition;
 						i++;
 					}
-				} else {
-					possible[i] = nextXPosition;
-					i++;
 				}
+			} else {
+				possible[i] = nextYPosition;
+				i++;
+			}
 		}
 		
 		aux.x = curr.x;
@@ -978,22 +989,22 @@ final public class Table implements PieceObserved {
 		nextYPosition = this.getPositionByCoordinate(aux);
 		if (nextYPosition != null) {
 			if (nextYPosition.occupiedBy != null) {
-				System.out.println("existe inf-esquerda");
 
-					if (nextYPosition.occupiedBy.getColor() != r.getColor()) {
-						// other player
-						possible[i] = nextXPosition;
+				if (nextYPosition.occupiedBy.getColor() == oponent) {
+					if (nextYPosition.occupiedBy.getPieceType() != PieceType.KING) {
+					// other player
+						possible[i] = nextYPosition;
 						i++;
 					}
-				} else {
-					possible[i] = nextXPosition;
-					i++;
 				}
+			} else {
+				possible[i] = nextYPosition;
+				i++;
+			}
 		}
 		
 		return possible;
 	}
-
 	protected boolean lookForCheck(Color c) {
 		
 		Color enemyColor = c == Color.WHITE ? Color.BLACK : Color.WHITE;
@@ -1013,6 +1024,20 @@ final public class Table implements PieceObserved {
 		return false;
 	}
 
+	private boolean checkIfMoveCauseCheck(Position current, Position destination) {
+		if (current.occupiedBy == null) {
+			return false;
+		}
+		
+		Color playerColor = current.occupiedBy.getColor();
+		
+		movePiece(current.coordinate,destination.coordinate);
+		boolean isCheck = lookForCheck(playerColor);
+		movePiece(destination.coordinate,current.coordinate);
+		
+		return isCheck;
+	}
+	
 	protected String generateStringFromTable() {
 		String data = "";
 		for (int[] pos: this.getVisualPositions()) {
